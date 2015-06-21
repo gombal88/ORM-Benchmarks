@@ -7,7 +7,7 @@ import de.greenrobot.daogenerator.Entity;
  */
 public class MultiTab05Entity extends BaseEntity {
 
-    public static final String TABLE_NAME = "MultiTable05";
+    public static final String TABLE_NAME = "MultiTable_05";
 
     @Override
     protected String getTableName() {

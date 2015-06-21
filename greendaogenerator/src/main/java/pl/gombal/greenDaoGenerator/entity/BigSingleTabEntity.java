@@ -81,26 +81,26 @@ public class BigSingleTabEntity extends BaseEntity{
         entity.addStringProperty(EXTRA_SAMPLE_STRING_COLL_19);
         entity.addStringProperty(EXTRA_SAMPLE_STRING_COLL_20);
 
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_01);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_02);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_03);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_04);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_05);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_06);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_07);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_08);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_09);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_10);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_11);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_12);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_13);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_14);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_15);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_16);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_17);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_18);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_19);
-        entity.addStringProperty(EXTRA_SAMPLE_DOUBLE_COLL_20);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_01);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_02);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_03);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_04);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_05);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_06);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_07);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_08);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_09);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_10);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_11);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_12);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_13);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_14);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_15);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_16);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_17);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_18);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_19);
+        entity.addDoubleProperty(EXTRA_SAMPLE_DOUBLE_COLL_20);
 
     }
 }

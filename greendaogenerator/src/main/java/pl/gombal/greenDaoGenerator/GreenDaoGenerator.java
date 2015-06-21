@@ -20,8 +20,8 @@ import pl.gombal.greenDaoGenerator.entity.TabWithRelationToOneEntity;
 
 public class GreenDaoGenerator {
 
-    private static final int DB_VERSION = 7;
-    private static final String DEFAULT_JAVA_PACKAGE = "pl.gombal.orm_benchmarks.io.greendao";
+    private static final int DB_VERSION = 8;
+    private static final String DEFAULT_JAVA_PACKAGE = "pl.gombal.orm_benchmarks.io.greendao.entity";
 
     public static void main(String args[]) throws Exception {
         Schema schema = new Schema(DB_VERSION, DEFAULT_JAVA_PACKAGE);

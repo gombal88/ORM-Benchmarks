@@ -37,7 +37,7 @@ public abstract class BaseEntity {
         if (entity == null)
             throw new IllegalStateException("Create entity first!");
 
-        Property relationProperty = entity.addLongProperty(getTableName() + "Id").getProperty();
+        Property relationProperty = entity.addLongProperty(relationTO.getTableName() + "Id").getProperty();
         ToOne toOne = entity.addToOne(relationTO.getEntity(), relationProperty);
 //        toOne.setName(relationTO.getTableName());
 
@@ -48,7 +48,7 @@ public abstract class BaseEntity {
         if (entity == null)
             throw new IllegalStateException("Create entity first!");
 
-        Property relationProperty = relationTO.getEntity().addLongProperty(getTableName() + "Id").notNull().getProperty();
+        Property relationProperty = relationTO.getEntity().addLongProperty(relationTO.getTableName() + "Id").notNull().getProperty();
         entity.addToMany(relationTO.getEntity(), relationProperty);
 
         return this;
@@ -57,16 +57,16 @@ public abstract class BaseEntity {
     public BaseEntity createEntity(Schema schema) {
         entity = schema.addEntity(getTableName());
         entity.addIdProperty().autoincrement();
-        entity.addShortProperty(SAMPLE_STRING_COLL_01).notNull();
-        entity.addShortProperty(SAMPLE_STRING_COLL_02);
-        entity.addShortProperty(SAMPLE_STRING_COLL_03);
-        entity.addShortProperty(SAMPLE_STRING_COLL_04);
-        entity.addShortProperty(SAMPLE_STRING_COLL_05);
-        entity.addShortProperty(SAMPLE_STRING_COLL_06);
-        entity.addShortProperty(SAMPLE_STRING_COLL_07);
-        entity.addShortProperty(SAMPLE_STRING_COLL_08);
-        entity.addShortProperty(SAMPLE_STRING_COLL_09);
-        entity.addShortProperty(SAMPLE_STRING_COLL_10);
+        entity.addStringProperty(SAMPLE_STRING_COLL_01).notNull();
+        entity.addStringProperty(SAMPLE_STRING_COLL_02);
+        entity.addStringProperty(SAMPLE_STRING_COLL_03);
+        entity.addStringProperty(SAMPLE_STRING_COLL_04);
+        entity.addStringProperty(SAMPLE_STRING_COLL_05);
+        entity.addStringProperty(SAMPLE_STRING_COLL_06);
+        entity.addStringProperty(SAMPLE_STRING_COLL_07);
+        entity.addStringProperty(SAMPLE_STRING_COLL_08);
+        entity.addStringProperty(SAMPLE_STRING_COLL_09);
+        entity.addStringProperty(SAMPLE_STRING_COLL_10);
         entity.addIntProperty(SAMPLE_INT_COLL_01).notNull();
         entity.addIntProperty(SAMPLE_INT_COLL_02);
         entity.addDoubleProperty(SAMPLE_REAL_COLL_01);
