@@ -14,20 +14,49 @@ import pl.gombal.orm_benchmarks.util.LogUtils;
 /**
  * Created by gombal on 21.06.2015.
  */
-public class BaseDao<T extends BaseModel> {
+public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
 
+    protected boolean innerTab = false;
+    protected String tableName;
     private SelectionBuilder selectionBuilder;
 
-    public BaseDao() {
-        selectionBuilder = new SelectionBuilder();
+    public abstract String getCreateTableStatement(boolean ifNotExists);
+    public abstract String[] getCreateIndexStatements(boolean ifNotExists);
+    public abstract String getDropTableStatement(boolean ifExists);
+    public abstract String[] getColumns();
+    protected abstract long saveAction(SQLiteDatabase db, T entity);
+    protected abstract int updateAction(SQLiteDatabase db, T entity, String selection, String[] selectionArgs);
+
+    public BaseDao(String tableName) {
+        this(tableName, false);
     }
 
-    public Cursor sellectAll(DataBaseOpenHelper dataBaseOpenHelper, String tableName) {
+    public BaseDao(String tableName, boolean innerTab) {
+
+        this.innerTab = innerTab;
+        this.tableName = tableName;
+        this.selectionBuilder = new SelectionBuilder();
+    }
+
+    public boolean isInnerTab() {
+        return innerTab;
+    }
+
+    public void setInnerTab(boolean innerTab) {
+        this.innerTab = innerTab;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+
+    public Cursor sellectAll(DataBaseOpenHelper dataBaseOpenHelper) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder.table(tableName).query(database, null, null);
     }
 
-    public Cursor sellectById(DataBaseOpenHelper dataBaseOpenHelper, String tableName, long id) {
+    public Cursor sellectById(DataBaseOpenHelper dataBaseOpenHelper, long id) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder
                 .table(tableName)
@@ -51,24 +80,21 @@ public class BaseDao<T extends BaseModel> {
 
         SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
 
-        String tableName = objects.get(0).getTableName();
-        boolean isInnerTab = objects.get(0).isInnerTab();
-
         if (withTransaction) {
             try {
-                beginTransaction(database, isInnerTab);
+                beginTransaction(database, innerTab);
                 for (T entity : objects) {
-                    result = entity.saveAction(database);
+                    result = saveAction(database, entity);
                 }
-                endTransaction(database, isInnerTab);
+                endTransaction(database, innerTab);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while inserting");
             } finally {
-                setTransactionSuccessful(database, isInnerTab);
+                setTransactionSuccessful(database, innerTab);
             }
         } else {
             for (T entity : objects) {
-                result = entity.saveAction(database);
+                result = saveAction(database, entity);
             }
         }
 
@@ -84,21 +110,19 @@ public class BaseDao<T extends BaseModel> {
 
         SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
 
-        String tableName = object.getTableName();
-        boolean isInnerTab = object.isInnerTab();
 
         if (withTransaction) {
             try {
-                beginTransaction(database, isInnerTab);
-                object.updateAction(database, selection, selectionArgs);
-                endTransaction(database, isInnerTab);
+                beginTransaction(database, innerTab);
+                result = updateAction(database, object, selection, selectionArgs);
+                endTransaction(database, innerTab);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while updating");
             } finally {
-                setTransactionSuccessful(database, isInnerTab);
+                setTransactionSuccessful(database, innerTab);
             }
         } else {
-            object.updateAction(database, selection, selectionArgs);
+            result = updateAction(database, object, selection, selectionArgs);
         }
 
         database.close();
@@ -106,19 +130,19 @@ public class BaseDao<T extends BaseModel> {
         return result;
     }
 
-    public int delete(DataBaseOpenHelper dataBaseOpenHelper, String table, BaseEntity object, boolean withTransaction) {
-        return deleteByWhere(dataBaseOpenHelper, table, BaseColumns._ID + " = ?",
+    public int delete(DataBaseOpenHelper dataBaseOpenHelper, BaseSampleEntity object, boolean withTransaction) {
+        return deleteByWhere(dataBaseOpenHelper, BaseColumns._ID + " = ?",
                 new String[]{String.valueOf(object.getId())}, withTransaction);
     }
 
-    public synchronized int deleteByWhere(DataBaseOpenHelper dataBaseOpenHelper, String table,
+    public synchronized int deleteByWhere(DataBaseOpenHelper dataBaseOpenHelper,
                                           String selection, String[] selectionArgs, boolean withTransaction) {
         int result = -1;
-        if (table == null)
+        if (tableName == null)
             return result;
 
         SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
-        selectionBuilder.reset().table(table).where(selection, selectionArgs);
+        selectionBuilder.reset().table(tableName).where(selection, selectionArgs);
 
         if (withTransaction) {
             try {
@@ -126,7 +150,7 @@ public class BaseDao<T extends BaseModel> {
                 selectionBuilder.delete(database);
                 endTransaction(database, false);
             } catch (Exception e) {
-                LogUtils.LOGD("Entity: " + table, "catch exception while deleting");
+                LogUtils.LOGD("Entity: " + tableName, "catch exception while deleting");
             } finally {
                 setTransactionSuccessful(database, false);
             }
