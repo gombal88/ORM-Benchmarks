@@ -86,11 +86,11 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 for (T entity : objects) {
                     result = saveAction(database, entity);
                 }
-                endTransaction(database, innerTab);
+                setTransactionSuccessful(database, innerTab);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while inserting");
             } finally {
-                setTransactionSuccessful(database, innerTab);
+                endTransaction(database, innerTab);
             }
         } else {
             for (T entity : objects) {
@@ -115,11 +115,11 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
             try {
                 beginTransaction(database, innerTab);
                 result = updateAction(database, object, selection, selectionArgs);
-                endTransaction(database, innerTab);
+                setTransactionSuccessful(database, innerTab);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while updating");
             } finally {
-                setTransactionSuccessful(database, innerTab);
+                endTransaction(database, innerTab);
             }
         } else {
             result = updateAction(database, object, selection, selectionArgs);
@@ -148,11 +148,11 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
             try {
                 beginTransaction(database, false);
                 selectionBuilder.delete(database);
-                endTransaction(database, false);
+                setTransactionSuccessful(database, false);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while deleting");
             } finally {
-                setTransactionSuccessful(database, false);
+                endTransaction(database, false);
             }
         } else {
             selectionBuilder.delete(database);

@@ -73,6 +73,10 @@ public class TableWithRelationToManyDao extends BaseSampleDao<TableWithRelationT
 
     @Override
     protected long saveAction(SQLiteDatabase db, TableWithRelationToMany entity) {
+        TableWithRelationToOneDao toOneDao = new TableWithRelationToOneDao();
+        for (TableWithRelationToOne toOne : entity.getTableWithRelationToOneList()){
+            toOneDao.saveAction(db, toOne);
+        }
         SelectionBuilder builder = new SelectionBuilder();
         return builder.table(tableName).insert(db, entity.getContentValues());
     }

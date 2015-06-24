@@ -8,6 +8,14 @@ import android.provider.BaseColumns;
  */
 public class MultiTable_10 extends BaseSampleEntity {
 
+    public MultiTable_10(long id) {
+        super(id);
+    }
+
+    public MultiTable_10(long id, String sampleStringColl01, String sampleStringColl02, String sampleStringColl03, String sampleStringColl04, String sampleStringColl05, String sampleStringColl06, String sampleStringColl07, String sampleStringColl08, String sampleStringColl09, String sampleStringColl10, int sampleIntColl01, Integer sampleIntColl02, Double sampleRealColl01, Double sampleRealColl02, Integer sampleIntCollIndexed) {
+        super(id, sampleStringColl01, sampleStringColl02, sampleStringColl03, sampleStringColl04, sampleStringColl05, sampleStringColl06, sampleStringColl07, sampleStringColl08, sampleStringColl09, sampleStringColl10, sampleIntColl01, sampleIntColl02, sampleRealColl01, sampleRealColl02, sampleIntCollIndexed);
+    }
+
     @Override
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();

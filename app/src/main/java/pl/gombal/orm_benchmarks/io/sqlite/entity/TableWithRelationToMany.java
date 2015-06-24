@@ -3,10 +3,14 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
+import java.util.List;
+
 /**
  * Created by gombal on 23.06.2015.
  */
 public class TableWithRelationToMany extends BaseSampleEntity {
+
+    private List<TableWithRelationToOne> tableWithRelationToOneList;
 
     public TableWithRelationToMany(long id) {
         super(id);
@@ -43,5 +47,13 @@ public class TableWithRelationToMany extends BaseSampleEntity {
         values.put(TableWithRelationToManyDao.SAMPLE_INT_COLL_INDEXED, SampleIntCollIndexed);
 
         return values;
+    }
+
+    public List<TableWithRelationToOne> getTableWithRelationToOneList() {
+        return tableWithRelationToOneList;
+    }
+
+    public void setTableWithRelationToOneList(List<TableWithRelationToOne> tableWithRelationToOneList) {
+        this.tableWithRelationToOneList = tableWithRelationToOneList;
     }
 }
