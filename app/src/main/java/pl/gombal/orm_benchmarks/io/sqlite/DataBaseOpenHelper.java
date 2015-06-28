@@ -11,15 +11,15 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
     public static final int DATA_BASE_VERSION = 1;
 
     public DataBaseOpenHelper(Context context) {
-        this(context, DATA_BASE_NAME, false);
+        this(context, DATA_BASE_NAME, DATA_BASE_VERSION, false);
     }
 
     public DataBaseOpenHelper(Context context, boolean inMemory) {
-        this(context, DATA_BASE_NAME, inMemory);
+        this(context, DATA_BASE_NAME, DATA_BASE_VERSION, inMemory);
     }
 
-    public DataBaseOpenHelper(Context context, String databaseName, boolean inMemory) {
-        super(context, inMemory ? null : databaseName, null, DATA_BASE_VERSION);
+    public DataBaseOpenHelper(Context context, String databaseName, int dbVersion, boolean inMemory) {
+        super(context, inMemory ? null : databaseName, null, dbVersion);
         DATA_BASE_NAME = databaseName;
 
     }

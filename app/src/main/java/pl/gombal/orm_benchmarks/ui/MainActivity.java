@@ -1,37 +1,33 @@
 package pl.gombal.orm_benchmarks.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import pl.gombal.orm_benchmarks.R;
+import pl.gombal.orm_benchmarks.io.ORMBenchmarkTasks;
+import pl.gombal.orm_benchmarks.io.greendao.GreenDaoBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sqlite.DataBaseOpenHelper;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_01;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_02;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_03;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_04;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_05;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_06;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_07;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_08;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_09;
-import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_10;
+import pl.gombal.orm_benchmarks.util.LogUtils;
+
 
 public class MainActivity extends Activity {
 
     DataBaseOpenHelper dataBaseOpenHelper;
 
-    MultiTable_10 multiTable_10;
-    MultiTable_09 multiTable_09;
-    MultiTable_08 multiTable_08;
-    MultiTable_07 multiTable_07;
-    MultiTable_06 multiTable_06;
-    MultiTable_05 multiTable_05;
-    MultiTable_04 multiTable_04;
-    MultiTable_03 multiTable_03;
-    MultiTable_02 multiTable_02;
-    MultiTable_01 multiTable_01;
+//    MultiTable_10 multiTable_10;
+//    MultiTable_09 multiTable_09;
+//    MultiTable_08 multiTable_08;
+//    MultiTable_07 multiTable_07;
+//    MultiTable_06 multiTable_06;
+//    MultiTable_05 multiTable_05;
+//    MultiTable_04 multiTable_04;
+//    MultiTable_03 multiTable_03;
+//    MultiTable_02 multiTable_02;
+//    MultiTable_01 multiTable_01;
 
 
     @Override
@@ -41,6 +37,8 @@ public class MainActivity extends Activity {
 
 
 //        ((AppController) getApplication()).getDaoSession();
+
+
 
 //        dataBaseOpenHelper = new DataBaseOpenHelper(this);
 //        SQLiteDatabase db = dataBaseOpenHelper.getWritableDatabase();
@@ -85,9 +83,105 @@ public class MainActivity extends Activity {
 //        multiTable_03 = new MultiTable_03(1, "str","str","str","str","str","str","str","str","str","str", 2, 2, 3.5, 5.5, 9, multiTable_04);
 //        multiTable_02 = new MultiTable_02(1, "str","str","str","str","str","str","str","str","str","str", 2, 2, 3.5, 5.5, 9, multiTable_03);
 //        multiTable_01 = new MultiTable_01(1, "str","str","str","str","str","str","str","str","str","str", 2, 2, 3.5, 5.5, 9, multiTable_02);
+
+
+
+
+//        ORMLiteDataBaseOpenHelper.init(this);
+//        ConnectionSource connectionSource = ORMLiteDataBaseOpenHelper.getInstance().getConnectionSource();
 //
+//        try {
+//            TableUtils.createTableIfNotExists(connectionSource, SingleTable.class);
+//            TableUtils.createTableIfNotExists(connectionSource, BigSingleTable.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_10.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_09.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_08.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_07.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_06.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_05.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_04.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_03.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_02.class);
+//            TableUtils.createTableIfNotExists(connectionSource, MultiTable_01.class);
+//            TableUtils.createTableIfNotExists(connectionSource, TableWithRelationToMany.class);
+//            TableUtils.createTableIfNotExists(connectionSource, TableWithRelationToOne.class);
 //
-//         new MultiTable_01Dao().insert(dataBaseOpenHelper, multiTable_01, true);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+
+
+
+//        SingleTable singleTable = new SingleTable();
+//
+//        singleTable.setSampleStringColl01("123");
+//        singleTable.setSampleStringColl02("123");
+//        singleTable.setSampleStringColl03("123");
+//        singleTable.setSampleStringColl04("123");
+//        singleTable.setSampleStringColl05("123");
+//        singleTable.setSampleStringColl06("123");
+//        singleTable.setSampleStringColl07("123");
+//        singleTable.setSampleStringColl08("123");
+//        singleTable.setSampleStringColl09("123");
+//        singleTable.setSampleStringColl10("123");
+//
+//        singleTable.save();
+
+
+        new AsyncTask<Context, Void, Void>() {
+            @Override
+            protected Void doInBackground(Context... params) {
+
+                GreenDaoBenchmarkTasks benchmarkTasks = new GreenDaoBenchmarkTasks();
+
+                Context context = params[0];
+                benchmarkTasks.init(context);
+
+                long createTime = benchmarkTasks.createDB();
+                LogUtils.LOGD("ORM BENCHMARKS", "createDB: " + createTime);
+
+                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                        + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                        + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                        + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                        + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 100, false));
+
+                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                        + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                        + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                        + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 100, false));
+                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                        + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 100, false));
+
+                benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, false);
+                benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, false);
+                benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, false);
+                benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, false);
+
+                benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5);
+                benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 5);
+                benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 5);
+                benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 5);
+
+                benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB, "a");
+                benchmarkTasks.search(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, "a");
+                benchmarkTasks.search(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, "a");
+                benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a");
+
+                benchmarkTasks.dropDB();
+
+                return null;
+            }
+        }.execute(this);
+
     }
 
     @Override

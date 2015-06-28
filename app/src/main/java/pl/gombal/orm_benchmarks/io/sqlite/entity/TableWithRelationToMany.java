@@ -5,9 +5,6 @@ import android.provider.BaseColumns;
 
 import java.util.List;
 
-/**
- * Created by gombal on 23.06.2015.
- */
 public class TableWithRelationToMany extends BaseSampleEntity {
 
     private List<TableWithRelationToOne> tableWithRelationToOneList;

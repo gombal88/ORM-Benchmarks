@@ -12,7 +12,7 @@ import pl.gombal.orm_benchmarks.R;
 public class ORMLiteDataBaseOpenHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATA_BASE_NAME = "ormlite-db";
-    public static final int DATA_BASE_VERSION = 1;
+    public static final int DATA_BASE_VERSION = 2;
 
     private static ORMLiteDataBaseOpenHelper instance;
 
@@ -23,11 +23,11 @@ public class ORMLiteDataBaseOpenHelper extends OrmLiteSqliteOpenHelper {
         return instance;
     }
 
-    public void init(Context context) {
+    public static void init(Context context) {
         init(context, false);
     }
 
-    public void init(Context context, boolean inMemory) {
+    public static void init(Context context, boolean inMemory) {
         instance  = new ORMLiteDataBaseOpenHelper(context, inMemory);
     }
 

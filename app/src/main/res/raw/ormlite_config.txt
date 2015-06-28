@@ -1,0 +1,1543 @@
+#
+# generated on 2015/06/27 02:31:54
+#
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.SingleTable
+tableName=SINGLE_TABLE
+# --table-fields-start--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=SINGLE_TABLE_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.BigSingleTable
+tableName=BIG_SINGLE_TABLE
+# --table-fields-start--
+# --field-start--
+fieldName=ExtraSmplStringColl01
+columnName=EXTRA_SMPL_STRING_COLL01
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl02
+columnName=EXTRA_SMPL_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl03
+columnName=EXTRA_SMPL_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl04
+columnName=EXTRA_SMPL_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl05
+columnName=EXTRA_SMPL_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl06
+columnName=EXTRA_SMPL_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl07
+columnName=EXTRA_SMPL_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl08
+columnName=EXTRA_SMPL_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl09
+columnName=EXTRA_SMPL_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl10
+columnName=EXTRA_SMPL_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl11
+columnName=EXTRA_SMPL_STRING_COLL11
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl12
+columnName=EXTRA_SMPL_STRING_COLL12
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl13
+columnName=EXTRA_SMPL_STRING_COLL13
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl14
+columnName=EXTRA_SMPL_STRING_COLL14
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl15
+columnName=EXTRA_SMPL_STRING_COLL15
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl16
+columnName=EXTRA_SMPL_STRING_COLL16
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl17
+columnName=EXTRA_SMPL_STRING_COLL17
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl18
+columnName=EXTRA_SMPL_STRING_COLL18
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl19
+columnName=EXTRA_SMPL_STRING_COLL19
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplStringColl20
+columnName=EXTRA_SMPL_STRING_COLL20
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl01
+columnName=EXTRA_SMPL_DOUBLE_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl02
+columnName=EXTRA_SMPL_DOUBLE_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl03
+columnName=EXTRA_SMPL_DOUBLE_COLL03
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl04
+columnName=EXTRA_SMPL_DOUBLE_COLL04
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl05
+columnName=EXTRA_SMPL_DOUBLE_COLL05
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl06
+columnName=EXTRA_SMPL_DOUBLE_COLL06
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl07
+columnName=EXTRA_SMPL_DOUBLE_COLL07
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl08
+columnName=EXTRA_SMPL_DOUBLE_COLL08
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl09
+columnName=EXTRA_SMPL_DOUBLE_COLL09
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl10
+columnName=EXTRA_SMPL_DOUBLE_COLL10
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl11
+columnName=EXTRA_SMPL_DOUBLE_COLL11
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl12
+columnName=EXTRA_SMPL_DOUBLE_COLL12
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl13
+columnName=EXTRA_SMPL_DOUBLE_COLL13
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl14
+columnName=EXTRA_SMPL_DOUBLE_COLL14
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl15
+columnName=EXTRA_SMPL_DOUBLE_COLL15
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl16
+columnName=EXTRA_SMPL_DOUBLE_COLL16
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl17
+columnName=EXTRA_SMPL_DOUBLE_COLL17
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl18
+columnName=EXTRA_SMPL_DOUBLE_COLL18
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl19
+columnName=EXTRA_SMPL_DOUBLE_COLL19
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=ExtraSmplDoubleColl20
+columnName=EXTRA_SMPL_DOUBLE_COLL20
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=BIG_SINGLE_TABLE_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_01
+tableName=MULTI_TABLE_01
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_02
+columnName=MULTI_TABLE_02_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_02(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_01_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_02
+tableName=MULTI_TABLE_02
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_03
+columnName=MULTI_TABLE_03_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_03(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_02_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_03
+tableName=MULTI_TABLE_03
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_04
+columnName=MULTI_TABLE_04_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_04(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_03_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_04
+tableName=MULTI_TABLE_04
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_05
+columnName=MULTI_TABLE_05_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_05(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_04_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_05
+tableName=MULTI_TABLE_05
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_06
+columnName=MULTI_TABLE_06_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_06(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_05_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_06
+tableName=MULTI_TABLE_06
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_07
+columnName=MULTI_TABLE_07_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_07(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_06_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_07
+tableName=MULTI_TABLE_07
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_08
+columnName=MULTI_TABLE_08_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_08(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_07_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_08
+tableName=MULTI_TABLE_08
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_09
+columnName=MULTI_TABLE_09_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_09(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_08_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_09
+tableName=MULTI_TABLE_09
+# --table-fields-start--
+# --field-start--
+fieldName=MultiTable_10
+columnName=MULTI_TABLE_10_ID
+foreign=true
+columnDefinition=integer references MULTI_TABLE_10(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_09_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_10
+tableName=MULTI_TABLE_10
+# --table-fields-start--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=MULTI_TABLE_10_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.TableWithRelationToMany
+tableName=TABLE_WITH_RELATION_TO_MANY
+# --table-fields-start--
+# --field-start--
+fieldName=tableWithRelationToOneList
+columnName=tableWithRelationToOneList
+foreignCollection=true
+foreignCollectionColumnName=tableWithRelationToOneList
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=TABLE_WITH_RELATION_TO_MANY_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.TableWithRelationToOne
+tableName=TABLE_WITH_RELATION_TO_ONE
+# --table-fields-start--
+# --field-start--
+fieldName=tableWithRelationToMany
+columnName=TABLE_WITH_RELATION_TO_MANY_ID
+foreign=true
+columnDefinition=integer references TABLE_WITH_RELATION_TO_MANY(_id ) on delete cascade
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl01
+columnName=SAMPLE_STRING_COLL01
+dataPersister=STRING
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl02
+columnName=SAMPLE_STRING_COLL02
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl03
+columnName=SAMPLE_STRING_COLL03
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl04
+columnName=SAMPLE_STRING_COLL04
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl05
+columnName=SAMPLE_STRING_COLL05
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl06
+columnName=SAMPLE_STRING_COLL06
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl07
+columnName=SAMPLE_STRING_COLL07
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl08
+columnName=SAMPLE_STRING_COLL08
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl09
+columnName=SAMPLE_STRING_COLL09
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleStringColl10
+columnName=SAMPLE_STRING_COLL10
+dataPersister=STRING
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl01
+columnName=SAMPLE_INT_COLL01
+dataPersister=INTEGER
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=SampleIntColl02
+columnName=SAMPLE_INT_COLL02
+dataPersister=INTEGER_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl01
+columnName=SAMPLE_REAL_COLL01
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleRealColl02
+columnName=SAMPLE_REAL_COLL02
+dataPersister=DOUBLE_OBJ
+# --field-end--
+# --field-start--
+fieldName=SampleIntCollIndexed
+columnName=SAMPLE_INT_COLL_INDEXED
+dataPersister=INTEGER_OBJ
+indexName=TABLE_WITH_RELATION_TO_ONE_SAMPLE_INT_COLL_INDEXED_idx
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

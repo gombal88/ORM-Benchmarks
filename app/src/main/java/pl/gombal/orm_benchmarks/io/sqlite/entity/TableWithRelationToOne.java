@@ -3,9 +3,6 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
-/**
- * Created by gombal on 23.06.2015.
- */
 public class TableWithRelationToOne extends BaseSampleEntity {
 
     private TableWithRelationToMany TableWithRelationToMany;
