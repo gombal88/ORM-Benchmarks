@@ -27,7 +27,7 @@ public class DataBaseUtils {
         }
     }
 
-    public static void copyDBFileFronAssets(Context context, String dbName) {
+    public static void copyDBFileFromAssets(Context context, String dbName) {
 
         String databasePath = context.getApplicationInfo().dataDir + "/databases/" + dbName;
 
@@ -51,11 +51,11 @@ public class DataBaseUtils {
         }
     }
 
-    public static void loadDataBaseFileFomAssets(Context context, String dbNamo) {
-        if (databaseExists(context, dbNamo)) {
-            deleteDataBase(context, dbNamo);
+    public static void loadDataBaseFileFomAssets(Context context, String dbName) {
+        if (databaseExists(context, dbName)) {
+            deleteDataBase(context, dbName);
         }
-        copyDBFileFronAssets(context, dbNamo);
+        copyDBFileFromAssets(context, dbName);
     }
 
 }

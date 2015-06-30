@@ -7,6 +7,10 @@ public class TableWithRelationToOne extends BaseSampleEntity {
 
     private TableWithRelationToMany TableWithRelationToMany;
 
+    public TableWithRelationToOne() {
+
+    }
+
     public TableWithRelationToOne(long id) {
         super(id);
     }

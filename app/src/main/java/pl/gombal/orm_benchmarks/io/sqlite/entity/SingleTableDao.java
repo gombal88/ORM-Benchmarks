@@ -71,7 +71,9 @@ public class SingleTableDao extends BaseSampleDao<SingleTable> {
     @Override
     protected long saveAction(SQLiteDatabase db, SingleTable entity) {
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).insert(db, entity.getContentValues());
+        long id = builder.table(tableName).insert(db, entity.getContentValues());
+        entity.setId(id);
+        return id;
     }
 
     @Override

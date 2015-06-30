@@ -5,9 +5,6 @@ import android.provider.BaseColumns;
 
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 
-/**
- * Created by gombal on 23.06.2015.
- */
 public class BigSingleTableDao extends BaseSampleDao<BigSingleTable> {
 
     public static final String EXTRA_SAMPLE_STRING_COLL_01 = "EXTRA_SMPL_STRING_COLL01";
@@ -194,7 +191,9 @@ public class BigSingleTableDao extends BaseSampleDao<BigSingleTable> {
     @Override
     protected long saveAction(SQLiteDatabase db, BigSingleTable entity) {
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).insert(db, entity.getContentValues());
+        long id = builder.table(tableName).insert(db, entity.getContentValues());
+        entity.setId(id);
+        return id;
     }
 
     @Override

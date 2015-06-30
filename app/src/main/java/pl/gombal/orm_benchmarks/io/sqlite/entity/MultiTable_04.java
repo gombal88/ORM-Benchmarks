@@ -3,12 +3,14 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
-/**
- * Created by gombal on 23.06.2015.
- */
+import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+
 public class MultiTable_04 extends BaseSampleEntity {
 
-    private MultiTable_05 MultiTable_05;
+    private MultiTable_05 multiTable_05;
+
+    public MultiTable_04() {
+    }
 
     public MultiTable_04(long id) {
         super(id);
@@ -22,7 +24,34 @@ public class MultiTable_04 extends BaseSampleEntity {
                 sampleStringColl06, sampleStringColl07, sampleStringColl08, sampleStringColl09, sampleStringColl10,
                 sampleIntColl01, sampleIntColl02, sampleRealColl01, sampleRealColl02, sampleIntCollIndexed);
 
-        this.MultiTable_05 = MultiTable_05;
+        this.multiTable_05 = MultiTable_05;
+    }
+
+    public static MultiTable_04 getNewEntityWithRandomData(int nextUniqueRandomInt) {
+        return getNewEntityWithRandomData(null, nextUniqueRandomInt);
+    }
+
+    public static MultiTable_04 getNewEntityWithRandomData(Long id, int nextUniqueRandomInt) {
+        MultiTable_04 table = new MultiTable_04();
+        if (id != null)
+            table.setId(id);
+        table.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl03(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl04(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl05(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl06(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl07(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl08(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl09(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl10(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleIntColl01(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleIntCollIndexed(nextUniqueRandomInt);
+        table.setMultiTable_05(MultiTable_05.getNewEntityWithRandomData(table.getId(), nextUniqueRandomInt));
+        return table;
     }
 
     @Override
@@ -44,16 +73,16 @@ public class MultiTable_04 extends BaseSampleEntity {
         values.put(MultiTable_04Dao.SAMPLE_REAL_COLL_01, SampleRealColl01);
         values.put(MultiTable_04Dao.SAMPLE_REAL_COLL_02, SampleRealColl02);
         values.put(MultiTable_04Dao.SAMPLE_INT_COLL_INDEXED, SampleIntCollIndexed);
-        values.put(MultiTable_04Dao.MULTI_TABLE_05_ID, MultiTable_05.getId());
+        values.put(MultiTable_04Dao.MULTI_TABLE_05_ID, multiTable_05.getId());
 
         return values;
     }
 
     public MultiTable_05 getMultiTable_05() {
-        return MultiTable_05;
+        return multiTable_05;
     }
 
     public void setMultiTable_05(MultiTable_05 MultiTable_05) {
-        this.MultiTable_05 = MultiTable_05;
+        this.multiTable_05 = MultiTable_05;
     }
 }

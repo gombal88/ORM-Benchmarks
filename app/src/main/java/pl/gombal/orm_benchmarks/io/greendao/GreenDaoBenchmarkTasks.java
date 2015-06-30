@@ -212,6 +212,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                         }
                     });
                 } else {
+                    Stopwatch stopwatchTMP = Stopwatch.createStarted();
                     MultiTable_01Dao multiTableDao01 = daoSession.getMultiTable_01Dao();
                     MultiTable_02Dao multiTableDao02 = daoSession.getMultiTable_02Dao();
                     MultiTable_03Dao multiTableDao03 = daoSession.getMultiTable_03Dao();
@@ -222,10 +223,13 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                     MultiTable_08Dao multiTableDao08 = daoSession.getMultiTable_08Dao();
                     MultiTable_09Dao multiTableDao09 = daoSession.getMultiTable_09Dao();
                     MultiTable_10Dao multiTableDao10 = daoSession.getMultiTable_10Dao();
+                    LogUtils.LOGI("ORM_BENCHMARKS", "getDAOs time: " + stopwatchTMP.elapsed(TimeUnit.MILLISECONDS));
 
                     for (MultiTable_01 table : multiTableList) {
                         multiTableDao01.insertOrReplace(table);
+                        Stopwatch stopwatchEntity = Stopwatch.createStarted();
                         MultiTable_02 table02 = table.getMultiTable_02();
+                        LogUtils.LOGI("ORM_BENCHMARKS", "getEntity time: " + stopwatchEntity.elapsed(TimeUnit.NANOSECONDS));
                         multiTableDao02.insertOrReplace(table02);
                         MultiTable_03 table03 = table02.getMultiTable_03();
                         multiTableDao03.insertOrReplace(table03);
@@ -378,8 +382,37 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 if (withTransaction) {
                     multiTableDao.updateInTx(multiTableList);
                 } else {
-                    for (MultiTable_01 multiTable : multiTableList) {
-                        multiTableDao.update(multiTable);
+                    MultiTable_01Dao multiTableDao01 = daoSession.getMultiTable_01Dao();
+                    MultiTable_02Dao multiTableDao02 = daoSession.getMultiTable_02Dao();
+                    MultiTable_03Dao multiTableDao03 = daoSession.getMultiTable_03Dao();
+                    MultiTable_04Dao multiTableDao04 = daoSession.getMultiTable_04Dao();
+                    MultiTable_05Dao multiTableDao05 = daoSession.getMultiTable_05Dao();
+                    MultiTable_06Dao multiTableDao06 = daoSession.getMultiTable_06Dao();
+                    MultiTable_07Dao multiTableDao07 = daoSession.getMultiTable_07Dao();
+                    MultiTable_08Dao multiTableDao08 = daoSession.getMultiTable_08Dao();
+                    MultiTable_09Dao multiTableDao09 = daoSession.getMultiTable_09Dao();
+                    MultiTable_10Dao multiTableDao10 = daoSession.getMultiTable_10Dao();
+
+                    for (MultiTable_01 table : multiTableList) {
+                        multiTableDao01.update(table);
+                        MultiTable_02 table02 = table.getMultiTable_02();
+                        multiTableDao02.update(table02);
+                        MultiTable_03 table03 = table02.getMultiTable_03();
+                        multiTableDao03.update(table03);
+                        MultiTable_04 table04 = table03.getMultiTable_04();
+                        multiTableDao04.update(table04);
+                        MultiTable_05 table05 = table04.getMultiTable_05();
+                        multiTableDao05.update(table05);
+                        MultiTable_06 table06 = table05.getMultiTable_06();
+                        multiTableDao06.update(table06);
+                        MultiTable_07 table07 = table06.getMultiTable_07();
+                        multiTableDao07.update(table07);
+                        MultiTable_08 table08 = table07.getMultiTable_08();
+                        multiTableDao08.update(table08);
+                        MultiTable_09 table09 = table08.getMultiTable_09();
+                        multiTableDao09.update(table09);
+                        MultiTable_10 table10 = table09.getMultiTable_10();
+                        multiTableDao10.update(table10);
                     }
                 }
                 break;

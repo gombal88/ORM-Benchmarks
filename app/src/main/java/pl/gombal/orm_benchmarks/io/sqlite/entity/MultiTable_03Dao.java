@@ -4,9 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 
-/**
- * Created by gombal on 23.06.2015.
- */
 public class MultiTable_03Dao extends BaseSampleDao<MultiTable_03> {
 
     public static final String TABLE_NAME = "MULTI_TABLE_03";
@@ -77,9 +74,11 @@ public class MultiTable_03Dao extends BaseSampleDao<MultiTable_03> {
 
     @Override
     protected long saveAction(SQLiteDatabase db, MultiTable_03 entity) {
-        new MultiTable_04Dao().saveAction(db, entity.getMultiTable_04());
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).insert(db, entity.getContentValues());
+        long id = builder.table(tableName).insert(db, entity.getContentValues());
+        entity.setId(id);
+        new MultiTable_04Dao().saveAction(db, entity.getMultiTable_04());
+        return id;
     }
 
     @Override
