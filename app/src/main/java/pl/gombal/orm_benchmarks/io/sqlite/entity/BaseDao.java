@@ -2,6 +2,7 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
@@ -11,9 +12,7 @@ import pl.gombal.orm_benchmarks.io.sqlite.DataBaseOpenHelper;
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
-/**
- * Created by gombal on 21.06.2015.
- */
+
 public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
 
     protected boolean innerTab = false;
@@ -21,10 +20,15 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
     private SelectionBuilder selectionBuilder;
 
     public abstract String getCreateTableStatement(boolean ifNotExists);
+
     public abstract String[] getCreateIndexStatements(boolean ifNotExists);
+
     public abstract String getDropTableStatement(boolean ifExists);
+
     public abstract String[] getColumns();
+
     protected abstract long saveAction(SQLiteDatabase db, T entity);
+
     protected abstract int updateAction(SQLiteDatabase db, T entity, String selection, String[] selectionArgs);
 
     public BaseDao(String tableName) {
@@ -51,12 +55,12 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
     }
 
 
-    public Cursor sellectAll(DataBaseOpenHelper dataBaseOpenHelper) {
+    public Cursor sellectAll(SQLiteOpenHelper dataBaseOpenHelper) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder.table(tableName).query(database, null, null);
     }
 
-    public Cursor sellectById(DataBaseOpenHelper dataBaseOpenHelper, long id) {
+    public Cursor sellectById(SQLiteOpenHelper dataBaseOpenHelper, long id) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder
                 .table(tableName)
@@ -64,7 +68,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 .query(database, null, null);
     }
 
-    public long insert(DataBaseOpenHelper dataBaseOpenHelper, T object, boolean withTransaction) {
+    public long insert(SQLiteOpenHelper dataBaseOpenHelper, T object, boolean withTransaction) {
         if (object == null)
             return -1;
 
@@ -73,7 +77,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
         return insert(dataBaseOpenHelper, valuesList, withTransaction);
     }
 
-    public synchronized long insert(DataBaseOpenHelper dataBaseOpenHelper, List<T> objects, boolean withTransaction) {
+    public synchronized long insert(SQLiteOpenHelper dataBaseOpenHelper, List<T> objects, boolean withTransaction) {
         long result = -1;
         if (objects.isEmpty())
             return result;
@@ -88,7 +92,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 }
                 setTransactionSuccessful(database, innerTab);
             } catch (Exception e) {
-                LogUtils.LOGD("Entity: " + tableName, "catch exception while inserting");
+                LogUtils.LOGD("Entity: " + tableName, "catch exception while inserting. Rollback changes.");
             } finally {
                 endTransaction(database, innerTab);
             }
@@ -103,9 +107,18 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
         return result;
     }
 
-    public synchronized int update(DataBaseOpenHelper dataBaseOpenHelper, T object, String selection, String[] selectionArgs, boolean withTransaction) {
-        int result = -1;
+    public synchronized int update(SQLiteOpenHelper dataBaseOpenHelper, T object, String selection, String[] selectionArgs, boolean withTransaction) {
         if (object == null)
+            return -1;
+
+        ArrayList<T> valuesList = new ArrayList<>();
+        valuesList.add(object);
+        return update(dataBaseOpenHelper, valuesList, selection, selectionArgs, withTransaction);
+    }
+
+    public synchronized int update(SQLiteOpenHelper dataBaseOpenHelper, List<T> objects, String selection, String[] selectionArgs, boolean withTransaction) {
+        int result = -1;
+        if (objects.isEmpty())
             return result;
 
         SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
@@ -114,15 +127,17 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
         if (withTransaction) {
             try {
                 beginTransaction(database, innerTab);
-                result = updateAction(database, object, selection, selectionArgs);
+                for (T entity : objects)
+                    result = updateAction(database, entity, selection, selectionArgs);
                 setTransactionSuccessful(database, innerTab);
             } catch (Exception e) {
-                LogUtils.LOGD("Entity: " + tableName, "catch exception while updating");
+                LogUtils.LOGD("Entity: " + tableName, "catch exception while updating. Rollback changes.");
             } finally {
                 endTransaction(database, innerTab);
             }
         } else {
-            result = updateAction(database, object, selection, selectionArgs);
+            for (T entity : objects)
+                result = updateAction(database, entity, selection, selectionArgs);
         }
 
         database.close();
@@ -135,7 +150,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 new String[]{String.valueOf(object.getId())}, withTransaction);
     }
 
-    public synchronized int deleteByWhere(DataBaseOpenHelper dataBaseOpenHelper,
+    public synchronized int deleteByWhere(SQLiteOpenHelper dataBaseOpenHelper,
                                           String selection, String[] selectionArgs, boolean withTransaction) {
         int result = -1;
         if (tableName == null)
@@ -150,7 +165,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 selectionBuilder.delete(database);
                 setTransactionSuccessful(database, false);
             } catch (Exception e) {
-                LogUtils.LOGD("Entity: " + tableName, "catch exception while deleting");
+                LogUtils.LOGD("Entity: " + tableName, "catch exception while deleting. . Rollback changes.");
             } finally {
                 endTransaction(database, false);
             }

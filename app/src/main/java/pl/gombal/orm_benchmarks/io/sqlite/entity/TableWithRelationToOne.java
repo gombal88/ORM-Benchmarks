@@ -1,7 +1,8 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
 import android.content.ContentValues;
-import android.provider.BaseColumns;
+
+import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
 
 public class TableWithRelationToOne extends BaseSampleEntity {
 
@@ -26,25 +27,36 @@ public class TableWithRelationToOne extends BaseSampleEntity {
         this.TableWithRelationToMany = TableWithRelationToMany;
     }
 
-    @Override
+    protected static TableWithRelationToOne getNewEntityWithRandomData(TableWithRelationToMany parent, int generatedIndexedInt) {
+        return getNewEntityWithRandomData(null, parent, generatedIndexedInt);
+    }
+
+    public static TableWithRelationToOne getNewEntityWithRandomData(Long id, TableWithRelationToMany parent, int generatedIndexedInt) {
+        TableWithRelationToOne table = new TableWithRelationToOne();
+        if (id != null)
+            table.setId(id);
+        table.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl03(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl04(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl05(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl06(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl07(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl08(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl09(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl10(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleIntColl01(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleIntCollIndexed(generatedIndexedInt);
+
+        table.setTableWithRelationToMany(parent);
+        return table;
+    }
+
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(BaseColumns._ID, id);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_01, SampleStringColl01);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_02, SampleStringColl02);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_03, SampleStringColl03);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_04, SampleStringColl04);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_05, SampleStringColl05);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_06, SampleStringColl06);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_07, SampleStringColl07);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_08, SampleStringColl08);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_09, SampleStringColl09);
-        values.put(TableWithRelationToOneDao.SAMPLE_STRING_COLL_10, SampleStringColl10);
-        values.put(TableWithRelationToOneDao.SAMPLE_INT_COLL_01, SampleIntColl01);
-        values.put(TableWithRelationToOneDao.SAMPLE_INT_COLL_02, SampleIntColl02);
-        values.put(TableWithRelationToOneDao.SAMPLE_REAL_COLL_01, SampleRealColl01);
-        values.put(TableWithRelationToOneDao.SAMPLE_REAL_COLL_02, SampleRealColl02);
-        values.put(TableWithRelationToOneDao.SAMPLE_INT_COLL_INDEXED, SampleIntCollIndexed);
+        ContentValues values = super.getContentValues();
         values.put(TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID, TableWithRelationToMany.getId());
 
         return values;

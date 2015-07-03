@@ -78,7 +78,9 @@ public class TableWithRelationToOneDao extends BaseSampleDao<TableWithRelationTo
     @Override
     protected long saveAction(SQLiteDatabase db, TableWithRelationToOne entity) {
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).insert(db, entity.getContentValues());
+        long id = builder.table(tableName).insert(db, entity.getContentValues());
+        entity.setId(id);
+        return id;
     }
 
     @Override

@@ -1,5 +1,9 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.provider.BaseColumns;
+
 public abstract class BaseSampleEntity extends BaseEntity {
 
     protected String SampleStringColl01;
@@ -43,6 +47,51 @@ public abstract class BaseSampleEntity extends BaseEntity {
         SampleRealColl01 = sampleRealColl01;
         SampleRealColl02 = sampleRealColl02;
         SampleIntCollIndexed = sampleIntCollIndexed;
+    }
+
+    @Override
+    public BaseEntity fromCursor(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+        SampleStringColl01 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_01));
+        SampleStringColl02 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_02));
+        SampleStringColl03 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_03));
+        SampleStringColl04 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_04));
+        SampleStringColl05 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_05));
+        SampleStringColl06 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_06));
+        SampleStringColl07 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_07));
+        SampleStringColl08 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_08));
+        SampleStringColl09 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_09));
+        SampleStringColl10 = cursor.getString(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_STRING_COLL_10));
+        SampleIntColl01 = cursor.getInt(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_INT_COLL_01));
+        SampleIntColl02 = cursor.getInt(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_INT_COLL_02));
+        SampleRealColl01 = cursor.getDouble(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_REAL_COLL_01));
+        SampleRealColl02 = cursor.getDouble(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_REAL_COLL_02));
+        SampleIntCollIndexed = cursor.getInt(cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_INT_COLL_INDEXED));
+
+        return this;
+    }
+
+    @Override
+    public ContentValues getContentValues() {
+        ContentValues values = new ContentValues();
+        values.put(BaseColumns._ID, id);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_01, SampleStringColl01);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_02, SampleStringColl02);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_03, SampleStringColl03);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_04, SampleStringColl04);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_05, SampleStringColl05);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_06, SampleStringColl06);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_07, SampleStringColl07);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_08, SampleStringColl08);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_09, SampleStringColl09);
+        values.put(SingleTableDao.SAMPLE_STRING_COLL_10, SampleStringColl10);
+        values.put(SingleTableDao.SAMPLE_INT_COLL_01, SampleIntColl01);
+        values.put(SingleTableDao.SAMPLE_INT_COLL_02, SampleIntColl02);
+        values.put(SingleTableDao.SAMPLE_REAL_COLL_01, SampleRealColl01);
+        values.put(SingleTableDao.SAMPLE_REAL_COLL_02, SampleRealColl02);
+        values.put(SingleTableDao.SAMPLE_INT_COLL_INDEXED, SampleIntCollIndexed);
+
+        return values;
     }
 
     public String getSampleStringColl01() {

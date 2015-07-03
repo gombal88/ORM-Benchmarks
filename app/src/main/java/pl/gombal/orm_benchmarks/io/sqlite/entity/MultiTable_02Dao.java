@@ -83,6 +83,7 @@ public class MultiTable_02Dao extends BaseSampleDao<MultiTable_02> {
 
     @Override
     protected int updateAction(SQLiteDatabase db, MultiTable_02 entity, String selection, String[] selectionArgs) {
+        new MultiTable_03Dao().updateAction(db, entity.getMultiTable_03(), null, null );
         SelectionBuilder builder = new SelectionBuilder();
         return builder.table(tableName).where(selection, selectionArgs).update(db, entity.getContentValues());
     }

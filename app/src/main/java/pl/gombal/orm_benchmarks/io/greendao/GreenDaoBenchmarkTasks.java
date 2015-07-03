@@ -312,6 +312,8 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 daoSession = getDaoSession();
                 SingleTableDao singleTableDao = daoSession.getSingleTableDao();
                 List<SingleTable> singleTableList = singleTableDao.queryBuilder().limit(num).list();
+                if (singleTableList.size() < num)
+                    throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
                 for (SingleTable table : singleTableList) {
                     table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 }
@@ -333,6 +335,8 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 daoSession = getDaoSession();
                 BigSingleTableDao bigSingleTableDao = daoSession.getBigSingleTableDao();
                 List<BigSingleTable> bigSingleTableList = bigSingleTableDao.queryBuilder().limit(num).list();
+                if (bigSingleTableList.size() < num)
+                    throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
                 for (BigSingleTable table : bigSingleTableList) {
                     table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 }
@@ -354,6 +358,8 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 daoSession = getDaoSession();
                 MultiTable_01Dao multiTableDao = daoSession.getMultiTable_01Dao();
                 List<MultiTable_01> multiTableList = multiTableDao.queryBuilder().limit(num).list();
+                if (multiTableList.size() < num)
+                    throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
                 for (MultiTable_01 table01 : multiTableList) {
                     table01.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                     MultiTable_02 table02 = table01.getMultiTable_02();
@@ -421,6 +427,8 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 daoSession = getDaoSession();
                 TableWithRelationToManyDao toManyDao = daoSession.getTableWithRelationToManyDao();
                 final List<TableWithRelationToMany> tableWithRelationToManyList = toManyDao.queryBuilder().limit(num).list();
+                if (tableWithRelationToManyList.size() < num)
+                    throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
                 final List<TableWithRelationToOne> tableWithRelationToOneList = new ArrayList<>();
                 for (TableWithRelationToMany table : tableWithRelationToManyList) {
                     table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
@@ -474,14 +482,11 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first GreenDaoBenchmarkTasks by call init()!");
 
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
+        Stopwatch stopwatch = Stopwatch.createStarted();
 
-        DaoSession daoSession = null;
-
+        DaoSession daoSession = getDaoSession();
         switch (entityType) {
             case SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 SingleTableDao singleTableDao = daoSession.getSingleTableDao();
                 if (lazy) {
                     singleTableDao.queryBuilder().build().listLazy().close();
@@ -491,8 +496,6 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 break;
 
             case BIG_SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 BigSingleTableDao bigSingleTableDao = daoSession.getBigSingleTableDao();
                 if (lazy) {
                     bigSingleTableDao.queryBuilder().build().listLazy().close();
@@ -502,8 +505,6 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 break;
 
             case MULTI_TAB_RELATION_TO_ONE:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 MultiTable_01Dao multiTableDao = daoSession.getMultiTable_01Dao();
                 if (lazy) {
                     multiTableDao.queryBuilder().build().listLazy().close();
@@ -524,8 +525,6 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 TableWithRelationToManyDao toManyDao = daoSession.getTableWithRelationToManyDao();
                 if (lazy) {
                     toManyDao.queryBuilder().build().listLazy().close();
@@ -538,8 +537,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 break;
         }
 
-        if (daoSession != null)
-            daoSession.clear();
+        daoSession.clear();
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
@@ -549,36 +547,27 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first GreenDaoBenchmarkTasks by call init()!");
 
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
+        Stopwatch stopwatch = Stopwatch.createStarted();
 
-        DaoSession daoSession = null;
         int size = 0;
-
+        DaoSession daoSession = getDaoSession();
         switch (entityType) {
             case SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 SingleTableDao singleTableDao = daoSession.getSingleTableDao();
                 size = singleTableDao.queryBuilder().where(SingleTableDao.Properties.SampleIntCollIndexed.eq(value)).list().size();
                 break;
 
             case BIG_SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 BigSingleTableDao bigSingleTableDao = daoSession.getBigSingleTableDao();
                 size = bigSingleTableDao.queryBuilder().where(BigSingleTableDao.Properties.SampleIntCollIndexed.eq(value)).list().size();
                 break;
 
             case MULTI_TAB_RELATION_TO_ONE:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 MultiTable_01Dao multiTableDao = daoSession.getMultiTable_01Dao();
                 size = multiTableDao.queryBuilder().where(MultiTable_01Dao.Properties.SampleIntCollIndexed.eq(value)).list().size();
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 TableWithRelationToManyDao toManyDao = daoSession.getTableWithRelationToManyDao();
                 size = toManyDao.queryBuilder().where(TableWithRelationToManyDao.Properties.SampleIntCollIndexed.eq(value)).list().size();
                 break;
@@ -586,8 +575,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
 
         LogUtils.LOGD(TAG, "Found " + size + "rows.");
 
-        if (daoSession != null)
-            daoSession.clear();
+        daoSession.clear();
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
 
@@ -596,36 +584,27 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first GreenDaoBenchmarkTasks by call init()!");
 
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
+        Stopwatch stopwatch = Stopwatch.createStarted();
 
-        DaoSession daoSession = null;
         int size = 0;
-
+        DaoSession daoSession = getDaoSession();
         switch (entityType) {
             case SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 SingleTableDao singleTableDao = daoSession.getSingleTableDao();
                 size = singleTableDao.queryBuilder().where(SingleTableDao.Properties.SampleStringColl01.like("%" + value + "%")).list().size();
                 break;
 
             case BIG_SINGLE_TAB:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 BigSingleTableDao bigSingleTableDao = daoSession.getBigSingleTableDao();
                 size = bigSingleTableDao.queryBuilder().where(BigSingleTableDao.Properties.SampleStringColl01.like("%" + value + "%")).list().size();
                 break;
 
             case MULTI_TAB_RELATION_TO_ONE:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 MultiTable_01Dao multiTableDao = daoSession.getMultiTable_01Dao();
                 size = multiTableDao.queryBuilder().where(MultiTable_01Dao.Properties.SampleStringColl01.like("%" + value + "%")).list().size();
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
-                stopwatch.start();
-                daoSession = getDaoSession();
                 TableWithRelationToManyDao toManyDao = daoSession.getTableWithRelationToManyDao();
                 size = toManyDao.queryBuilder().where(TableWithRelationToManyDao.Properties.SampleStringColl01.like("%" + value + "%")).list().size();
                 break;
@@ -633,8 +612,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
 
         LogUtils.LOGD(TAG, "Found " + size + "rows.");
 
-        if (daoSession != null)
-            daoSession.clear();
+        daoSession.clear();
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
 

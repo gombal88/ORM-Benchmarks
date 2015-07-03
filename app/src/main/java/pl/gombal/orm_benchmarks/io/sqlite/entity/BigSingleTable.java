@@ -1,7 +1,7 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
 import android.content.ContentValues;
-import android.provider.BaseColumns;
+import android.database.Cursor;
 
 import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
 
@@ -174,25 +174,56 @@ public class BigSingleTable extends BaseSampleEntity{
         return bigSingleTable;
     }
 
-    @Override
+    public BaseEntity fromCursor(Cursor cursor) {
+        super.fromCursor(cursor);
+
+        ExtraSmplStringColl01 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_01));
+        ExtraSmplStringColl02 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_02));
+        ExtraSmplStringColl03 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_03));
+        ExtraSmplStringColl04 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_04));
+        ExtraSmplStringColl05 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_05));
+        ExtraSmplStringColl06 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_06));
+        ExtraSmplStringColl07 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_07));
+        ExtraSmplStringColl08 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_08));
+        ExtraSmplStringColl09 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_09));
+        ExtraSmplStringColl10 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_10));
+        ExtraSmplStringColl11 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_11));
+        ExtraSmplStringColl12 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_12));
+        ExtraSmplStringColl13 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_13));
+        ExtraSmplStringColl14 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_14));
+        ExtraSmplStringColl15 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_15));
+        ExtraSmplStringColl16 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_16));
+        ExtraSmplStringColl17 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_17));
+        ExtraSmplStringColl18 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_18));
+        ExtraSmplStringColl19 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_19));
+        ExtraSmplStringColl20 = cursor.getString(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_20));
+
+        ExtraSmplDoubleColl01 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_01));
+        ExtraSmplDoubleColl02 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_02));
+        ExtraSmplDoubleColl03 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_03));
+        ExtraSmplDoubleColl04 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_04));
+        ExtraSmplDoubleColl05 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_05));
+        ExtraSmplDoubleColl06 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_06));
+        ExtraSmplDoubleColl07 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_07));
+        ExtraSmplDoubleColl08 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_08));
+        ExtraSmplDoubleColl09 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_09));
+        ExtraSmplDoubleColl10 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_10));
+        ExtraSmplDoubleColl11 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_11));
+        ExtraSmplDoubleColl12 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_12));
+        ExtraSmplDoubleColl13 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_13));
+        ExtraSmplDoubleColl14 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_14));
+        ExtraSmplDoubleColl15 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_15));
+        ExtraSmplDoubleColl16 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_16));
+        ExtraSmplDoubleColl17 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_17));
+        ExtraSmplDoubleColl18 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_18));
+        ExtraSmplDoubleColl19 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_19));
+        ExtraSmplDoubleColl20 = cursor.getDouble(cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_20));
+
+        return this;
+    }
+
     public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(BaseColumns._ID, id);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_01, SampleStringColl01);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_02, SampleStringColl02);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_03, SampleStringColl03);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_04, SampleStringColl04);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_05, SampleStringColl05);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_06, SampleStringColl06);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_07, SampleStringColl07);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_08, SampleStringColl08);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_09, SampleStringColl09);
-        values.put(BigSingleTableDao.SAMPLE_STRING_COLL_10, SampleStringColl10);
-        values.put(BigSingleTableDao.SAMPLE_INT_COLL_01, SampleIntColl01);
-        values.put(BigSingleTableDao.SAMPLE_INT_COLL_02, SampleIntColl02);
-        values.put(BigSingleTableDao.SAMPLE_REAL_COLL_01, SampleRealColl01);
-        values.put(BigSingleTableDao.SAMPLE_REAL_COLL_02, SampleRealColl02);
-        values.put(BigSingleTableDao.SAMPLE_INT_COLL_INDEXED, SampleIntCollIndexed);
+        ContentValues values = super.getContentValues();
 
         values.put(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_01, ExtraSmplStringColl01);
         values.put(BigSingleTableDao.EXTRA_SAMPLE_STRING_COLL_02, ExtraSmplStringColl02);

@@ -81,9 +81,9 @@ public class MultiTable_09Dao extends BaseSampleDao<MultiTable_09> {
         return id;
     }
 
-    // todo update rekursywnie
     @Override
     protected int updateAction(SQLiteDatabase db, MultiTable_09 entity, String selection, String[] selectionArgs) {
+        new MultiTable_10Dao().updateAction(db, entity.getMultiTable_10(), null, null);
         SelectionBuilder builder = new SelectionBuilder();
         return builder.table(tableName).where(selection, selectionArgs).update(db, entity.getContentValues());
     }
