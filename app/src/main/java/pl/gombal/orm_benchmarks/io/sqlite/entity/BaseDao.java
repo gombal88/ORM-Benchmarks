@@ -55,16 +55,24 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
     }
 
 
-    public Cursor sellectAll(SQLiteOpenHelper dataBaseOpenHelper) {
+    public Cursor selectAll(SQLiteOpenHelper dataBaseOpenHelper) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder.table(tableName).query(database, null, null);
     }
 
-    public Cursor sellectById(SQLiteOpenHelper dataBaseOpenHelper, long id) {
+    public Cursor selectById(SQLiteOpenHelper dataBaseOpenHelper, long id) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder
                 .table(tableName)
                 .where(BaseColumns._ID + " = ?", new String[]{String.valueOf(id)})
+                .query(database, null, null);
+    }
+
+    public Cursor selectByWhere(SQLiteOpenHelper dataBaseOpenHelper, String selection, String... selectionArgs) {
+        SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
+        return selectionBuilder
+                .table(tableName)
+                .where(selection, selectionArgs)
                 .query(database, null, null);
     }
 
@@ -127,8 +135,14 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
         if (withTransaction) {
             try {
                 beginTransaction(database, innerTab);
-                for (T entity : objects)
+                for (T entity : objects) {
+                    if (selection == null || selectionArgs == null) {
+                        selection = BaseColumns._ID + " = ?";
+                        selectionArgs = new String[]{String.valueOf(entity.getId())};
+                        entity.setId(null);
+                    }
                     result = updateAction(database, entity, selection, selectionArgs);
+                }
                 setTransactionSuccessful(database, innerTab);
             } catch (Exception e) {
                 LogUtils.LOGD("Entity: " + tableName, "catch exception while updating. Rollback changes.");
@@ -136,8 +150,14 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 endTransaction(database, innerTab);
             }
         } else {
-            for (T entity : objects)
+            for (T entity : objects) {
+                if (selection == null || selectionArgs == null) {
+                    selection = BaseColumns._ID + " = ?";
+                    selectionArgs = new String[]{String.valueOf(entity.getId())};
+                    entity.setId(null);
+                }
                 result = updateAction(database, entity, selection, selectionArgs);
+            }
         }
 
         database.close();

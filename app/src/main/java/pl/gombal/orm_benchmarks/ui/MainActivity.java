@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import pl.gombal.orm_benchmarks.R;
 import pl.gombal.orm_benchmarks.io.ORMBenchmarkTasks;
-import pl.gombal.orm_benchmarks.io.greendao.GreenDaoBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sqlite.DataBaseOpenHelper;
+import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
 
@@ -131,65 +131,66 @@ public class MainActivity extends Activity {
 //        singleTable.save();
 
 
+        deleteDatabase(SQLiteBenchmarkTasks.DB_NAME);
         new AsyncTask<Context, Void, Void>() {
             @Override
             protected Void doInBackground(Context... params) {
 
-                GreenDaoBenchmarkTasks benchmarkTasks = new GreenDaoBenchmarkTasks();
+                SQLiteBenchmarkTasks benchmarkTasks = new SQLiteBenchmarkTasks();
 
                 Context context = params[0];
                 benchmarkTasks.init(context);
 
                 long createTime = benchmarkTasks.createDB();
-                LogUtils.LOGD("ORM BENCHMARKS", "createDB: " + createTime);
+                LogUtils.LOGI("ORM BENCHMARKS", "createDB: " + createTime);
 
-                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                         + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
                         + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
                         + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                         + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 10, false));
 
-                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                         + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
                         + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
                         + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 10, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                         + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 10, false));
 
-                LogUtils.LOGD("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                         + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
                         + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
                         + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, false));
-                LogUtils.LOGD("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                         + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, false));
 
-                LogUtils.LOGD("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                         + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5));
-                LogUtils.LOGD("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
                         + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 5));
-                LogUtils.LOGD("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
                         + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 5));
-                LogUtils.LOGD("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                         + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 5));
 
-                LogUtils.LOGD("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                         + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB, "a"));
-                LogUtils.LOGD("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
                         + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, "a"));
-                LogUtils.LOGD("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
                         + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, "a"));
-                LogUtils.LOGD("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                         + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a"));
 
                 long dropTime = benchmarkTasks.dropDB();
-                LogUtils.LOGD("ORM BENCHMARKS", "dropDB: " + dropTime);
+                LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + dropTime);
 
                 return null;
             }

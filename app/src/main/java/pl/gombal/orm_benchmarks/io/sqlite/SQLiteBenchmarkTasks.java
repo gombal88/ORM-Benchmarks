@@ -62,6 +62,10 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         return "SQLite RAW";
     }
 
+    public void init(Context context) {
+        init(context, false, false);
+    }
+
     @Override
     public void init(Context context, boolean copyDBFormAssets, boolean inMemoryDB) {
         if (copyDBFormAssets)
@@ -243,9 +247,9 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
             switch (entityType) {
                 case SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("SINGLE_TABLE").query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new SingleTableDao().selectAll(dbOpenHelper);
                     if (cursor != null && lazy) {
-                        while (cursor.moveToFirst()) {
+                        while (cursor.moveToNext()) {
                             new SingleTable().fromCursor(cursor);
                         }
 //                        mapCursorToSingleTable(cursor);
@@ -253,36 +257,86 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     break;
 
                 case BIG_SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("BIG_SINGLE_TABLE").query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new BigSingleTableDao().selectAll(dbOpenHelper);
                     if (cursor != null && lazy) {
-                        while (cursor.moveToFirst()) {
+                        while (cursor.moveToNext()) {
                             new BigSingleTable().fromCursor(cursor);
                         }
-                        mapCursorToBigSingleTable(cursor);
+//                        mapCursorToBigSingleTable(cursor);
                     }
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
-                    cursor = new SelectionBuilder().table("MULTI_TABLE_01").query(dbOpenHelper.getWritableDatabase(), null, null);
-                    if (cursor != null && lazy) {
-                        while (cursor.moveToFirst()) {
-                            new MultiTable_01().fromCursor(cursor);
+                    Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
+                    try {
+                        c1 = new MultiTable_01Dao().selectAll(dbOpenHelper);
+                        int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
+                        while (c1.moveToNext()) {
+                            c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                            c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                            c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                            c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                            c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                            c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                            c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                            c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                            c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+
+                            if (lazy) {
+                                new MultiTable_01().fromCursor(c1);
+                                new MultiTable_02().fromCursor(c2);
+                                new MultiTable_03().fromCursor(c3);
+                                new MultiTable_04().fromCursor(c4);
+                                new MultiTable_05().fromCursor(c5);
+                                new MultiTable_06().fromCursor(c6);
+                                new MultiTable_07().fromCursor(c7);
+                                new MultiTable_08().fromCursor(c8);
+                                new MultiTable_09().fromCursor(c9);
+                                new MultiTable_10().fromCursor(c10);
+                            }
                         }
+                    } finally {
+                        if (c1 != null) {
+                            LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
+                            c1.close();
+                        }
+                        if (c2 != null) c2.close();
+                        if (c3 != null) c3.close();
+                        if (c4 != null) c4.close();
+                        if (c5 != null) c5.close();
+                        if (c6 != null) c6.close();
+                        if (c7 != null) c7.close();
+                        if (c8 != null) c8.close();
+                        if (c9 != null) c9.close();
+                        if (c10 != null) c10.close();
                     }
                     break;
 
                 case SINGLE_TAB_RELATION_TO_MANY:
-                    cursor = new SelectionBuilder().table("TABLE_WITH_RELATION_TO_MANY").query(dbOpenHelper.getWritableDatabase(), null, null);
-                    if (cursor != null && lazy) {
-                        while (cursor.moveToFirst()) {
-                            new TableWithRelationToMany().fromCursor(cursor);
+                    cursor = new TableWithRelationToManyDao().selectAll(dbOpenHelper);
+                    Cursor toOneCursor = null;
+                    try {
+                        String selection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
+                        String selectionArgs;
+                        while (cursor != null && cursor.moveToNext()) {
+                            selectionArgs = String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
+                            toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                            if (lazy) {
+                                new TableWithRelationToMany().fromCursor(cursor);
+                                while (toOneCursor.moveToNext())
+                                    new TableWithRelationToOne().fromCursor(toOneCursor);
+                            }
                         }
+                    } finally {
+                        if (toOneCursor != null) toOneCursor.close();
                     }
                     break;
             }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 LogUtils.LOGD(TAG, "Found " + cursor.getCount() + "rows.");
+                cursor.close();
+            }
         }
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
@@ -298,23 +352,64 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         try {
 
             String selection = BaseSampleDao.SAMPLE_INT_COLL_INDEXED + " LIKE ?";
-            String[] selectionArgs = new String[]{'%' + String.valueOf(value) + '%'};
+            String[] selectionArgs = new String[]{String.valueOf(value)};
 
             switch (entityType) {
                 case SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("SINGLE_TABLE").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new SingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                     break;
 
                 case BIG_SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("BIG_SINGLE_TABLE").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new BigSingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
-                    cursor = new SelectionBuilder().table("MULTI_TABLE_01").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
+                    try {
+                        c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                        int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
+                        while (c1.moveToNext()) {
+                            c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                            c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                            c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                            c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                            c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                            c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                            c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                            c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                            c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+                        }
+                    } finally {
+                        if (c1 != null) {
+                            LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
+                            c1.close();
+                        }
+                        if (c2 != null) c2.close();
+                        if (c3 != null) c3.close();
+                        if (c4 != null) c4.close();
+                        if (c5 != null) c5.close();
+                        if (c6 != null) c6.close();
+                        if (c7 != null) c7.close();
+                        if (c8 != null) c8.close();
+                        if (c9 != null) c9.close();
+                        if (c10 != null) c10.close();
+                    }
                     break;
 
                 case SINGLE_TAB_RELATION_TO_MANY:
-                    cursor = new SelectionBuilder().table("TABLE_WITH_RELATION_TO_MANY").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new TableWithRelationToManyDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    Cursor toOneCursor = null;
+                    try {
+                        String toOneSelection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
+                        String toOneSelectionArgs;
+                        int columnIdIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+                        while (cursor.moveToNext()) {
+                            toOneSelectionArgs = String.valueOf(cursor.getInt(columnIdIndex));
+                            toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, toOneSelection, toOneSelectionArgs);
+                        }
+                    } finally {
+                        if (toOneCursor != null) toOneCursor.close();
+                    }
                     break;
             }
         } finally {
@@ -333,25 +428,65 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         Stopwatch stopwatch = Stopwatch.createStarted();
         Cursor cursor = null;
         try {
-
-            String selection = BaseSampleDao.SAMPLE_INT_COLL_INDEXED + " LIKE ?";
+            String selection = BaseSampleDao.SAMPLE_INT_COLL_01 + " LIKE ?";
             String[] selectionArgs = new String[]{'%' + value + '%'};
 
             switch (entityType) {
                 case SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("SINGLE_TABLE").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new SingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                     break;
 
                 case BIG_SINGLE_TAB:
-                    cursor = new SelectionBuilder().table("BIG_SINGLE_TABLE").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new BigSingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
-                    cursor = new SelectionBuilder().table("MULTI_TABLE_01").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
+                    try {
+                        c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                        int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
+                        while (c1.moveToNext()) {
+                            c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                            c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                            c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                            c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                            c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                            c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                            c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                            c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                            c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+                        }
+                    } finally {
+                        if (c1 != null) {
+                            LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
+                            c1.close();
+                        }
+                        if (c2 != null) c2.close();
+                        if (c3 != null) c3.close();
+                        if (c4 != null) c4.close();
+                        if (c5 != null) c5.close();
+                        if (c6 != null) c6.close();
+                        if (c7 != null) c7.close();
+                        if (c8 != null) c8.close();
+                        if (c9 != null) c9.close();
+                        if (c10 != null) c10.close();
+                    }
                     break;
 
                 case SINGLE_TAB_RELATION_TO_MANY:
-                    cursor = new SelectionBuilder().table("TABLE_WITH_RELATION_TO_MANY").where(selection, selectionArgs).query(dbOpenHelper.getWritableDatabase(), null, null);
+                    cursor = new TableWithRelationToManyDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    Cursor toOneCursor = null;
+                    try {
+                        String toOneSelection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
+                        String toOneSelectionArgs;
+                        int columnIdIndex = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+                        while (cursor.moveToNext()) {
+                            toOneSelectionArgs = String.valueOf(cursor.getInt(columnIdIndex));
+                            toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, toOneSelection, toOneSelectionArgs);
+                        }
+                    } finally {
+                        if (toOneCursor != null) toOneCursor.close();
+                    }
                     break;
             }
         } finally {
@@ -409,16 +544,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     private List<MultiTable_01> getMultiTableList(int num) {
         List<MultiTable_01> multiTableList = new ArrayList<>();
         SelectionBuilder selectionBuilder = new SelectionBuilder();
-        Cursor c1 = null;
-        Cursor c2 = null;
-        Cursor c3 = null;
-        Cursor c4 = null;
-        Cursor c5 = null;
-        Cursor c6 = null;
-        Cursor c7 = null;
-        Cursor c8 = null;
-        Cursor c9 = null;
-        Cursor c10 = null;
+        Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
         try {
             c1 = selectionBuilder.table("MULTI_TABLE_01")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
@@ -495,26 +621,16 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 multiTableList.add(table01);
             }
         } finally {
-            if (c1 != null)
-                c1.close();
-            if (c2 != null)
-                c2.close();
-            if (c3 != null)
-                c3.close();
-            if (c4 != null)
-                c4.close();
-            if (c5 != null)
-                c5.close();
-            if (c6 != null)
-                c6.close();
-            if (c7 != null)
-                c7.close();
-            if (c8 != null)
-                c8.close();
-            if (c9 != null)
-                c9.close();
-            if (c10 != null)
-                c10.close();
+            if (c1 != null) c1.close();
+            if (c2 != null) c2.close();
+            if (c3 != null) c3.close();
+            if (c4 != null) c4.close();
+            if (c5 != null) c5.close();
+            if (c6 != null) c6.close();
+            if (c7 != null) c7.close();
+            if (c8 != null) c8.close();
+            if (c9 != null) c9.close();
+            if (c10 != null) c10.close();
         }
         return multiTableList;
     }
@@ -578,7 +694,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         while (cursor.moveToFirst()) {
             SingleTable singleTable = new SingleTable();
-            singleTable.setId(cursor.getInt(idIndex));
+            singleTable.setId(cursor.getLong(idIndex));
             singleTable.setSampleStringColl01(cursor.getString(sampleStringColl01Index));
             singleTable.setSampleStringColl02(cursor.getString(sampleStringColl02Index));
             singleTable.setSampleStringColl03(cursor.getString(sampleStringColl03Index));
@@ -662,7 +778,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         while (cursor.moveToFirst()) {
             BigSingleTable table = new BigSingleTable();
-            table.setId(cursor.getInt(idIndex));
+            table.setId(cursor.getLong(idIndex));
             table.setSampleStringColl01(cursor.getString(sampleStringColl01Index));
             table.setSampleStringColl02(cursor.getString(sampleStringColl02Index));
             table.setSampleStringColl03(cursor.getString(sampleStringColl03Index));
