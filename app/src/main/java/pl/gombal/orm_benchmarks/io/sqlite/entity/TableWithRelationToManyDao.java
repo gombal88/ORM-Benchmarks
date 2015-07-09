@@ -1,6 +1,8 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 
@@ -90,6 +92,8 @@ public class TableWithRelationToManyDao extends BaseSampleDao<TableWithRelationT
             toOneDao.updateAction(db, child, null, null);
         }
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).where(selection, selectionArgs).update(db, entity.getContentValues());
+        ContentValues values = entity.getContentValues();
+        values.remove(BaseColumns._ID);
+        return builder.table(tableName).where(selection, selectionArgs).update(db, values);
     }
 }

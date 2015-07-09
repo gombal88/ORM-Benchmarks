@@ -1,6 +1,8 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 
@@ -83,8 +85,10 @@ public class MultiTable_07Dao extends BaseSampleDao<MultiTable_07> {
 
     @Override
     protected int updateAction(SQLiteDatabase db, MultiTable_07 entity, String selection, String[] selectionArgs) {
-        new MultiTable_08Dao().updateAction(db, entity.getMultiTable_08(), null, null);
+        new MultiTable_08Dao().updateAction(db, entity.getMultiTable_08(), BaseColumns._ID + " = ? ", new String[]{String.valueOf(entity.getMultiTable_08().getId())});
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).where(selection, selectionArgs).update(db, entity.getContentValues());
+        ContentValues values = entity.getContentValues();
+        values.remove(BaseColumns._ID);
+        return builder.table(tableName).where(selection, selectionArgs).update(db, values);
     }
 }

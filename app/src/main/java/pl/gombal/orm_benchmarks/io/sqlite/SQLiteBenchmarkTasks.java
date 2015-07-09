@@ -549,71 +549,62 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
             c1 = selectionBuilder.table("MULTI_TABLE_01")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
 
-            while (c1 != null && c1.moveToNext()) {
+            MultiTable_02Dao table02Dao = new MultiTable_02Dao();
+            MultiTable_03Dao table03Dao = new MultiTable_03Dao();
+            MultiTable_04Dao table04Dao = new MultiTable_04Dao();
+            MultiTable_05Dao table05Dao = new MultiTable_05Dao();
+            MultiTable_06Dao table06Dao = new MultiTable_06Dao();
+            MultiTable_07Dao table07Dao = new MultiTable_07Dao();
+            MultiTable_08Dao table08Dao = new MultiTable_08Dao();
+            MultiTable_09Dao table09Dao = new MultiTable_09Dao();
+            MultiTable_10Dao table10Dao = new MultiTable_10Dao();
 
+            while (c1 != null && c1.moveToNext()) {
 
                 MultiTable_01 table01 = (MultiTable_01) new MultiTable_01().fromCursor(c1);
                 table01.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
 
-                c2 = selectionBuilder.reset().table("MULTI_TABLE_02")
-                        .where(BaseColumns._ID + " =? ", c1.getString(c1.getColumnIndexOrThrow(MultiTable_01Dao.MULTI_TABLE_02_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c2 = table02Dao.selectById(dbOpenHelper, c1.getLong(c1.getColumnIndexOrThrow(MultiTable_01Dao.MULTI_TABLE_02_ID)));
                 MultiTable_02 table02 = (MultiTable_02) new MultiTable_02().fromCursor(c2);
                 table02.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table01.setMultiTable_02(table02);
 
-                c3 = selectionBuilder.reset().table("MULTI_TABLE_03")
-                        .where(BaseColumns._ID + " =? ", c2.getString(c2.getColumnIndexOrThrow(MultiTable_02Dao.MULTI_TABLE_03_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c3 = table03Dao.selectById(dbOpenHelper, c2.getLong(c2.getColumnIndexOrThrow(MultiTable_02Dao.MULTI_TABLE_03_ID)));
                 MultiTable_03 table03 = (MultiTable_03) new MultiTable_03().fromCursor(c3);
                 table03.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table02.setMultiTable_03(table03);
 
-                c4 = selectionBuilder.reset().table("MULTI_TABLE_04")
-                        .where(BaseColumns._ID + " =? ", c3.getString(c3.getColumnIndexOrThrow(MultiTable_03Dao.MULTI_TABLE_04_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c4 = table04Dao.selectById(dbOpenHelper, c3.getLong(c3.getColumnIndexOrThrow(MultiTable_03Dao.MULTI_TABLE_04_ID)));
                 MultiTable_04 table04 = (MultiTable_04) new MultiTable_04().fromCursor(c4);
                 table04.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table03.setMultiTable_04(table04);
 
-                c5 = selectionBuilder.reset().table("MULTI_TABLE_05")
-                        .where(BaseColumns._ID + " =? ", c4.getString(c4.getColumnIndexOrThrow(MultiTable_04Dao.MULTI_TABLE_05_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c5 = table05Dao.selectById(dbOpenHelper, c4.getLong(c4.getColumnIndexOrThrow(MultiTable_04Dao.MULTI_TABLE_05_ID)));
                 MultiTable_05 table05 = (MultiTable_05) new MultiTable_05().fromCursor(c5);
                 table05.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table04.setMultiTable_05(table05);
 
-                c6 = selectionBuilder.reset().table("MULTI_TABLE_06")
-                        .where(BaseColumns._ID + " =? ", c5.getString(c5.getColumnIndexOrThrow(MultiTable_05Dao.MULTI_TABLE_06_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c6 = table06Dao.selectById(dbOpenHelper, c5.getLong(c5.getColumnIndexOrThrow(MultiTable_05Dao.MULTI_TABLE_06_ID)));
                 MultiTable_06 table06 = (MultiTable_06) new MultiTable_06().fromCursor(c6);
                 table06.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table05.setMultiTable_06(table06);
 
-                c7 = selectionBuilder.reset().table("MULTI_TABLE_07")
-                        .where(BaseColumns._ID + " =? ", c6.getString(c6.getColumnIndexOrThrow(MultiTable_06Dao.MULTI_TABLE_07_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c7 = table07Dao.selectById(dbOpenHelper, c6.getLong(c6.getColumnIndexOrThrow(MultiTable_06Dao.MULTI_TABLE_07_ID)));
                 MultiTable_07 table07 = (MultiTable_07) new MultiTable_07().fromCursor(c7);
                 table07.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table06.setMultiTable_07(table07);
 
-                c8 = selectionBuilder.reset().table("MULTI_TABLE_08")
-                        .where(BaseColumns._ID + " =? ", c7.getString(c7.getColumnIndexOrThrow(MultiTable_07Dao.MULTI_TABLE_08_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c8 = table08Dao.selectById(dbOpenHelper, c7.getLong(c7.getColumnIndexOrThrow(MultiTable_07Dao.MULTI_TABLE_08_ID)));
                 MultiTable_08 table08 = (MultiTable_08) new MultiTable_08().fromCursor(c8);
                 table08.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table07.setMultiTable_08(table08);
 
-                c9 = selectionBuilder.reset().table("MULTI_TABLE_09")
-                        .where(BaseColumns._ID + " =? ", c8.getString(c8.getColumnIndexOrThrow(MultiTable_08Dao.MULTI_TABLE_09_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c9 = table09Dao.selectById(dbOpenHelper, c8.getLong(c8.getColumnIndexOrThrow(MultiTable_08Dao.MULTI_TABLE_09_ID)));
                 MultiTable_09 table09 = (MultiTable_09) new MultiTable_09().fromCursor(c9);
                 table09.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table08.setMultiTable_09(table09);
 
-                c10 = selectionBuilder.reset().table("MULTI_TABLE_09")
-                        .where(BaseColumns._ID + " =? ", c9.getString(c9.getColumnIndexOrThrow(MultiTable_09Dao.MULTI_TABLE_10_ID)))
-                        .query(dbOpenHelper.getWritableDatabase(), null, null);
+                c10 = table10Dao.selectById(dbOpenHelper, c9.getLong(c9.getColumnIndexOrThrow(MultiTable_09Dao.MULTI_TABLE_10_ID)));
                 MultiTable_10 table10 = (MultiTable_10) new MultiTable_10().fromCursor(c10);
                 table10.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table09.setMultiTable_10(table10);

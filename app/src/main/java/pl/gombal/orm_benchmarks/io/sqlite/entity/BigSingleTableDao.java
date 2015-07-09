@@ -1,5 +1,6 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
@@ -199,6 +200,8 @@ public class BigSingleTableDao extends BaseSampleDao<BigSingleTable> {
     @Override
     protected int updateAction(SQLiteDatabase db, BigSingleTable entity, String selection, String[] selectionArgs) {
         SelectionBuilder builder = new SelectionBuilder();
-        return builder.table(tableName).where(selection, selectionArgs).update(db, entity.getContentValues());
+        ContentValues values = entity.getContentValues();
+        values.remove(BaseColumns._ID);
+        return builder.table(tableName).where(selection, selectionArgs).update(db, values);
     }
 }
