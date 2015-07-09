@@ -76,10 +76,10 @@ public class MultiTable_02Dao extends BaseSampleDao<MultiTable_02> {
 
     @Override
     protected long saveAction(SQLiteDatabase db, MultiTable_02 entity) {
-        SelectionBuilder builder = new SelectionBuilder();
-        long id = builder.table(tableName).insert(db, entity.getContentValues());
+        long nestedTableID = new MultiTable_03Dao().saveAction(db, entity.getMultiTable_03());
+        entity.getMultiTable_03().setId(nestedTableID);
+        long id = new SelectionBuilder().table(tableName).insert(db, entity.getContentValues());
         entity.setId(id);
-        new MultiTable_03Dao().saveAction(db, entity.getMultiTable_03());
         return id;
     }
 

@@ -57,12 +57,13 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
 
     public Cursor selectAll(SQLiteOpenHelper dataBaseOpenHelper) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
-        return selectionBuilder.table(tableName).query(database, null, null);
+        return selectionBuilder.reset().table(tableName).query(database, null, null);
     }
 
     public Cursor selectById(SQLiteOpenHelper dataBaseOpenHelper, long id) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder
+                .reset()
                 .table(tableName)
                 .where(BaseColumns._ID + " = ?", new String[]{String.valueOf(id)})
                 .query(database, null, null);
@@ -71,6 +72,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
     public Cursor selectByWhere(SQLiteOpenHelper dataBaseOpenHelper, String selection, String... selectionArgs) {
         SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
         return selectionBuilder
+                .reset()
                 .table(tableName)
                 .where(selection, selectionArgs)
                 .query(database, null, null);
@@ -139,7 +141,6 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                     if (selection == null || selectionArgs == null) {
                         selection = BaseColumns._ID + " = ?";
                         selectionArgs = new String[]{String.valueOf(entity.getId())};
-                        entity.setId(null);
                     }
                     result = updateAction(database, entity, selection, selectionArgs);
                 }
@@ -154,7 +155,6 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 if (selection == null || selectionArgs == null) {
                     selection = BaseColumns._ID + " = ?";
                     selectionArgs = new String[]{String.valueOf(entity.getId())};
-                    entity.setId(null);
                 }
                 result = updateAction(database, entity, selection, selectionArgs);
             }

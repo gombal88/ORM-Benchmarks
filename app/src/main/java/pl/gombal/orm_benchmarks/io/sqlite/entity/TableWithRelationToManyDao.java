@@ -80,6 +80,7 @@ public class TableWithRelationToManyDao extends BaseSampleDao<TableWithRelationT
         entity.setId(id);
         TableWithRelationToOneDao toOneDao = new TableWithRelationToOneDao();
         for (TableWithRelationToOne toOne : entity.getTableWithRelationToOneList()){
+            toOne.setTableWithRelationToMany(entity);
             toOneDao.saveAction(db, toOne);
         }
         return id;
@@ -89,7 +90,7 @@ public class TableWithRelationToManyDao extends BaseSampleDao<TableWithRelationT
     protected int updateAction(SQLiteDatabase db, TableWithRelationToMany entity, String selection, String[] selectionArgs) {
         TableWithRelationToOneDao toOneDao = new TableWithRelationToOneDao();
         for (TableWithRelationToOne child : entity.getTableWithRelationToOneList()) {
-            toOneDao.updateAction(db, child, null, null);
+            toOneDao.updateAction(db, child, BaseColumns._ID + " = ? ", new String[]{String.valueOf(child.getId())});
         }
         SelectionBuilder builder = new SelectionBuilder();
         ContentValues values = entity.getContentValues();

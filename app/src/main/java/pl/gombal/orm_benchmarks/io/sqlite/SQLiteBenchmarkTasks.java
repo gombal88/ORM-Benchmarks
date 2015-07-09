@@ -226,10 +226,11 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
+                // TODO: 09.07.2015 Zmierzyć dla dodatkowych badań czas zmiany danych w encjach
                 List<TableWithRelationToMany> toManyList = getTableToManyList(num);
 
                 stopwatch.start();
-                new TableWithRelationToManyDao().insert(dbOpenHelper, toManyList, withTransaction);
+                new TableWithRelationToManyDao().update(dbOpenHelper, toManyList, null, null, withTransaction);
                 break;
         }
 
@@ -244,24 +245,25 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         Stopwatch stopwatch = Stopwatch.createStarted();
         Cursor cursor = null;
         try {
-
             switch (entityType) {
                 case SINGLE_TAB:
                     cursor = new SingleTableDao().selectAll(dbOpenHelper);
-                    if (cursor != null && lazy) {
-                        while (cursor.moveToNext()) {
+                    if (lazy) {
+                        cursor.moveToFirst();
+                        do {
                             new SingleTable().fromCursor(cursor);
-                        }
+                        } while (cursor.moveToNext());
 //                        mapCursorToSingleTable(cursor);
                     }
                     break;
 
                 case BIG_SINGLE_TAB:
                     cursor = new BigSingleTableDao().selectAll(dbOpenHelper);
-                    if (cursor != null && lazy) {
-                        while (cursor.moveToNext()) {
+                    if (lazy) {
+                        cursor.moveToNext();
+                        do {
                             new BigSingleTable().fromCursor(cursor);
-                        }
+                        } while (cursor.moveToNext());
 //                        mapCursorToBigSingleTable(cursor);
                     }
                     break;
@@ -271,17 +273,26 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     try {
                         c1 = new MultiTable_01Dao().selectAll(dbOpenHelper);
                         int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
-                        while (c1.moveToNext()) {
+                        c1.moveToFirst();
+                        do {
                             c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                            c2.moveToFirst();
                             c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                            c3.moveToFirst();
                             c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                            c4.moveToFirst();
                             c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                            c5.moveToFirst();
                             c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                            c6.moveToFirst();
                             c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                            c7.moveToFirst();
                             c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                            c8.moveToFirst();
                             c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                            c9.moveToFirst();
                             c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
-
+                            c10.moveToFirst();
                             if (lazy) {
                                 new MultiTable_01().fromCursor(c1);
                                 new MultiTable_02().fromCursor(c2);
@@ -294,7 +305,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                                 new MultiTable_09().fromCursor(c9);
                                 new MultiTable_10().fromCursor(c10);
                             }
-                        }
+                        } while (c1.moveToNext());
                     } finally {
                         if (c1 != null) {
                             LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
@@ -318,15 +329,17 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     try {
                         String selection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
                         String selectionArgs;
-                        while (cursor != null && cursor.moveToNext()) {
+                        cursor.moveToFirst();
+                        do {
                             selectionArgs = String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
                             toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                             if (lazy) {
                                 new TableWithRelationToMany().fromCursor(cursor);
-                                while (toOneCursor.moveToNext())
-                                    new TableWithRelationToOne().fromCursor(toOneCursor);
+                                toOneCursor.moveToFirst();
+                                do new TableWithRelationToOne().fromCursor(toOneCursor);
+                                while (toOneCursor.moveToNext());
                             }
-                        }
+                        } while (cursor.moveToNext());
                     } finally {
                         if (toOneCursor != null) toOneCursor.close();
                     }
@@ -368,17 +381,26 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     try {
                         c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
                         int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
-                        while (c1.moveToNext()) {
+                        c1.moveToFirst();
+                        do {
                             c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                            c2.moveToFirst();
                             c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                            c3.moveToFirst();
                             c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                            c4.moveToFirst();
                             c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                            c5.moveToFirst();
                             c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                            c6.moveToFirst();
                             c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                            c7.moveToFirst();
                             c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                            c8.moveToFirst();
                             c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                            c9.moveToFirst();
                             c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
-                        }
+                        } while (c1.moveToNext());
                     } finally {
                         if (c1 != null) {
                             LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
@@ -504,14 +526,15 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         try {
             cursorSingleTable = new SelectionBuilder().table("SINGLE_TABLE")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
-            if (cursorSingleTable != null && cursorSingleTable.getCount() < num)
-                throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
+            if (cursorSingleTable == null || cursorSingleTable.getCount() < num)
+                throw new ExceptionInInitializerError("Number entities is smaller than: " + num);
 
-            while (cursorSingleTable != null && cursorSingleTable.moveToNext()) {
+            cursorSingleTable.moveToNext();
+            do {
                 SingleTable table = (SingleTable) new SingleTable().fromCursor(cursorSingleTable);
                 table.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 singleTableList.add(table);
-            }
+            } while (cursorSingleTable.moveToNext());
         } finally {
             if (cursorSingleTable != null)
                 cursorSingleTable.close();
@@ -526,14 +549,15 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         try {
             cursorBigSingleTable = new SelectionBuilder().table("BIG_SINGLE_TABLE")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
-            if (cursorBigSingleTable != null && cursorBigSingleTable.getCount() < num)
-                throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
+            if (cursorBigSingleTable == null || cursorBigSingleTable.getCount() < num)
+                throw new ExceptionInInitializerError("Number entities is smaller than: " + num);
 
-            while (cursorBigSingleTable != null && cursorBigSingleTable.moveToNext()) {
+            cursorBigSingleTable.moveToFirst();
+            do {
                 BigSingleTable table = (BigSingleTable) new BigSingleTable().fromCursor(cursorBigSingleTable);
                 table.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 bigSingleTableList.add(table);
-            }
+            } while (cursorBigSingleTable.moveToNext());
         } finally {
             if (cursorBigSingleTable != null)
                 cursorBigSingleTable.close();
@@ -548,6 +572,8 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         try {
             c1 = selectionBuilder.table("MULTI_TABLE_01")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
+            if (c1 == null || c1.getCount() < num)
+                throw new ExceptionInInitializerError("Number entities is smaller than: " + num);
 
             MultiTable_02Dao table02Dao = new MultiTable_02Dao();
             MultiTable_03Dao table03Dao = new MultiTable_03Dao();
@@ -559,8 +585,8 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
             MultiTable_09Dao table09Dao = new MultiTable_09Dao();
             MultiTable_10Dao table10Dao = new MultiTable_10Dao();
 
-            while (c1 != null && c1.moveToNext()) {
-
+            c1.moveToFirst();
+            do {
                 MultiTable_01 table01 = (MultiTable_01) new MultiTable_01().fromCursor(c1);
                 table01.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
 
@@ -570,47 +596,56 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 table01.setMultiTable_02(table02);
 
                 c3 = table03Dao.selectById(dbOpenHelper, c2.getLong(c2.getColumnIndexOrThrow(MultiTable_02Dao.MULTI_TABLE_03_ID)));
+                c3.moveToFirst();
                 MultiTable_03 table03 = (MultiTable_03) new MultiTable_03().fromCursor(c3);
                 table03.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table02.setMultiTable_03(table03);
 
                 c4 = table04Dao.selectById(dbOpenHelper, c3.getLong(c3.getColumnIndexOrThrow(MultiTable_03Dao.MULTI_TABLE_04_ID)));
+                c4.moveToFirst();
                 MultiTable_04 table04 = (MultiTable_04) new MultiTable_04().fromCursor(c4);
                 table04.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table03.setMultiTable_04(table04);
 
                 c5 = table05Dao.selectById(dbOpenHelper, c4.getLong(c4.getColumnIndexOrThrow(MultiTable_04Dao.MULTI_TABLE_05_ID)));
+                c5.moveToFirst();
                 MultiTable_05 table05 = (MultiTable_05) new MultiTable_05().fromCursor(c5);
                 table05.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table04.setMultiTable_05(table05);
 
                 c6 = table06Dao.selectById(dbOpenHelper, c5.getLong(c5.getColumnIndexOrThrow(MultiTable_05Dao.MULTI_TABLE_06_ID)));
+                c6.moveToFirst();
                 MultiTable_06 table06 = (MultiTable_06) new MultiTable_06().fromCursor(c6);
                 table06.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table05.setMultiTable_06(table06);
 
                 c7 = table07Dao.selectById(dbOpenHelper, c6.getLong(c6.getColumnIndexOrThrow(MultiTable_06Dao.MULTI_TABLE_07_ID)));
+                c7.moveToFirst();
                 MultiTable_07 table07 = (MultiTable_07) new MultiTable_07().fromCursor(c7);
                 table07.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table06.setMultiTable_07(table07);
 
                 c8 = table08Dao.selectById(dbOpenHelper, c7.getLong(c7.getColumnIndexOrThrow(MultiTable_07Dao.MULTI_TABLE_08_ID)));
+                c8.moveToFirst();
                 MultiTable_08 table08 = (MultiTable_08) new MultiTable_08().fromCursor(c8);
                 table08.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table07.setMultiTable_08(table08);
 
                 c9 = table09Dao.selectById(dbOpenHelper, c8.getLong(c8.getColumnIndexOrThrow(MultiTable_08Dao.MULTI_TABLE_09_ID)));
+                c9.moveToFirst();
                 MultiTable_09 table09 = (MultiTable_09) new MultiTable_09().fromCursor(c9);
                 table09.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table08.setMultiTable_09(table09);
 
                 c10 = table10Dao.selectById(dbOpenHelper, c9.getLong(c9.getColumnIndexOrThrow(MultiTable_09Dao.MULTI_TABLE_10_ID)));
+                c10.moveToFirst();
                 MultiTable_10 table10 = (MultiTable_10) new MultiTable_10().fromCursor(c10);
                 table10.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table09.setMultiTable_10(table10);
 
                 multiTableList.add(table01);
-            }
+            } while (c1.moveToNext());
+
         } finally {
             if (c1 != null) c1.close();
             if (c2 != null) c2.close();
@@ -634,10 +669,11 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
             cursorToMany = new SelectionBuilder().table("TABLE_WITH_RELATION_TO_MANY")
                     .query(dbOpenHelper.getWritableDatabase(), null, null, null, null, String.valueOf(num));
-            if (cursorToMany != null && cursorToMany.getCount() < num)
+            if (cursorToMany == null || cursorToMany.getCount() < num)
                 throw new ExceptionInInitializerError("Number entities to update is smaller than: " + num);
 
-            while (cursorToMany != null && cursorToMany.moveToNext()) {
+            cursorToMany.moveToFirst();
+            do {
                 TableWithRelationToMany tableToMany = (TableWithRelationToMany) new TableWithRelationToMany().fromCursor(cursorToMany);
                 tableToMany.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 cursorToOne = new SelectionBuilder().table("TABLE_WITH_RELATION_TO_ONE")
@@ -645,21 +681,26 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                         .query(dbOpenHelper.getWritableDatabase(), null, null);
 
                 List<TableWithRelationToOne> toOneList = new ArrayList<>();
-                while (cursorToOne != null && cursorToOne.moveToNext()) {
+                cursorToOne.moveToFirst();
+                do {
                     TableWithRelationToOne tableToOne = (TableWithRelationToOne) new TableWithRelationToOne().fromCursor(cursorToOne);
                     tableToOne.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                     tableToOne.setTableWithRelationToMany(tableToMany);
                     toOneList.add(tableToOne);
-                }
+                } while (cursorToOne.moveToNext());
+
                 tableToMany.setTableWithRelationToOneList(toOneList);
                 toManyList.add(tableToMany);
-            }
-        } finally {
+            } while (cursorToMany.moveToNext());
+        } finally
+
+        {
             if (cursorToMany != null)
                 cursorToMany.close();
             if (cursorToOne != null)
                 cursorToOne.close();
         }
+
         return toManyList;
     }
 
@@ -683,7 +724,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         int sampleRealColl02Index = cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_REAL_COLL_02);
         int sampleIntCollIndexedIndex = cursor.getColumnIndexOrThrow(BaseSampleDao.SAMPLE_INT_COLL_INDEXED);
 
-        while (cursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
             SingleTable singleTable = new SingleTable();
             singleTable.setId(cursor.getLong(idIndex));
             singleTable.setSampleStringColl01(cursor.getString(sampleStringColl01Index));
@@ -767,7 +808,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         int extraSmplDoubleColl19Index = cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_19);
         int extraSmplDoubleColl20Index = cursor.getColumnIndexOrThrow(BigSingleTableDao.EXTRA_SAMPLE_DOUBLE_COLL_20);
 
-        while (cursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
             BigSingleTable table = new BigSingleTable();
             table.setId(cursor.getLong(idIndex));
             table.setSampleStringColl01(cursor.getString(sampleStringColl01Index));
