@@ -3,6 +3,8 @@ package pl.gombal.orm_benchmarks.io;
 
 import android.content.Context;
 
+import java.sql.SQLException;
+
 public interface ORMBenchmarkTasks {
 
     enum EntityType {
@@ -27,13 +29,13 @@ public interface ORMBenchmarkTasks {
     void init(Context context, boolean copyDBFormAssets, boolean inMemoryDB);
     boolean isInitialized();
 
-    long createDB();
-    long dropDB();
+    long createDB() throws SQLException;
+    long dropDB() throws SQLException;
 
-    long insert(EntityType entityType, int num, boolean withTransaction);
-    long update(EntityType entityType, int num, boolean withTransaction);
-    long selectAll(EntityType entityType, boolean lazy);
-    long searchIndexed(EntityType entityType, int value);
-    long search(EntityType entityType, String value);
+    long insert(EntityType entityType, int num, boolean withTransaction) throws SQLException;
+    long update(EntityType entityType, int num, boolean withTransaction) throws SQLException;
+    long selectAll(EntityType entityType, boolean lazy) throws SQLException;
+    long searchIndexed(EntityType entityType, int value) throws SQLException;
+    long search(EntityType entityType, String value) throws SQLException;
 
 }

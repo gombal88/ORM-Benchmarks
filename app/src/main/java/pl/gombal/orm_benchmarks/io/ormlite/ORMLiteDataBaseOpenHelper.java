@@ -33,7 +33,6 @@ public class ORMLiteDataBaseOpenHelper extends OrmLiteSqliteOpenHelper {
 
     private ORMLiteDataBaseOpenHelper(Context context, boolean inMemory) {
         super(context, inMemory ? null : DATA_BASE_NAME, null, DATA_BASE_VERSION, R.raw.ormlite_config);
-
     }
 
     @Override

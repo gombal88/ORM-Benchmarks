@@ -4,6 +4,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+
 @DatabaseTable(tableName = BigSingleTable.TABLE_NAME)
 public class BigSingleTable extends BaseSampleEntity {
 
@@ -174,6 +176,75 @@ public class BigSingleTable extends BaseSampleEntity {
     @DatabaseField(columnName = EXTRA_SAMPLE_DOUBLE_COLL_20, dataType = DataType.DOUBLE_OBJ)
     private Double ExtraSmplDoubleColl20;
 
+
+    public static BigSingleTable getNewEntityWithRandomData(EntityFieldGeneratorUtils generatorUtils) {
+        return getNewEntityWithRandomData(null, generatorUtils);
+    }
+
+    public static BigSingleTable getNewEntityWithRandomData(Long id, EntityFieldGeneratorUtils generatorUtils) {
+        BigSingleTable table = new BigSingleTable();
+        if (id != null)
+            table.setId(id);
+        table.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl03(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl04(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl05(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl06(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl07(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl08(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl09(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleStringColl10(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setSampleIntColl01(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
+        table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
+        table.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
+
+        table.setExtraSmplStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl02(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl03(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl04(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl05(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl06(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl07(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl08(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl09(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl10(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl11(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl12(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl13(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl14(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl15(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl16(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl17(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl18(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl19(EntityFieldGeneratorUtils.getRandomString(20));
+        table.setExtraSmplStringColl20(EntityFieldGeneratorUtils.getRandomString(20));
+
+        table.setExtraSmplDoubleColl01(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl02(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl03(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl04(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl05(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl06(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl07(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl08(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl09(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl10(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl11(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl12(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl13(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl14(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl15(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl16(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl17(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl18(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl19(EntityFieldGeneratorUtils.getRandomDouble(20));
+        table.setExtraSmplDoubleColl20(EntityFieldGeneratorUtils.getRandomDouble(20));
+
+        return table;
+    }
 
     public String getExtraSmplStringColl01() {
         return ExtraSmplStringColl01;

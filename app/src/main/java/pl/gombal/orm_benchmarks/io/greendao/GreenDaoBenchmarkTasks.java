@@ -122,8 +122,9 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
 
         DaoSession daoSession = null;
 
-        EntityFieldGeneratorUtils.init(num);
-        EntityFieldGeneratorUtils generatorUtils = EntityFieldGeneratorUtils.getInstance();
+        EntityFieldGeneratorUtils.clearAllInstances();
+        EntityFieldGeneratorUtils generatorUtils = EntityFieldGeneratorUtils
+                .getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID, num);
 
         switch (entityType) {
             case SINGLE_TAB:
@@ -165,7 +166,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
             case MULTI_TAB_RELATION_TO_ONE:
                 final List<MultiTable_01> multiTableList = new ArrayList<>();
                 for (int i = 0; i < num; i++) {
-                    multiTableList.add(getNewMultiTableWithRelationToOne(i, generatorUtils));
+                    multiTableList.add(getNewMultiTableWithRelationToOne(i, generatorUtils, num));
                 }
 
                 stopwatch.start();
@@ -212,7 +213,6 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                         }
                     });
                 } else {
-                    Stopwatch stopwatchTMP = Stopwatch.createStarted();
                     MultiTable_01Dao multiTableDao01 = daoSession.getMultiTable_01Dao();
                     MultiTable_02Dao multiTableDao02 = daoSession.getMultiTable_02Dao();
                     MultiTable_03Dao multiTableDao03 = daoSession.getMultiTable_03Dao();
@@ -223,13 +223,10 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                     MultiTable_08Dao multiTableDao08 = daoSession.getMultiTable_08Dao();
                     MultiTable_09Dao multiTableDao09 = daoSession.getMultiTable_09Dao();
                     MultiTable_10Dao multiTableDao10 = daoSession.getMultiTable_10Dao();
-                    LogUtils.LOGI("ORM_BENCHMARKS", "getDAOs time: " + stopwatchTMP.elapsed(TimeUnit.MILLISECONDS));
 
                     for (MultiTable_01 table : multiTableList) {
                         multiTableDao01.insertOrReplace(table);
-                        Stopwatch stopwatchEntity = Stopwatch.createStarted();
                         MultiTable_02 table02 = table.getMultiTable_02();
-                        LogUtils.LOGI("ORM_BENCHMARKS", "getEntity time: " + stopwatchEntity.elapsed(TimeUnit.NANOSECONDS));
                         multiTableDao02.insertOrReplace(table02);
                         MultiTable_03 table03 = table02.getMultiTable_03();
                         multiTableDao03.insertOrReplace(table03);
@@ -257,7 +254,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
                 for (int i = 0; i < num; i++) {
                     TableWithRelationToMany toMany = getNewTableWithRelationToMany(i, generatorUtils);
                     tableWithRelationToManyList.add(toMany);
-                    tableWithRelationToOneList.addAll(getNewTableWithRelationToOneList(i, toMany.getSampleIntCollIndexed(), 10));
+                    tableWithRelationToOneList.addAll(getNewTableWithRelationToOneList(i, num, 10));
                 }
 
                 stopwatch.start();
@@ -700,8 +697,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         return bigSingleTable;
     }
 
-    private MultiTable_01 getNewMultiTableWithRelationToOne(long id, EntityFieldGeneratorUtils generatorUtils) {
-        int nextUniqueRandomInt = generatorUtils.getNextUniqueRandomInt();
+    private MultiTable_01 getNewMultiTableWithRelationToOne(long id, EntityFieldGeneratorUtils generatorUtils, int num) {
 
         MultiTable_10 multiTable_10 = new MultiTable_10(id);
         multiTable_10.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
@@ -718,7 +714,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_10.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_10.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_10.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_10.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_10.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 10, num).getNextUniqueRandomInt());
 
         MultiTable_09 multiTable_09 = new MultiTable_09(id);
         multiTable_09.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
@@ -735,7 +731,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_09.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_09.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_09.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_09.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_09.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 9, num).getNextUniqueRandomInt());
         multiTable_09.setMultiTable_10(multiTable_10);
         multiTable_09.setMultiTable_10Id(id);
 
@@ -754,7 +750,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_08.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_08.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_08.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_08.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_08.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 8, num).getNextUniqueRandomInt());
         multiTable_08.setMultiTable_09(multiTable_09);
         multiTable_08.setMultiTable_09Id(id);
 
@@ -773,7 +769,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_07.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_07.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_07.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_07.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_07.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 7, num).getNextUniqueRandomInt());
         multiTable_07.setMultiTable_08(multiTable_08);
         multiTable_07.setMultiTable_08Id(id);
 
@@ -792,7 +788,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_06.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_06.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_06.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_06.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_06.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 6, num).getNextUniqueRandomInt());
         multiTable_06.setMultiTable_07(multiTable_07);
         multiTable_06.setMultiTable_07Id(id);
 
@@ -811,7 +807,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_05.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_05.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_05.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_05.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_05.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 5, num).getNextUniqueRandomInt());
         multiTable_05.setMultiTable_06(multiTable_06);
         multiTable_05.setMultiTable_06Id(id);
 
@@ -830,7 +826,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_04.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_04.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_04.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_04.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_04.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 4, num).getNextUniqueRandomInt());
         multiTable_04.setMultiTable_05(multiTable_05);
         multiTable_04.setMultiTable_05Id(id);
 
@@ -849,7 +845,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_03.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_03.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_03.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_03.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_03.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 3, num).getNextUniqueRandomInt());
         multiTable_03.setMultiTable_04(multiTable_04);
         multiTable_03.setMultiTable_04Id(id);
 
@@ -868,7 +864,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_02.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_02.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_02.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_02.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_02.setSampleIntCollIndexed(EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 2, num).getNextUniqueRandomInt());
         multiTable_02.setMultiTable_03(multiTable_03);
         multiTable_02.setMultiTable_03Id(id);
 
@@ -887,7 +883,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         multiTable_01.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         multiTable_01.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         multiTable_01.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        multiTable_01.setSampleIntCollIndexed(nextUniqueRandomInt);
+        multiTable_01.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
         multiTable_01.setMultiTable_02(multiTable_02);
         multiTable_01.setMultiTable_02Id(id);
 
@@ -916,7 +912,7 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         return relationToMany;
     }
 
-    private List<TableWithRelationToOne> getNewTableWithRelationToOneList(long parentTableID, int uniqueInt, int count) {
+    private List<TableWithRelationToOne> getNewTableWithRelationToOneList(long parentTableID, int parentCount, int count) {
 
         List<TableWithRelationToOne> tableWithRelationToOneList = new ArrayList<>();
 
@@ -937,7 +933,8 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
             relationToOne.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
             relationToOne.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
             relationToOne.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-            relationToOne.setSampleIntCollIndexed(uniqueInt);
+            EntityFieldGeneratorUtils generatorUtils = EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.GREEN_DAO_ENTITY_FIELD_GENERATOR_ID + 50, parentCount * count);
+            relationToOne.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
 
             tableWithRelationToOneList.add(relationToOne);
         }

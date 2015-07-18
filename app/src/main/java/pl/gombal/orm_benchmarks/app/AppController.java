@@ -11,7 +11,7 @@ import pl.gombal.orm_benchmarks.io.greendao.entity.DaoSession;
 
 public class AppController extends SugarApp {
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public DaoSession daoSession;
 

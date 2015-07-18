@@ -26,11 +26,11 @@ public class MultiTable_03 extends BaseSampleEntity {
         this.multiTable_04 = MultiTable_04;
     }
 
-    public static MultiTable_03 getNewEntityWithRandomData(int nextUniqueRandomInt) {
-        return getNewEntityWithRandomData(null, nextUniqueRandomInt);
+    public static MultiTable_03 getNewEntityWithRandomData(int range) {
+        return getNewEntityWithRandomData(null, range);
     }
 
-    public static MultiTable_03 getNewEntityWithRandomData(Long id, int nextUniqueRandomInt) {
+    public static MultiTable_03 getNewEntityWithRandomData(Long id, int range) {
         MultiTable_03 table = new MultiTable_03();
         if (id != null)
             table.setId(id);
@@ -48,8 +48,9 @@ public class MultiTable_03 extends BaseSampleEntity {
         table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        table.setSampleIntCollIndexed(nextUniqueRandomInt);
-        table.setMultiTable_04(MultiTable_04.getNewEntityWithRandomData(table.getId(), nextUniqueRandomInt));
+        EntityFieldGeneratorUtils generatorUtils = EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.RAW_SQL_ENTITY_FIELD_GENERATOR_ID + 3, range);
+        table.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
+        table.setMultiTable_04(MultiTable_04.getNewEntityWithRandomData(table.getId(), generatorUtils.getUniqueNumberRange()));
         return table;
     }
 

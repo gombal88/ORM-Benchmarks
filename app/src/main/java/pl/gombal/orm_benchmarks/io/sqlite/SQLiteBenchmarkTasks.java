@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 
 import com.google.common.base.Stopwatch;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +82,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long createDB() {
+    public long createDB() throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -126,7 +127,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long dropDB() {
+    public long dropDB() throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -150,14 +151,15 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long insert(EntityType entityType, int num, boolean withTransaction) {
+    public long insert(EntityType entityType, int num, boolean withTransaction) throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
         Stopwatch stopwatch = Stopwatch.createUnstarted();
 
-        EntityFieldGeneratorUtils.init(num);
-        EntityFieldGeneratorUtils generatorUtils = EntityFieldGeneratorUtils.getInstance();
+        EntityFieldGeneratorUtils.clearAllInstances();
+        EntityFieldGeneratorUtils generatorUtils =
+                EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.RAW_SQL_ENTITY_FIELD_GENERATOR_ID, num);
 
         switch (entityType) {
             case SINGLE_TAB:
@@ -197,7 +199,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long update(EntityType entityType, int num, boolean withTransaction) {
+    public long update(EntityType entityType, int num, boolean withTransaction) throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -238,7 +240,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long selectAll(EntityType entityType, boolean lazy) {
+    public long selectAll(EntityType entityType, boolean lazy) throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -356,7 +358,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long searchIndexed(EntityType entityType, int value) {
+    public long searchIndexed(EntityType entityType, int value) throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -377,6 +379,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
+                    cursor = null;
                     Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
                     try {
                         c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
@@ -443,7 +446,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
     }
 
     @Override
-    public long search(EntityType entityType, String value) {
+    public long search(EntityType entityType, String value) throws SQLException {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
@@ -463,6 +466,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
+                    cursor = null;
                     Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
                     try {
                         c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
@@ -591,6 +595,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 table01.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
 
                 c2 = table02Dao.selectById(dbOpenHelper, c1.getLong(c1.getColumnIndexOrThrow(MultiTable_01Dao.MULTI_TABLE_02_ID)));
+                c2.moveToFirst();
                 MultiTable_02 table02 = (MultiTable_02) new MultiTable_02().fromCursor(c2);
                 table02.setSampleStringColl01(EntityFieldGeneratorUtils.getRandomString(10));
                 table01.setMultiTable_02(table02);

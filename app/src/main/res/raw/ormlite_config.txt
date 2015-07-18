@@ -1,5 +1,5 @@
 #
-# generated on 2015/06/27 02:31:54
+# generated on 2015/07/12 02:33:42
 #
 # --table-start--
 dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.SingleTable
@@ -388,7 +388,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_01
 tableName=MULTI_TABLE_01
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_02
+fieldName=multiTable_02
 columnName=MULTI_TABLE_02_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_02(_id ) on delete cascade
@@ -485,7 +485,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_02
 tableName=MULTI_TABLE_02
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_03
+fieldName=multiTable_03
 columnName=MULTI_TABLE_03_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_03(_id ) on delete cascade
@@ -582,7 +582,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_03
 tableName=MULTI_TABLE_03
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_04
+fieldName=multiTable_04
 columnName=MULTI_TABLE_04_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_04(_id ) on delete cascade
@@ -679,7 +679,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_04
 tableName=MULTI_TABLE_04
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_05
+fieldName=multiTable_05
 columnName=MULTI_TABLE_05_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_05(_id ) on delete cascade
@@ -776,7 +776,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_05
 tableName=MULTI_TABLE_05
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_06
+fieldName=multiTable_06
 columnName=MULTI_TABLE_06_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_06(_id ) on delete cascade
@@ -873,7 +873,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_06
 tableName=MULTI_TABLE_06
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_07
+fieldName=multiTable_07
 columnName=MULTI_TABLE_07_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_07(_id ) on delete cascade
@@ -970,7 +970,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_07
 tableName=MULTI_TABLE_07
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_08
+fieldName=multiTable_08
 columnName=MULTI_TABLE_08_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_08(_id ) on delete cascade
@@ -1067,7 +1067,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_08
 tableName=MULTI_TABLE_08
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_09
+fieldName=multiTable_09
 columnName=MULTI_TABLE_09_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_09(_id ) on delete cascade
@@ -1164,7 +1164,7 @@ dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.MultiTable_09
 tableName=MULTI_TABLE_09
 # --table-fields-start--
 # --field-start--
-fieldName=MultiTable_10
+fieldName=multiTable_10
 columnName=MULTI_TABLE_10_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_10(_id ) on delete cascade

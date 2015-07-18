@@ -16,7 +16,7 @@ public class SingleTableDao extends BaseSampleDao<SingleTable> {
 
     @Override
     public String getCreateTableStatement(boolean ifNotExists) {
-        String constraint = ifNotExists? "IF NOT EXISTS ": "";
+        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         return "CREATE TABLE " + constraint + tableName + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + SAMPLE_STRING_COLL_01 + " TEXT NOT NULL ,"
@@ -38,7 +38,7 @@ public class SingleTableDao extends BaseSampleDao<SingleTable> {
 
     @Override
     public String[] getCreateIndexStatements(boolean ifNotExists) {
-        String constraint = ifNotExists? "IF NOT EXISTS ": "";
+        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         return new String[]{"CREATE INDEX " + constraint
                 + "IDX_SINGLE_TABLE_SAMPLE_INT_COLL_INDEXED ON "
                 + tableName + " (" + SAMPLE_INT_COLL_INDEXED + " );"};

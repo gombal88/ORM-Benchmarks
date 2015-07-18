@@ -48,9 +48,8 @@ public class MultiTable_01 extends BaseSampleEntity {
         table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        int nextUniqueRandomInt = generatorUtils.getNextUniqueRandomInt();
-        table.setSampleIntCollIndexed(nextUniqueRandomInt);
-        table.setMultiTable_02(MultiTable_02.getNewEntityWithRandomData(table.getId(), nextUniqueRandomInt));
+        table.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
+        table.setMultiTable_02(MultiTable_02.getNewEntityWithRandomData(table.getId(), generatorUtils.getUniqueNumberRange()));
         return table;
     }
 

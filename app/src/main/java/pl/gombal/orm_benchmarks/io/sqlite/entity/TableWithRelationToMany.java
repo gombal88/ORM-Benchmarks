@@ -2,7 +2,6 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
 
@@ -53,7 +52,9 @@ public class TableWithRelationToMany extends BaseSampleEntity {
 
         List<TableWithRelationToOne> childList = new ArrayList<>();
         for (int i = 0; i < childCount; i++) {
-            childList.add(TableWithRelationToOne.getNewEntityWithRandomData(table, new Random().nextInt()));
+            EntityFieldGeneratorUtils generatorUtilsToOne =
+                    EntityFieldGeneratorUtils.getInstance(EntityFieldGeneratorUtils.RAW_SQL_ENTITY_FIELD_GENERATOR_ID + 50, generatorUtils.getUniqueNumberRange() * childCount);
+            childList.add(TableWithRelationToOne.getNewEntityWithRandomData(table, generatorUtilsToOne.getNextUniqueRandomInt()));
         }
         table.setTableWithRelationToOneList(childList);
         return table;
