@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.sugarorm.entity;
 
 import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
-public class MultiTable_03 extends BaseSampleEntity<MultiTable_03> {
+public class MultiTable_03 extends BaseSampleEntity {
 
     private MultiTable_04 multiTable_04;
 

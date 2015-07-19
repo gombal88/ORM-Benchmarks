@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.sugarorm.entity;
 
 import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
-public class TableWithRelationToOne extends BaseSampleEntity<TableWithRelationToOne> {
+public class TableWithRelationToOne extends BaseSampleEntity {
 
     private TableWithRelationToMany tableWithRelationToMany;
 

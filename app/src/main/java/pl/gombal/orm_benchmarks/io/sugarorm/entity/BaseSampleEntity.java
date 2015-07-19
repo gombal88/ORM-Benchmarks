@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.sugarorm.entity;
 
 import com.orm.SugarRecord;
 
-public abstract class BaseSampleEntity<T> extends SugarRecord<T> {
+public abstract class BaseSampleEntity extends SugarRecord {
 
     protected String SampleStringColl01;
     protected String SampleStringColl02;

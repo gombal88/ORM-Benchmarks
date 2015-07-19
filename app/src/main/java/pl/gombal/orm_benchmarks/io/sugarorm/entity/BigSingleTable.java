@@ -5,7 +5,7 @@ import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 /**
  * Created by gombal on 27.06.2015.
  */
-public class BigSingleTable extends BaseSampleEntity<BigSingleTable> {
+public class BigSingleTable extends BaseSampleEntity {
 
     private String ExtraSmplStringColl01;
     private String ExtraSmplStringColl02;
@@ -74,7 +74,6 @@ public class BigSingleTable extends BaseSampleEntity<BigSingleTable> {
         table.setSampleIntColl02(EntityFieldGeneratorUtils.getRandomInt(1000));
         table.setSampleRealColl01(EntityFieldGeneratorUtils.getRandomDouble(10));
         table.setSampleRealColl02(EntityFieldGeneratorUtils.getRandomDouble(10));
-        table.setSampleIntCollIndexed(generatorUtils.getNextUniqueRandomInt());
 
         table.setExtraSmplStringColl01(EntityFieldGeneratorUtils.getRandomString(20));
         table.setExtraSmplStringColl02(EntityFieldGeneratorUtils.getRandomString(20));
