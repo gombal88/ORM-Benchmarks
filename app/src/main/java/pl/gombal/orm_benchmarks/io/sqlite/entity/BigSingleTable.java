@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 public class BigSingleTable extends BaseSampleEntity{
 

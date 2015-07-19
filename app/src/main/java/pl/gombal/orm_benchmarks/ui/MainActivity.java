@@ -10,9 +10,9 @@ import android.view.MenuItem;
 import java.sql.SQLException;
 
 import pl.gombal.orm_benchmarks.R;
-import pl.gombal.orm_benchmarks.io.ORMBenchmarkTasks;
-import pl.gombal.orm_benchmarks.io.ormlite.ORMLiteBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
+import pl.gombal.orm_benchmarks.io.sugarorm.SugarORMBenchmarkTask;
+import pl.gombal.orm_benchmarks.io.util.ORMBenchmarkTasks;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
 
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
             @Override
             protected Void doInBackground(Context... params) {
 
-                ORMBenchmarkTasks benchmarkTasks = new ORMLiteBenchmarkTasks();
+                ORMBenchmarkTasks benchmarkTasks = new SugarORMBenchmarkTask();
 
                 Context context = params[0];
                 benchmarkTasks.init(context, false, false);
@@ -56,13 +56,13 @@ public class MainActivity extends Activity {
                             + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 10, false));
 
                     LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, false));
+                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
                     LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, false));
+                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
                     LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, false));
+                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
                     LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, false));
+                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
 
                     LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
                             + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5));
@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
                     LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
                             + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a"));
 
-//                    LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + benchmarkTasks.dropDB());
+                    LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + benchmarkTasks.dropDB());
 
                 } catch (SQLException e) {
                     e.printStackTrace();

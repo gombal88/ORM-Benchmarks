@@ -53,8 +53,6 @@ public class DataBaseConfigUtil extends OrmLiteConfigUtil {
             configFile.delete();
         }
 
-        configFile = new File(fullConfigPath);
-
         writeConfigFile(configFile, classes);
     }
 }

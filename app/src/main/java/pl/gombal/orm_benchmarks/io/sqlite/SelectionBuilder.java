@@ -2,6 +2,7 @@ package pl.gombal.orm_benchmarks.io.sqlite;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
@@ -116,6 +117,10 @@ public class SelectionBuilder {
         else columns = getColumns();
         LogUtils.LOGD(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
         return db.query(distinct, table, columns, getSelection(), getSelectionArgs(), groupBy, having, orderBy, limit);
+    }
+
+    public long count(SQLiteDatabase db) {
+        return DatabaseUtils.queryNumEntries(db, table, getSelection(), getSelectionArgs());
     }
 
     public long insert(SQLiteDatabase db, ContentValues values) {

@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 @DatabaseTable(tableName = MultiTable_06.TABLE_NAME)
 public class MultiTable_06 extends BaseSampleEntity  {
@@ -14,7 +14,7 @@ public class MultiTable_06 extends BaseSampleEntity  {
 
     public static final String MULTI_TABLE_07_ID = "MULTI_TABLE_07_ID";
 
-    @DatabaseField(columnName = MULTI_TABLE_07_ID, foreign = true,
+    @DatabaseField(columnName = MULTI_TABLE_07_ID, foreign = true, foreignAutoCreate = true,
             columnDefinition = "integer references " + MultiTable_07.TABLE_NAME + "(" + BaseColumns._ID + " ) on delete cascade")
     private MultiTable_07 multiTable_07;
 

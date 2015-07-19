@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 @DatabaseTable(tableName = BigSingleTable.TABLE_NAME)
 public class BigSingleTable extends BaseSampleEntity {

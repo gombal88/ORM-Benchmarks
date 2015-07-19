@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 public class TableWithRelationToMany extends BaseSampleEntity {
 

@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 @DatabaseTable(tableName = TableWithRelationToOne.TABLE_NAME)
 public class TableWithRelationToOne extends BaseSampleEntity {

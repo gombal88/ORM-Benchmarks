@@ -1,6 +1,6 @@
 package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 public class MultiTable_10 extends BaseSampleEntity {
 

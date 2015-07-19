@@ -3,7 +3,7 @@ package pl.gombal.orm_benchmarks.io.ormlite.entity;
 
 import com.j256.ormlite.table.DatabaseTable;
 
-import pl.gombal.orm_benchmarks.util.EntityFieldGeneratorUtils;
+import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 @DatabaseTable(tableName = SingleTable.TABLE_NAME)
 public class SingleTable extends BaseSampleEntity {

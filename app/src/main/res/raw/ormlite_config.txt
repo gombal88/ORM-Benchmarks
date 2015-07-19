@@ -1,5 +1,5 @@
 #
-# generated on 2015/07/12 02:33:42
+# generated on 2015/07/18 04:44:41
 #
 # --table-start--
 dataClass=pl.gombal.orm_benchmarks.io.ormlite.entity.SingleTable
@@ -392,6 +392,7 @@ fieldName=multiTable_02
 columnName=MULTI_TABLE_02_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_02(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -489,6 +490,7 @@ fieldName=multiTable_03
 columnName=MULTI_TABLE_03_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_03(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -586,6 +588,7 @@ fieldName=multiTable_04
 columnName=MULTI_TABLE_04_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_04(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -683,6 +686,7 @@ fieldName=multiTable_05
 columnName=MULTI_TABLE_05_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_05(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -780,6 +784,7 @@ fieldName=multiTable_06
 columnName=MULTI_TABLE_06_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_06(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -877,6 +882,7 @@ fieldName=multiTable_07
 columnName=MULTI_TABLE_07_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_07(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -974,6 +980,7 @@ fieldName=multiTable_08
 columnName=MULTI_TABLE_08_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_08(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -1071,6 +1078,7 @@ fieldName=multiTable_09
 columnName=MULTI_TABLE_09_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_09(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
@@ -1168,6 +1176,7 @@ fieldName=multiTable_10
 columnName=MULTI_TABLE_10_ID
 foreign=true
 columnDefinition=integer references MULTI_TABLE_10(_id ) on delete cascade
+foreignAutoCreate=true
 # --field-end--
 # --field-start--
 fieldName=SampleStringColl01
