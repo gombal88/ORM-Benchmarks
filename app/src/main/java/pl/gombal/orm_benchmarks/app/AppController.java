@@ -1,15 +1,13 @@
 package pl.gombal.orm_benchmarks.app;
 
+import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
-
-import com.activeandroid.ActiveAndroid;
-import com.orm.SugarApp;
 
 import pl.gombal.orm_benchmarks.io.greendao.entity.DaoMaster;
 import pl.gombal.orm_benchmarks.io.greendao.entity.DaoSession;
 
 
-public class AppController extends SugarApp {
+public class AppController extends Application {
 
     public static final boolean DEBUG = true;
 
@@ -21,8 +19,7 @@ public class AppController extends SugarApp {
 
 //        setupDatabase();
 
-
-        ActiveAndroid.initialize(this);
+//        ActiveAndroid.initialize(this, false);
     }
 
     private void setupDatabase() {

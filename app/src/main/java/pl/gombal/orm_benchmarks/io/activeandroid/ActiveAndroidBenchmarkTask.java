@@ -38,6 +38,8 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
 
     public static final String DB_NAME = "activeandroid-db";
 
+    private Context context;
+
     private boolean initialized = false;
 
     @Override
@@ -54,6 +56,11 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
         if (copyDBFormAssets)
             DataBaseUtils.loadDataBaseFileFomAssets(context, DB_NAME);
 
+//        If copy form assets activeAndroid should be initialized form here and db file should be
+//        copied to assets before.
+
+        this.context = context;
+
         initialized = true;
     }
 
@@ -64,7 +71,9 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
 
     @Override
     public long createDB() throws SQLException {
-        return -1;
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        ActiveAndroid.initialize(context.getApplicationContext(), false);
+        return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -102,6 +111,8 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
         ActiveAndroid.execSQL("delete from sqlite_sequence where name='" + TableWithRelationToOne.TABLE_NAME + "';");
         ActiveAndroid.execSQL("delete from " + TableWithRelationToMany.TABLE_NAME + ";");
         ActiveAndroid.execSQL("delete from sqlite_sequence where name='" + TableWithRelationToMany.TABLE_NAME + "';");
+
+        ActiveAndroid.dispose();
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }

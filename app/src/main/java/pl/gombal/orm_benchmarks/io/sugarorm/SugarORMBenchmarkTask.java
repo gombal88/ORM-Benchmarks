@@ -2,17 +2,21 @@ package pl.gombal.orm_benchmarks.io.sugarorm;
 
 
 import android.content.Context;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.common.base.Stopwatch;
 import com.orm.SchemaGenerator;
-import com.orm.SugarDb;
+import com.orm.SugarContext;
 import com.orm.SugarTransactionHelper;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import pl.gombal.orm_benchmarks.io.sqlite.DataBaseOpenHelper;
 import pl.gombal.orm_benchmarks.io.sugarorm.entity.BigSingleTable;
 import pl.gombal.orm_benchmarks.io.sugarorm.entity.MultiTable_01;
 import pl.gombal.orm_benchmarks.io.sugarorm.entity.MultiTable_02;
@@ -36,11 +40,12 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
     public static final String TAG = SugarORMBenchmarkTask.class.getSimpleName();
 
-    public static final String DB_NAME = "activeandroid-db";
+    public static final String DB_NAME = "sugarorm-db";
 
     private Context context;
 
     private SchemaGenerator schemaGenerator;
+    private SQLiteOpenHelper dbOpenHelper;
     private boolean initialized = false;
 
     @Override
@@ -58,7 +63,9 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             DataBaseUtils.loadDataBaseFileFomAssets(context, DB_NAME);
 
         this.context = context;
+        SugarContext.init(context.getApplicationContext());
         schemaGenerator = new SchemaGenerator(context);
+        dbOpenHelper = new DataBaseOpenHelper(context, DB_NAME, 1, inMemoryDB);
         initialized = true;
     }
 
@@ -69,8 +76,12 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
     @Override
     public long createDB() throws SQLException {
-        schemaGenerator.createDatabase(new SugarDb(context).getDB());
-        return -1;
+        if (!initialized)
+            throw new IllegalStateException("Initialize first SugarORMBenchmarkTask by call init()!");
+
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        schemaGenerator.createDatabase(dbOpenHelper.getWritableDatabase());
+        return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -78,22 +89,8 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first SugarORMBenchmarkTask by call init()!");
 
-        //// TODO: 19.07.2015 Investigate if is possible to use SchemaGenerator class for drop and create database
         Stopwatch stopwatch = Stopwatch.createStarted();
-        SingleTable.deleteAll(SingleTable.class);
-        BigSingleTable.deleteAll(BigSingleTable.class);
-        MultiTable_01.deleteAll(MultiTable_01.class);
-        MultiTable_02.deleteAll(MultiTable_02.class);
-        MultiTable_03.deleteAll(MultiTable_03.class);
-        MultiTable_04.deleteAll(MultiTable_04.class);
-        MultiTable_05.deleteAll(MultiTable_05.class);
-        MultiTable_06.deleteAll(MultiTable_06.class);
-        MultiTable_07.deleteAll(MultiTable_07.class);
-        MultiTable_08.deleteAll(MultiTable_08.class);
-        MultiTable_09.deleteAll(MultiTable_09.class);
-        MultiTable_10.deleteAll(MultiTable_10.class);
-        TableWithRelationToOne.deleteAll(TableWithRelationToOne.class);
-        TableWithRelationToMany.deleteAll(TableWithRelationToMany.class);
+        schemaGenerator.deleteTables(dbOpenHelper.getWritableDatabase());
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
@@ -299,13 +296,12 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             case SINGLE_TAB:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-
-                        break;
+                        return -1;
                     case WITHOUT_LAZY_INIT:
-
+                        Select.from(SingleTable.class).list();
                         break;
                     case COUNT_ONLY:
-
+                        Select.from(SingleTable.class).count();
                         break;
                 }
                 break;
@@ -313,13 +309,12 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             case BIG_SINGLE_TAB:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-
-                        break;
+                        return -1;
                     case WITHOUT_LAZY_INIT:
-
+                        Select.from(BigSingleTable.class).list();
                         break;
                     case COUNT_ONLY:
-
+                        Select.from(BigSingleTable.class).count();
                         break;
                 }
                 break;
@@ -327,13 +322,14 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             case MULTI_TAB_RELATION_TO_ONE:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-
-                        break;
+                        return -1;
                     case WITHOUT_LAZY_INIT:
-
+                        Select.from(MultiTable_01.class).list();
+//                        MultiTable_01.listAll(MultiTable_01.class);
                         break;
                     case COUNT_ONLY:
-
+                        Select.from(MultiTable_01.class).count();
+//                        MultiTable_01.count(MultiTable_01.class);
                         break;
                 }
                 break;
@@ -341,13 +337,15 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             case SINGLE_TAB_RELATION_TO_MANY:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-
+                        Select.from(TableWithRelationToMany.class).list();
                         break;
                     case WITHOUT_LAZY_INIT:
-
+                        List<TableWithRelationToMany> list = Select.from(TableWithRelationToMany.class).list();
+                        for (TableWithRelationToMany toMany : list)
+                            toMany.getTableWithRelationToOneList();
                         break;
                     case COUNT_ONLY:
-
+                        Select.from(TableWithRelationToMany.class).count();
                         break;
                 }
                 break;
@@ -365,21 +363,22 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first SugarORMBenchmarkTask by call init()!");
 
-        int size = 0;
+        long size = 0;
 
         Stopwatch stopwatch = Stopwatch.createStarted();
         String arg = "%" + value + "%";
         switch (entityType) {
             case SINGLE_TAB:
+                size = Select.from(SingleTable.class).where(Condition.prop("SAMPLE_STRING_COLL01").like(arg)).count();
                 break;
-
             case BIG_SINGLE_TAB:
+                size = Select.from(BigSingleTable.class).where(Condition.prop("SAMPLE_STRING_COLL01").like(arg)).count();
                 break;
-
             case MULTI_TAB_RELATION_TO_ONE:
+                size = Select.from(MultiTable_01.class).where(Condition.prop("SAMPLE_STRING_COLL01").like(arg)).count();
                 break;
-
             case SINGLE_TAB_RELATION_TO_MANY:
+                size = Select.from(TableWithRelationToMany.class).where(Condition.prop("SAMPLE_STRING_COLL01").like(arg)).count();
                 break;
         }
         LogUtils.LOGD(TAG, "Found " + size + "rows.");

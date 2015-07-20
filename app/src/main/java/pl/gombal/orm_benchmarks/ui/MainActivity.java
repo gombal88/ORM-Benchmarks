@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import java.sql.SQLException;
 
 import pl.gombal.orm_benchmarks.R;
+import pl.gombal.orm_benchmarks.io.activeandroid.ActiveAndroidBenchmarkTask;
 import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
-import pl.gombal.orm_benchmarks.io.sugarorm.SugarORMBenchmarkTask;
 import pl.gombal.orm_benchmarks.io.util.ORMBenchmarkTasks;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
             @Override
             protected Void doInBackground(Context... params) {
 
-                ORMBenchmarkTasks benchmarkTasks = new SugarORMBenchmarkTask();
+                ORMBenchmarkTasks benchmarkTasks = new ActiveAndroidBenchmarkTask();
 
                 Context context = params[0];
                 benchmarkTasks.init(context, false, false);

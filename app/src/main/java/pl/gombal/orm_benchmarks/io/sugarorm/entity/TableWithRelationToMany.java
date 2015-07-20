@@ -1,8 +1,6 @@
 package pl.gombal.orm_benchmarks.io.sugarorm.entity;
 
 
-import android.provider.BaseColumns;
-
 import java.util.List;
 
 import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
@@ -39,7 +37,7 @@ public class TableWithRelationToMany extends BaseSampleEntity {
     }
 
     public List<TableWithRelationToOne> getTableWithRelationToOneList() {
-        return TableWithRelationToOne.find(TableWithRelationToOne.class, BaseColumns._ID + " = ?", String.valueOf(this.getId()));
+        return TableWithRelationToOne.find(TableWithRelationToOne.class, "ID = ?", String.valueOf(this.getId()));
     }
 
 }
