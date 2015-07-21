@@ -1,4 +1,4 @@
-package pl.gombal.orm_benchmarks.io.util;
+package pl.gombal.orm_benchmarks.task;
 
 
 import android.content.Context;

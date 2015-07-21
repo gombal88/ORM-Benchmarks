@@ -45,7 +45,7 @@ import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToOne;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToOneDao;
 import pl.gombal.orm_benchmarks.io.util.DataBaseUtils;
 import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
-import pl.gombal.orm_benchmarks.io.util.ORMBenchmarkTasks;
+import pl.gombal.orm_benchmarks.task.ORMBenchmarkTasks;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
 public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {

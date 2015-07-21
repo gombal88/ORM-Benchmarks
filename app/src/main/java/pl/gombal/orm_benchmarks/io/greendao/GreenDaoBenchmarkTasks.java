@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import pl.gombal.orm_benchmarks.io.util.ORMBenchmarkTasks;
+import pl.gombal.orm_benchmarks.task.ORMBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.greendao.entity.BigSingleTable;
 import pl.gombal.orm_benchmarks.io.greendao.entity.BigSingleTableDao;
 import pl.gombal.orm_benchmarks.io.greendao.entity.DaoMaster;

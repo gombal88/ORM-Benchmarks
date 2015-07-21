@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import pl.gombal.orm_benchmarks.R;
 import pl.gombal.orm_benchmarks.io.activeandroid.ActiveAndroidBenchmarkTask;
 import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
-import pl.gombal.orm_benchmarks.io.util.ORMBenchmarkTasks;
+import pl.gombal.orm_benchmarks.task.ORMBenchmarkTasks;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
 
