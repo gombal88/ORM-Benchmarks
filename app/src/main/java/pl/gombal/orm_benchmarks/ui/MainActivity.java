@@ -1,96 +1,60 @@
 package pl.gombal.orm_benchmarks.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.sql.SQLException;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import pl.gombal.orm_benchmarks.R;
-import pl.gombal.orm_benchmarks.io.activeandroid.ActiveAndroidBenchmarkTask;
-import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
-import pl.gombal.orm_benchmarks.task.ORMBenchmarkTasks;
-import pl.gombal.orm_benchmarks.util.LogUtils;
+import pl.gombal.orm_benchmarks.task.BenchmarkServiceConnector;
+import pl.gombal.orm_benchmarks.task.ORMBenchmarkService;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements BenchmarkServiceConnector.BenchmarkServiceCallback {
+
+    BenchmarkServiceConnector serviceConnection;
+
+    private Button startButton;
+    private ProgressBar serviceProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        serviceConnection = BenchmarkServiceConnector.getInstance(this);
 
-        deleteDatabase(SQLiteBenchmarkTasks.DB_NAME);
-        new AsyncTask<Context, Void, Void>() {
+        startButton = (Button) findViewById(R.id.button);
+        serviceProgress = (ProgressBar) findViewById(R.id.progressBar);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected Void doInBackground(Context... params) {
-
-                ORMBenchmarkTasks benchmarkTasks = new ActiveAndroidBenchmarkTask();
-
-                Context context = params[0];
-                benchmarkTasks.init(context, false, false);
-
-                try {
-                    LogUtils.LOGI("ORM BENCHMARKS", "createDB: " + benchmarkTasks.createDB());
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 10, false));
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 10, false));
-                    LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 10, false));
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-                    LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-                    LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-                    LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5));
-                    LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 5));
-                    LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 5));
-                    LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 5));
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                            + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB, "a"));
-                    LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                            + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, "a"));
-                    LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                            + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, "a"));
-                    LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                            + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a"));
-
-                    LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + benchmarkTasks.dropDB());
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onClick(View v) {
+                startORMService();
             }
-        }.execute(this);
+        });
 
+    }
+
+    private void startORMService() {
+        Intent serviceIntent = new Intent(this, ORMBenchmarkService.class);
+        startService(serviceIntent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        serviceConnection.doBindService(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        serviceConnection.doUnbindService();
     }
 
     @Override
@@ -113,5 +77,37 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBenchmarkServiceConnected() {
+
+    }
+
+    @Override
+    public void onBenchmarkServiceDisconnected() {
+
+    }
+
+    @Override
+    public void bindingServiceFailed() {
+
+    }
+
+    @Override
+    public void onBenchmarkTaskStart() {
+        startButton.setVisibility(View.GONE);
+        serviceProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBenchmarkTaskStop() {
+        startButton.setVisibility(View.VISIBLE);
+        serviceProgress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBenchmarkNotifyProgress() {
+
     }
 }

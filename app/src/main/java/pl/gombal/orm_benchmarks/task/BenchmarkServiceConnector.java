@@ -26,14 +26,35 @@ public class BenchmarkServiceConnector implements ServiceConnection {
 
         @Override
         public void handleMessage(Message msg) {
-
+            switch (msg.what) {
+                case ServiceMessage.Response.START_BENCHMARK_TASK:
+                    if (serviceCallback != null) {
+                        serviceCallback.onBenchmarkTaskStart();
+                    }
+                    break;
+                case ServiceMessage.Response.STOP_BENCHMARK_TASK:
+                    if (serviceCallback != null) {
+                        serviceCallback.onBenchmarkTaskStop();
+                    }
+                    break;
+                case ServiceMessage.Response.NOTIFY_BENCHMARK_PROGRESS:
+                    if (serviceCallback != null) {
+                        serviceCallback.onBenchmarkNotifyProgress();
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
         }
     }
 
-    interface BenchmarkServiceCallback {
-        void bindingServiceFailed();
+    public interface BenchmarkServiceCallback {
         void onBenchmarkServiceConnected();
         void onBenchmarkServiceDisconnected();
+        void bindingServiceFailed();
+        void onBenchmarkTaskStart();
+        void onBenchmarkTaskStop();
+        void onBenchmarkNotifyProgress();
     }
 
     private BenchmarkServiceCallback serviceCallback = null;

@@ -1,26 +1,33 @@
 package pl.gombal.orm_benchmarks.task;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
+import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.gombal.orm_benchmarks.Constants;
 import pl.gombal.orm_benchmarks.R;
+import pl.gombal.orm_benchmarks.io.sugarorm.SugarORMBenchmarkTask;
 import pl.gombal.orm_benchmarks.ui.MainActivity;
+import pl.gombal.orm_benchmarks.util.LogUtils;
 
-public class ORMBenchmarkService extends Service {
+public class ORMBenchmarkService extends IntentService {
+
+    public static final String TAG = ORMBenchmarkService.class.getSimpleName();
 
     private List<Messenger> clients = new ArrayList<>();
 
@@ -42,6 +49,7 @@ public class ORMBenchmarkService extends Service {
     private final Messenger messenger = new Messenger(new IncomingHandler());
 
     class IncomingHandler extends Handler {
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -51,9 +59,6 @@ public class ORMBenchmarkService extends Service {
                 case ServiceMessage.Request.UNREGISTER_CLIENT:
                     clients.remove(msg.replyTo);
                     break;
-                case ServiceMessage.Request.RUN_BENCHMARK:
-
-                    break;
                 default:
                     super.handleMessage(msg);
             }
@@ -61,9 +66,15 @@ public class ORMBenchmarkService extends Service {
     }
 
 
+    public ORMBenchmarkService() {
+        super(TAG);
+        LogUtils.LOGD(TAG, "Constructor");
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        LogUtils.LOGD(TAG, "onCreate");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
     }
@@ -75,12 +86,102 @@ public class ORMBenchmarkService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtils.LOGD(TAG, "onStartCommand");
 
-        handleCommand(intent);
+        if (intent != null) {
+            handleOnStartCommand(intent);
+            super.onStartCommand(intent, flags, startId);
+        }
+        return START_STICKY;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        LogUtils.LOGD(TAG, "onHandleIntent");
+
+        String action = intent.getAction();
+
+        switch (action) {
+            case ServiceMessage.IntentFilers.START_BENCHMARK_SQLITE:
+
+                break;
+            case ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO:
+
+                break;
+            case ServiceMessage.IntentFilers.START_BENCHMARK_ORMLITE:
+
+                break;
+            case ServiceMessage.IntentFilers.START_BENCHMARK_ACTIVE_ANDROID:
+
+                break;
+            case ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM:
+
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal action " + action);
+        }
 
         startForeground(Constants.NotificationsID.FOREGROUND_SERVICE, getNotification());
 
-        return START_STICKY;
+        notifyClients(ServiceMessage.Response.START_BENCHMARK_TASK);
+
+        ORMBenchmarkTasks benchmarkTasks = new SugarORMBenchmarkTask();
+        benchmarkTasks.init(getApplicationContext(), false, false);
+        try {
+            LogUtils.LOGI("ORM BENCHMARKS", "createDB: " + benchmarkTasks.createDB());
+
+            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 1000, false));
+
+            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 1000, false));
+            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 1000, false));
+
+            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
+            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
+            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
+            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
+
+            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5));
+            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 5));
+            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 5));
+            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 5));
+
+            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
+                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB, "a"));
+            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
+                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, "a"));
+            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
+                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, "a"));
+            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
+                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a"));
+
+            LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + benchmarkTasks.dropDB());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
     }
 
     @Override
@@ -88,18 +189,13 @@ public class ORMBenchmarkService extends Service {
         return messenger.getBinder();
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return true;
-    }
-
-    private boolean handleCommand(Intent intent) {
+    private boolean handleOnStartCommand(Intent intent) {
         if (intent != null && intent.getAction() != null) {
             String action = intent.getAction();
 
             switch (action) {
                 case Constants.Actions.STOP_FOREGROUND_SERVICE:
-                    //// TODO:
+                    notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
                     stopForeground(true);
                     stopSelf();
                     return true;
@@ -108,6 +204,31 @@ public class ORMBenchmarkService extends Service {
             }
         } else {
             return false;
+        }
+    }
+
+    private void notifyClients(int messageType) {
+        Bundle bundle = new Bundle();
+        switch (messageType) {
+            case ServiceMessage.Response.START_BENCHMARK_TASK:
+                break;
+            case ServiceMessage.Response.STOP_BENCHMARK_TASK:
+
+                break;
+            case ServiceMessage.Response.NOTIFY_BENCHMARK_PROGRESS:
+
+                break;
+        }
+        for (Messenger client : clients) {
+            try {
+                Message msg = Message.obtain(null, messageType);
+                msg.setData(bundle);
+                client.send(msg);
+            } catch (RemoteException e) {
+                // Client is dead - unregister client
+                LogUtils.LOGI(TAG, "UnregisterClient: " + client.toString());
+                clients.remove(client);
+            }
         }
     }
 
