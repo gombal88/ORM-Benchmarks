@@ -100,6 +100,8 @@ public class ORMBenchmarkService extends IntentService {
         LogUtils.LOGD(TAG, "onHandleIntent");
 
         String action = intent.getAction();
+        if (action == null)
+            throw new IllegalArgumentException("Action can not be null");
 
         switch (action) {
             case ServiceMessage.IntentFilers.START_BENCHMARK_SQLITE:
