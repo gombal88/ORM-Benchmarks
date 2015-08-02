@@ -21,6 +21,10 @@ import java.util.List;
 
 import pl.gombal.orm_benchmarks.Constants;
 import pl.gombal.orm_benchmarks.R;
+import pl.gombal.orm_benchmarks.io.activeandroid.ActiveAndroidBenchmarkTask;
+import pl.gombal.orm_benchmarks.io.greendao.GreenDaoBenchmarkTasks;
+import pl.gombal.orm_benchmarks.io.ormlite.ORMLiteBenchmarkTasks;
+import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sugarorm.SugarORMBenchmarkTask;
 import pl.gombal.orm_benchmarks.ui.MainActivity;
 import pl.gombal.orm_benchmarks.util.LogUtils;
@@ -29,9 +33,11 @@ public class ORMBenchmarkService extends IntentService {
 
     public static final String TAG = ORMBenchmarkService.class.getSimpleName();
 
-    private List<Messenger> clients = new ArrayList<>();
+    private static List<Messenger> clients = new ArrayList<>();
 
     private NotificationManager notificationManager;
+
+    private static boolean isBenchmarkRunning = false;
 
 
     private static volatile PowerManager.WakeLock lockStatic = null;
@@ -48,13 +54,15 @@ public class ORMBenchmarkService extends IntentService {
 
     private final Messenger messenger = new Messenger(new IncomingHandler());
 
-    class IncomingHandler extends Handler {
+    static class IncomingHandler extends Handler {
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case ServiceMessage.Request.REGISTER_CLIENT:
                     clients.add(msg.replyTo);
+                    if (isBenchmarkRunning)
+                        notifyClients(ServiceMessage.Response.NOTIFY_BENCHMARK_PROGRESS);
                     break;
                 case ServiceMessage.Request.UNREGISTER_CLIENT:
                     clients.remove(msg.replyTo);
@@ -88,8 +96,7 @@ public class ORMBenchmarkService extends IntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogUtils.LOGD(TAG, "onStartCommand");
 
-        if (intent != null) {
-            handleOnStartCommand(intent);
+        if (intent != null && !handleOnStartCommand(intent)) {
             super.onStartCommand(intent, flags, startId);
         }
         return START_STICKY;
@@ -105,29 +112,30 @@ public class ORMBenchmarkService extends IntentService {
 
         switch (action) {
             case ServiceMessage.IntentFilers.START_BENCHMARK_SQLITE:
-
+                startORMBenchmark(new SQLiteBenchmarkTasks());
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO:
-
+                startORMBenchmark(new GreenDaoBenchmarkTasks());
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_ORMLITE:
-
+                startORMBenchmark(new ORMLiteBenchmarkTasks());
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_ACTIVE_ANDROID:
-
+                startORMBenchmark(new ActiveAndroidBenchmarkTask());
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM:
-
+                startORMBenchmark(new SugarORMBenchmarkTask());
                 break;
             default:
                 throw new IllegalArgumentException("Illegal action " + action);
         }
+    }
 
+    private void startORMBenchmark(ORMBenchmarkTasks benchmarkTasks) {
         startForeground(Constants.NotificationsID.FOREGROUND_SERVICE, getNotification());
 
         notifyClients(ServiceMessage.Response.START_BENCHMARK_TASK);
 
-        ORMBenchmarkTasks benchmarkTasks = new SugarORMBenchmarkTask();
         benchmarkTasks.init(getApplicationContext(), false, false);
         try {
             LogUtils.LOGI("ORM BENCHMARKS", "createDB: " + benchmarkTasks.createDB());
@@ -209,7 +217,7 @@ public class ORMBenchmarkService extends IntentService {
         }
     }
 
-    private void notifyClients(int messageType) {
+    private static void notifyClients(int messageType) {
         Bundle bundle = new Bundle();
         switch (messageType) {
             case ServiceMessage.Response.START_BENCHMARK_TASK:

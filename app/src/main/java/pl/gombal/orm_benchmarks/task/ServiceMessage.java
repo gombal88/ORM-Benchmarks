@@ -1,9 +1,9 @@
 package pl.gombal.orm_benchmarks.task;
 
 
-public abstract class ServiceMessage {
+public interface ServiceMessage {
 
-    public static final String PACKAGE_NAME = "pl.gombal.orm_benchmarks";
+    String PACKAGE_NAME = "pl.gombal.orm_benchmarks";
 
     interface Request {
         int REGISTER_CLIENT = 1;

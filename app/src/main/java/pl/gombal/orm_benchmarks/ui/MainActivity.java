@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import pl.gombal.orm_benchmarks.R;
 import pl.gombal.orm_benchmarks.task.BenchmarkServiceConnector;
 import pl.gombal.orm_benchmarks.task.ORMBenchmarkService;
+import pl.gombal.orm_benchmarks.task.ServiceMessage;
 
 
 public class MainActivity extends Activity implements BenchmarkServiceConnector.BenchmarkServiceCallback {
@@ -31,17 +32,14 @@ public class MainActivity extends Activity implements BenchmarkServiceConnector.
         startButton = (Button) findViewById(R.id.button);
         serviceProgress = (ProgressBar) findViewById(R.id.progressBar);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startORMService();
-            }
-        });
+        startButton.setOnClickListener(v -> startORMService());
+
 
     }
 
     private void startORMService() {
         Intent serviceIntent = new Intent(this, ORMBenchmarkService.class);
+        serviceIntent.setAction(ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM);
         startService(serviceIntent);
     }
 
