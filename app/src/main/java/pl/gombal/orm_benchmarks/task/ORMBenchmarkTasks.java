@@ -8,10 +8,10 @@ import java.sql.SQLException;
 public interface ORMBenchmarkTasks {
 
     enum EntityType {
-        SINGLE_TAB("Single Table"),
-        BIG_SINGLE_TAB("Big Single Table"),
-        MULTI_TAB_RELATION_TO_ONE("Multi Tables with relations to one"),
-        SINGLE_TAB_RELATION_TO_MANY("Single Table with relations to many");
+        SINGLE_TAB("Single Tab"),
+        BIG_SINGLE_TAB("Big Single Tab"),
+        MULTI_TAB_RELATION_TO_ONE("Cascade tables"),
+        SINGLE_TAB_RELATION_TO_MANY("Tab - relations to many");
 
         private String entityName;
 
@@ -31,12 +31,16 @@ public interface ORMBenchmarkTasks {
 
         private String selectionTypeName;
 
-        SelectionType(String selectionTypeName) {
+        SelectionType( String selectionTypeName) {
             this.selectionTypeName = selectionTypeName;
         }
 
         public String getSelectionTypeName() {
             return selectionTypeName;
+        }
+
+        public static SelectionType byOrdinal(int ordinal) {
+            return SelectionType.values()[ordinal];
         }
     }
 

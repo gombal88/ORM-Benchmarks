@@ -34,12 +34,12 @@ public class MainActivity extends Activity implements BenchmarkServiceConnector.
 
         startButton.setOnClickListener(v -> startORMService());
 
-
     }
 
     private void startORMService() {
         Intent serviceIntent = new Intent(this, ORMBenchmarkService.class);
-        serviceIntent.setAction(ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM);
+        serviceIntent.setAction(ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO);
+        serviceIntent.putExtra(ServiceMessage.IntentExtrasKeys.ROW_COUNT, 10);
         startService(serviceIntent);
     }
 

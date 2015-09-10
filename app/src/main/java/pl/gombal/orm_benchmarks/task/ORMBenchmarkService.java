@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -14,6 +15,7 @@ import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import pl.gombal.orm_benchmarks.io.greendao.GreenDaoBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.ormlite.ORMLiteBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sqlite.SQLiteBenchmarkTasks;
 import pl.gombal.orm_benchmarks.io.sugarorm.SugarORMBenchmarkTask;
+import pl.gombal.orm_benchmarks.io.util.OrmExcelFileLogger;
 import pl.gombal.orm_benchmarks.ui.MainActivity;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
@@ -110,88 +113,75 @@ public class ORMBenchmarkService extends IntentService {
         if (action == null)
             throw new IllegalArgumentException("Action can not be null");
 
+        int rowCount = intent.getIntExtra(ServiceMessage.IntentExtrasKeys.ROW_COUNT, 10);
+        int withTransaction = intent.getIntExtra(ServiceMessage.IntentExtrasKeys.WITH_TRANSACTION, 0);
+        int selectionTypeOrdinal = intent.getIntExtra(ServiceMessage.IntentExtrasKeys.SELECTION_TYPE, 0);
+        ORMBenchmarkTasks.SelectionType selectionType = ORMBenchmarkTasks.SelectionType.byOrdinal(selectionTypeOrdinal);
+        Log.v("ORM", "with Transaction = " + withTransaction);
+
+        ORMBenchmarkTasks benchmarkTasks;
         switch (action) {
             case ServiceMessage.IntentFilers.START_BENCHMARK_SQLITE:
-                startORMBenchmark(new SQLiteBenchmarkTasks());
+                benchmarkTasks = new SQLiteBenchmarkTasks();
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO:
-                startORMBenchmark(new GreenDaoBenchmarkTasks());
+                benchmarkTasks = new GreenDaoBenchmarkTasks();
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_ORMLITE:
-                startORMBenchmark(new ORMLiteBenchmarkTasks());
+                benchmarkTasks = new ORMLiteBenchmarkTasks();
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_ACTIVE_ANDROID:
-                startORMBenchmark(new ActiveAndroidBenchmarkTask());
+                benchmarkTasks = new ActiveAndroidBenchmarkTask();
                 break;
             case ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM:
-                startORMBenchmark(new SugarORMBenchmarkTask());
+                benchmarkTasks = new SugarORMBenchmarkTask();
                 break;
             default:
                 throw new IllegalArgumentException("Illegal action " + action);
         }
+        startORMBenchmark(benchmarkTasks, rowCount, withTransaction == 1, selectionType);
     }
 
-    private void startORMBenchmark(ORMBenchmarkTasks benchmarkTasks) {
+    private void startORMBenchmark(ORMBenchmarkTasks benchmarkTasks, int rowCount, boolean withTransaction, ORMBenchmarkTasks.SelectionType selectionType) {
         startForeground(Constants.NotificationsID.FOREGROUND_SERVICE, getNotification());
 
         notifyClients(ServiceMessage.Response.START_BENCHMARK_TASK);
 
+        OrmExcelFileLogger logger = new OrmExcelFileLogger(benchmarkTasks.getName());
+
         benchmarkTasks.init(getApplicationContext(), false, false);
         try {
-            LogUtils.LOGI("ORM BENCHMARKS", "createDB: " + benchmarkTasks.createDB());
+            logger.logCreate(benchmarkTasks.createDB());
 
-            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "insert to " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                    + benchmarkTasks.insert(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 1000, false));
+            long time;
+            for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                time = benchmarkTasks.insert(entityType, rowCount, withTransaction);
+                logger.logInsert(entityType, withTransaction, rowCount, time);
 
-            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 1000, false));
-            LogUtils.LOGI("ORM BENCHMARKS", "update " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                    + benchmarkTasks.update(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 1000, false));
+                time = benchmarkTasks.update(entityType, rowCount, withTransaction);
+                logger.logUpdate(entityType, withTransaction, rowCount, time);
 
-            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
-            LogUtils.LOGI("ORM BENCHMARKS", "selectAll " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                    + benchmarkTasks.selectAll(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, ORMBenchmarkTasks.SelectionType.COUNT_ONLY));
+                time = benchmarkTasks.selectAll(entityType, selectionType);
+                logger.logSelect(entityType, selectionType, rowCount, time);
 
-            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB, 5));
-            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, 5));
-            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, 5));
-            LogUtils.LOGI("ORM BENCHMARKS", "searchIndex " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                    + benchmarkTasks.searchIndexed(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, 5));
+                time = benchmarkTasks.searchIndexed(entityType, 5);
+                logger.logSearchIindexed(entityType, rowCount, time);
 
-            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB + ": "
-                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB, "a"));
-            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB + ": "
-                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.BIG_SINGLE_TAB, "a"));
-            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE + ": "
-                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.MULTI_TAB_RELATION_TO_ONE, "a"));
-            LogUtils.LOGI("ORM BENCHMARKS", "search letter - a " + ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY + ": "
-                    + benchmarkTasks.search(ORMBenchmarkTasks.EntityType.SINGLE_TAB_RELATION_TO_MANY, "a"));
+                time = benchmarkTasks.search(entityType, "a");
+                logger.logSearch(entityType, rowCount, time);
+            }
 
-            LogUtils.LOGI("ORM BENCHMARKS", "dropDB: " + benchmarkTasks.dropDB());
+            logger.logDropDb(benchmarkTasks.dropDB());
 
-        } catch (SQLException e) {
+            logger.commit();
+
+        } catch (SQLException | SQLiteException e) {
             e.printStackTrace();
         }
 
-        notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
+        LogUtils.LOGI("ORM BENCHMARKS", "FINISH_ORM_BENCHMARK");
+
+        benchmarkFinished();
     }
 
     @Override
@@ -205,9 +195,7 @@ public class ORMBenchmarkService extends IntentService {
 
             switch (action) {
                 case Constants.Actions.STOP_FOREGROUND_SERVICE:
-                    notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
-                    stopForeground(true);
-                    stopSelf();
+                    benchmarkFinished();
                     return true;
                 default:
                     return false;
@@ -215,6 +203,12 @@ public class ORMBenchmarkService extends IntentService {
         } else {
             return false;
         }
+    }
+
+    private void benchmarkFinished() {
+        notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
+        stopForeground(true);
+        stopSelf();
     }
 
     private static void notifyClients(int messageType) {

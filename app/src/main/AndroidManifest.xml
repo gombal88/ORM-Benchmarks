@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.gombal.orm_benchmarks" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
@@ -61,7 +63,7 @@
 
         <service
             android:name=".task.ORMBenchmarkService"
-            android:exported="false"
+            android:exported="true"
             android:process=":remote">
             <intent-filter>
                 <action android:name="pl.gombal.orm_benchmarks.action.START_SQLITE_BENCHMARK"/>

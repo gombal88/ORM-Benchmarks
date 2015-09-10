@@ -25,4 +25,10 @@ public interface ServiceMessage {
         String START_BENCHMARK_SUGAR_ORM = PACKAGE_NAME + ".action.START_SUGAR_ORM_BENCHMARK";
     }
 
+    interface IntentExtrasKeys {
+        String ROW_COUNT = PACKAGE_NAME + ".intent_key.ROW_COUNT";
+        String WITH_TRANSACTION = PACKAGE_NAME + ".intent_key.WITH_TRANSACTION";
+        String SELECTION_TYPE = PACKAGE_NAME + ".intent_key.SELECTION_TYPE";
+    }
+
 }
