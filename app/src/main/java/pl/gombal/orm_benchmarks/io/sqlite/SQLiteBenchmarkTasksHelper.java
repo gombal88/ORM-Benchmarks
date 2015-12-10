@@ -2,6 +2,7 @@ package pl.gombal.orm_benchmarks.io.sqlite;
 
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
@@ -32,12 +33,56 @@ import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_09Dao;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_10;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.MultiTable_10Dao;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.SingleTable;
+import pl.gombal.orm_benchmarks.io.sqlite.entity.SingleTableDao;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToMany;
+import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToManyDao;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToOne;
 import pl.gombal.orm_benchmarks.io.sqlite.entity.TableWithRelationToOneDao;
 import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 
 public class SQLiteBenchmarkTasksHelper {
+
+    protected static void createDatabase(SQLiteDatabase db, boolean createTablesIfNotExists) {
+        createDatabase(db, null, createTablesIfNotExists);
+    }
+
+    protected static void createDatabase(SQLiteDatabase db, List<String> indexStatements, boolean createTablesIfNotExists) {
+        db.execSQL(new SingleTableDao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new BigSingleTableDao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_01Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_02Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_03Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_04Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_05Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_06Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_07Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_08Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_09Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new MultiTable_10Dao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new TableWithRelationToManyDao().getCreateTableStatement(createTablesIfNotExists));
+        db.execSQL(new TableWithRelationToOneDao().getCreateTableStatement(createTablesIfNotExists));
+
+        if (indexStatements != null)
+            for (String indexStatement : indexStatements)
+                db.execSQL(indexStatement);
+    }
+
+    protected static void dropDatabase(SQLiteDatabase db, boolean ifNotExists) {
+        db.execSQL(new SingleTableDao().getDropTableStatement(ifNotExists));
+        db.execSQL(new BigSingleTableDao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_01Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_02Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_03Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_04Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_05Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_06Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_07Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_08Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_09Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new MultiTable_10Dao().getDropTableStatement(ifNotExists));
+        db.execSQL(new TableWithRelationToManyDao().getDropTableStatement(ifNotExists));
+        db.execSQL(new TableWithRelationToOneDao().getDropTableStatement(ifNotExists));
+    }
 
     protected static List<SingleTable> getSingleTableList(SQLiteOpenHelper dbOpenHelper, int num) {
         List<SingleTable> singleTableList = new ArrayList<>();
@@ -118,51 +163,60 @@ public class SQLiteBenchmarkTasksHelper {
 
                 c3 = table03Dao.selectById(dbOpenHelper, c2.getLong(c2.getColumnIndexOrThrow(MultiTable_02Dao.MULTI_TABLE_03_ID)));
                 c3.moveToFirst();
+                c2.close();
                 MultiTable_03 table03 = (MultiTable_03) new MultiTable_03().fromCursor(c3);
                 table03.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table02.setMultiTable_03(table03);
 
                 c4 = table04Dao.selectById(dbOpenHelper, c3.getLong(c3.getColumnIndexOrThrow(MultiTable_03Dao.MULTI_TABLE_04_ID)));
                 c4.moveToFirst();
+                c3.close();
                 MultiTable_04 table04 = (MultiTable_04) new MultiTable_04().fromCursor(c4);
                 table04.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table03.setMultiTable_04(table04);
 
                 c5 = table05Dao.selectById(dbOpenHelper, c4.getLong(c4.getColumnIndexOrThrow(MultiTable_04Dao.MULTI_TABLE_05_ID)));
                 c5.moveToFirst();
+                c4.close();
                 MultiTable_05 table05 = (MultiTable_05) new MultiTable_05().fromCursor(c5);
                 table05.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table04.setMultiTable_05(table05);
 
                 c6 = table06Dao.selectById(dbOpenHelper, c5.getLong(c5.getColumnIndexOrThrow(MultiTable_05Dao.MULTI_TABLE_06_ID)));
                 c6.moveToFirst();
+                c5.close();
                 MultiTable_06 table06 = (MultiTable_06) new MultiTable_06().fromCursor(c6);
                 table06.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table05.setMultiTable_06(table06);
 
                 c7 = table07Dao.selectById(dbOpenHelper, c6.getLong(c6.getColumnIndexOrThrow(MultiTable_06Dao.MULTI_TABLE_07_ID)));
                 c7.moveToFirst();
+                c6.close();
                 MultiTable_07 table07 = (MultiTable_07) new MultiTable_07().fromCursor(c7);
                 table07.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table06.setMultiTable_07(table07);
 
                 c8 = table08Dao.selectById(dbOpenHelper, c7.getLong(c7.getColumnIndexOrThrow(MultiTable_07Dao.MULTI_TABLE_08_ID)));
                 c8.moveToFirst();
+                c7.close();
                 MultiTable_08 table08 = (MultiTable_08) new MultiTable_08().fromCursor(c8);
                 table08.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table07.setMultiTable_08(table08);
 
                 c9 = table09Dao.selectById(dbOpenHelper, c8.getLong(c8.getColumnIndexOrThrow(MultiTable_08Dao.MULTI_TABLE_09_ID)));
                 c9.moveToFirst();
+                c8.close();
                 MultiTable_09 table09 = (MultiTable_09) new MultiTable_09().fromCursor(c9);
                 table09.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table08.setMultiTable_09(table09);
 
                 c10 = table10Dao.selectById(dbOpenHelper, c9.getLong(c9.getColumnIndexOrThrow(MultiTable_09Dao.MULTI_TABLE_10_ID)));
                 c10.moveToFirst();
+                c9.close();
                 MultiTable_10 table10 = (MultiTable_10) new MultiTable_10().fromCursor(c10);
                 table10.setSampleStringColl02(EntityFieldGeneratorUtils.getRandomString(10));
                 table09.setMultiTable_10(table10);
+                c10.close();
 
                 multiTableList.add(table01);
             } while (c1.moveToNext());
@@ -209,6 +263,7 @@ public class SQLiteBenchmarkTasksHelper {
                     tableToOne.setTableWithRelationToMany(tableToMany);
                     toOneList.add(tableToOne);
                 } while (cursorToOne.moveToNext());
+                cursorToOne.close();
 
                 tableToMany.setTableWithRelationToOneList(toOneList);
                 toManyList.add(tableToMany);
@@ -216,10 +271,8 @@ public class SQLiteBenchmarkTasksHelper {
         } finally
 
         {
-            if (cursorToMany != null)
-                cursorToMany.close();
-            if (cursorToOne != null)
-                cursorToOne.close();
+            if (cursorToMany != null) cursorToMany.close();
+            if (cursorToOne != null) cursorToOne.close();
         }
 
         return toManyList;

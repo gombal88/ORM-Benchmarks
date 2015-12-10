@@ -50,7 +50,7 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
     @Override
     public String getName() {
-        return "SugarORMBenchmarkTask";
+        return "SugarORM";
     }
 
     public void init(Context context) {
@@ -132,12 +132,9 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
                 stopwatch.start();
                 if (withTransaction) {
-                    SugarTransactionHelper.doInTransaction(new SugarTransactionHelper.Callback() {
-                        @Override
-                        public void manipulateInTransaction() {
-                            for (SingleTable table : finalSingleTableList)
-                                table.save();
-                        }
+                    SugarTransactionHelper.doInTransaction(() -> {
+                        for (SingleTable table : finalSingleTableList)
+                            table.save();
                     });
                 } else {
                     for (SingleTable table : singleTableList)
@@ -159,12 +156,9 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
                 stopwatch.start();
                 if (withTransaction) {
-                    SugarTransactionHelper.doInTransaction(new SugarTransactionHelper.Callback() {
-                        @Override
-                        public void manipulateInTransaction() {
-                            for (BigSingleTable table : finalBigSingleTableList)
-                                table.save();
-                        }
+                    SugarTransactionHelper.doInTransaction(() -> {
+                        for (BigSingleTable table : finalBigSingleTableList)
+                            table.save();
                     });
                 } else {
                     for (BigSingleTable table : bigSingleTableList)
@@ -186,31 +180,28 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
                 stopwatch.start();
                 if (withTransaction) {
-                    SugarTransactionHelper.doInTransaction(new SugarTransactionHelper.Callback() {
-                        @Override
-                        public void manipulateInTransaction() {
-                            for (MultiTable_01 table01 : finalMultiTableList) {
-                                MultiTable_02 table02 = table01.getMultiTable_02();
-                                MultiTable_03 table03 = table02.getMultiTable_03();
-                                MultiTable_04 table04 = table03.getMultiTable_04();
-                                MultiTable_05 table05 = table04.getMultiTable_05();
-                                MultiTable_06 table06 = table05.getMultiTable_06();
-                                MultiTable_07 table07 = table06.getMultiTable_07();
-                                MultiTable_08 table08 = table07.getMultiTable_08();
-                                MultiTable_09 table09 = table08.getMultiTable_09();
-                                MultiTable_10 table10 = table09.getMultiTable_10();
+                    SugarTransactionHelper.doInTransaction(() -> {
+                        for (MultiTable_01 table01 : finalMultiTableList) {
+                            MultiTable_02 table02 = table01.getMultiTable_02();
+                            MultiTable_03 table03 = table02.getMultiTable_03();
+                            MultiTable_04 table04 = table03.getMultiTable_04();
+                            MultiTable_05 table05 = table04.getMultiTable_05();
+                            MultiTable_06 table06 = table05.getMultiTable_06();
+                            MultiTable_07 table07 = table06.getMultiTable_07();
+                            MultiTable_08 table08 = table07.getMultiTable_08();
+                            MultiTable_09 table09 = table08.getMultiTable_09();
+                            MultiTable_10 table10 = table09.getMultiTable_10();
 
-                                table10.save();
-                                table09.save();
-                                table08.save();
-                                table07.save();
-                                table06.save();
-                                table05.save();
-                                table04.save();
-                                table03.save();
-                                table02.save();
-                                table01.save();
-                            }
+                            table10.save();
+                            table09.save();
+                            table08.save();
+                            table07.save();
+                            table06.save();
+                            table05.save();
+                            table04.save();
+                            table03.save();
+                            table02.save();
+                            table01.save();
                         }
                     });
                 } else {
@@ -264,14 +255,11 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
 
                 stopwatch.start();
                 if (withTransaction) {
-                    SugarTransactionHelper.doInTransaction(new SugarTransactionHelper.Callback() {
-                        @Override
-                        public void manipulateInTransaction() {
-                            for (TableWithRelationToMany table : finalToManyList)
-                                table.save();
-                            for (TableWithRelationToOne table : finalToOneList)
-                                table.save();
-                        }
+                    SugarTransactionHelper.doInTransaction(() -> {
+                        for (TableWithRelationToMany table : finalToManyList)
+                            table.save();
+                        for (TableWithRelationToOne table : finalToOneList)
+                            table.save();
                     });
                 } else {
                     for (TableWithRelationToMany table : toManyList)

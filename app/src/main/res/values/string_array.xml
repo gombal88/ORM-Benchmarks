@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="orm_array">
+        <item>Raw SQL</item>
+        <item>GreenDao</item>
+        <item>ORMLite</item>
+        <item>ActiveAndroid</item>
+        <item>SugarORM</item>
+    </string-array>
+
+    <string-array name="selection_type_array">
+        <item>Lazy loading</item>
+        <item>Full mapping</item>
+        <item>Count only</item>
+    </string-array>
+
+</resources>

@@ -44,7 +44,7 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
 
     @Override
     public String getName() {
-        return "ActiveAndroidBenchmarkTask";
+        return "ActiveAndroid";
     }
 
     public void init(Context context) {

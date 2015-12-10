@@ -6,7 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,9 +16,7 @@ import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +116,6 @@ public class ORMBenchmarkService extends IntentService {
         int withTransaction = intent.getIntExtra(ServiceMessage.IntentExtrasKeys.WITH_TRANSACTION, 0);
         int selectionTypeOrdinal = intent.getIntExtra(ServiceMessage.IntentExtrasKeys.SELECTION_TYPE, 0);
         ORMBenchmarkTasks.SelectionType selectionType = ORMBenchmarkTasks.SelectionType.byOrdinal(selectionTypeOrdinal);
-        Log.v("ORM", "with Transaction = " + withTransaction);
 
         ORMBenchmarkTasks benchmarkTasks;
         switch (action) {
@@ -147,41 +145,61 @@ public class ORMBenchmarkService extends IntentService {
 
         notifyClients(ServiceMessage.Response.START_BENCHMARK_TASK);
 
+        boolean finishedWithoutErrors;
         OrmExcelFileLogger logger = new OrmExcelFileLogger(benchmarkTasks.getName());
+
+        LogUtils.LOGI(TAG, "Start benchmark for: " + benchmarkTasks.getName());
 
         benchmarkTasks.init(getApplicationContext(), false, false);
         try {
-            logger.logCreate(benchmarkTasks.createDB());
+            logger.logCreate(rowCount, benchmarkTasks.createDB());
 
             long time;
             for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                LogUtils.LOGI(TAG, "Start INSERT operation. Rows: " + rowCount);
                 time = benchmarkTasks.insert(entityType, rowCount, withTransaction);
                 logger.logInsert(entityType, withTransaction, rowCount, time);
-
+            }
+            for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                LogUtils.LOGI(TAG, "Start UPDATE operation. Rows: " + rowCount);
                 time = benchmarkTasks.update(entityType, rowCount, withTransaction);
                 logger.logUpdate(entityType, withTransaction, rowCount, time);
-
+            }
+            for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                LogUtils.LOGI(TAG, "Start SELECT ALL operation. Rows: " + rowCount);
                 time = benchmarkTasks.selectAll(entityType, selectionType);
                 logger.logSelect(entityType, selectionType, rowCount, time);
-
+            }
+            for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                LogUtils.LOGI(TAG, "Start SEARCH INDEXED operation. Rows: " + rowCount);
                 time = benchmarkTasks.searchIndexed(entityType, 5);
-                logger.logSearchIindexed(entityType, rowCount, time);
-
+                logger.logSearchIndexed(entityType, rowCount, time);
+            }
+            for (ORMBenchmarkTasks.EntityType entityType : ORMBenchmarkTasks.EntityType.values()) {
+                LogUtils.LOGI(TAG, "Start SEARCH operation. Rows: " + rowCount);
                 time = benchmarkTasks.search(entityType, "a");
                 logger.logSearch(entityType, rowCount, time);
             }
 
-            logger.logDropDb(benchmarkTasks.dropDB());
+            logger.logDropDb(rowCount, benchmarkTasks.dropDB());
 
-            logger.commit();
+            finishedWithoutErrors = logger.commit();
 
-        } catch (SQLException | SQLiteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            finishedWithoutErrors = false;
         }
 
-        LogUtils.LOGI("ORM BENCHMARKS", "FINISH_ORM_BENCHMARK");
+        if (finishedWithoutErrors)
+            LogUtils.LOGI("ORM BENCHMARKS", "FINISH_" + benchmarkTasks.getName()
+                    + "_rows=" + rowCount
+                    + "_t=" + (withTransaction ? 1 : 0)
+                    + "_select=" + selectionType.ordinal());
+        else
+            notificationManager.notify(1000, getAlertNotification());
 
         benchmarkFinished();
+
     }
 
     @Override
@@ -209,6 +227,7 @@ public class ORMBenchmarkService extends IntentService {
         notifyClients(ServiceMessage.Response.STOP_BENCHMARK_TASK);
         stopForeground(true);
         stopSelf();
+        // todo delete databases if exists
     }
 
     private static void notifyClients(int messageType) {
@@ -254,6 +273,18 @@ public class ORMBenchmarkService extends IntentService {
                 .setOngoing(true)
                 .addAction(R.drawable.notification_stop_service, "Stop", stopServicePendingIntent);
 
+        return notificationBuilder.build();
+    }
+
+    private Notification getAlertNotification() {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle("ORM Benchmark Task FAIL")
+                .setTicker("ORM Benchmark Task FAIL")
+                .setContentText("Something goes wrong")
+                .setSmallIcon(R.drawable.notification_benchmark_service_small_icon)
+                .setSound(Uri.parse("android.resource://pl.gombal.orm_benchmarks/" + R.raw.alarm))
+                .setLights(Color.RED, 1000, 500)
+                .setVibrate(new long[]{1000, 1000, 1000});
         return notificationBuilder.build();
     }
 }

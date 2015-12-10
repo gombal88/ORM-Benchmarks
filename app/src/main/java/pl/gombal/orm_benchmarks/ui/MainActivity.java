@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import pl.gombal.orm_benchmarks.R;
 import pl.gombal.orm_benchmarks.task.BenchmarkServiceConnector;
@@ -19,6 +23,9 @@ public class MainActivity extends Activity implements BenchmarkServiceConnector.
 
     BenchmarkServiceConnector serviceConnection;
 
+    private Spinner ormSpinner, selectionTypeSpinner;
+    private EditText rowCountSpinner;
+    private CheckBox transactionCheckbox;
     private Button startButton;
     private ProgressBar serviceProgress;
 
@@ -29,17 +36,62 @@ public class MainActivity extends Activity implements BenchmarkServiceConnector.
 
         serviceConnection = BenchmarkServiceConnector.getInstance(this);
 
-        startButton = (Button) findViewById(R.id.button);
-        serviceProgress = (ProgressBar) findViewById(R.id.progressBar);
+        findViews();
+
+        ArrayAdapter<CharSequence> ormAdapter = ArrayAdapter.createFromResource(this, R.array.orm_array, android.R.layout.simple_spinner_item);
+        ormAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ormSpinner.setAdapter(ormAdapter);
+
+        ArrayAdapter<CharSequence> selectionTypeAdapter = ArrayAdapter.createFromResource(this, R.array.selection_type_array, android.R.layout.simple_spinner_item);
+        selectionTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectionTypeSpinner.setAdapter(selectionTypeAdapter);
 
         startButton.setOnClickListener(v -> startORMService());
 
     }
 
+    private void findViews() {
+        ormSpinner = (Spinner) findViewById(R.id.orm);
+        rowCountSpinner = (EditText) findViewById(R.id.row_count);
+        selectionTypeSpinner = (Spinner) findViewById(R.id.selection_type);
+        transactionCheckbox = (CheckBox) findViewById(R.id.transaction);
+
+        startButton = (Button) findViewById(R.id.button);
+
+        serviceProgress = (ProgressBar) findViewById(R.id.progressBar);
+    }
+
     private void startORMService() {
+        String intentAction;
+        switch (((String) ormSpinner.getSelectedItem())) {
+            case "Raw SQL":
+                intentAction = ServiceMessage.IntentFilers.START_BENCHMARK_SQLITE;
+                break;
+            case "GreenDao":
+                intentAction = ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO;
+                break;
+            case "ORMLite":
+                intentAction = ServiceMessage.IntentFilers.START_BENCHMARK_ORMLITE;
+                break;
+            case "ActiveAndroid":
+                intentAction = ServiceMessage.IntentFilers.START_BENCHMARK_ACTIVE_ANDROID;
+                break;
+            case "SugarORM":
+                intentAction = ServiceMessage.IntentFilers.START_BENCHMARK_SUGAR_ORM;
+                break;
+            default:
+                intentAction = "";
+        }
+
+        int rowCount = Integer.valueOf(rowCountSpinner.getText().toString());
+        int selectionType = selectionTypeSpinner.getSelectedItemPosition();
+        int transaction = transactionCheckbox.isChecked() ? 1 : 0;
+
         Intent serviceIntent = new Intent(this, ORMBenchmarkService.class);
-        serviceIntent.setAction(ServiceMessage.IntentFilers.START_BENCHMARK_GREENDAO);
-        serviceIntent.putExtra(ServiceMessage.IntentExtrasKeys.ROW_COUNT, 10);
+        serviceIntent.setAction(intentAction);
+        serviceIntent.putExtra(ServiceMessage.IntentExtrasKeys.ROW_COUNT, rowCount);
+        serviceIntent.putExtra(ServiceMessage.IntentExtrasKeys.SELECTION_TYPE, selectionType);
+        serviceIntent.putExtra(ServiceMessage.IntentExtrasKeys.WITH_TRANSACTION, transaction);
         startService(serviceIntent);
     }
 

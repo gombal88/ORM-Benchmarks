@@ -14,13 +14,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 public class ExcelUtils {
 
     public static final String TAG = "ExcelUtils";
 
     public static boolean isFileExist(String filePath) {
-        File file = new File(filePath);
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + filePath);
         return file.exists();
     }
 
@@ -107,15 +108,31 @@ public class ExcelUtils {
     }
 
     public static int getLastEmptyRowID(Sheet sheet) {
-        if (sheet == null)
-            throw new IllegalArgumentException("Sheet can not be null!");
-        return sheet.getLastRowNum() == 0 ? sheet.getLastRowNum() : sheet.getLastRowNum() + 1;
+        Iterator<Row> rowIterator = sheet.iterator();
+        int emptyRowID = 0;
+        while (rowIterator.hasNext()) {
+            if (isRowEmpty(rowIterator.next()))
+                break;
+            else
+                emptyRowID++;
+        }
+        return emptyRowID;
+    }
+
+    public static boolean isRowEmpty(Row row) {
+        for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+            Cell cell = row.getCell(c);
+            if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+                return false;
+        }
+        return true;
     }
 
     public static int getLastEmptyCellID(Row row) {
         if (row == null)
             throw new IllegalArgumentException("Row can not be null!");
-        return row.getLastCellNum() == 0 ? row.getLastCellNum() : row.getLastCellNum() + 1;
+        int lastCellNum = row.getLastCellNum();
+        return lastCellNum == -1 ? 0 : lastCellNum;
     }
 
     public static Row getRowAt(Sheet sheet, int position) {

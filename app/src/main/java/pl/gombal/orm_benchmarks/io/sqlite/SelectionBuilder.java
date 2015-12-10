@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.gombal.orm_benchmarks.util.LogUtils;
-
 public class SelectionBuilder {
     private static final String TAG =  SelectionBuilder.class.getSimpleName();
 
@@ -115,7 +113,7 @@ public class SelectionBuilder {
         assertTable();
         if (columns != null) mapColumns(columns);
         else columns = getColumns();
-        LogUtils.LOGD(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
+//        LogUtils.LOGD(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
         return db.query(distinct, table, columns, getSelection(), getSelectionArgs(), groupBy, having, orderBy, limit);
     }
 
@@ -125,19 +123,19 @@ public class SelectionBuilder {
 
     public long insert(SQLiteDatabase db, ContentValues values) {
         assertTable();
-        LogUtils.LOGD(TAG, "insert() " + this);
+//        LogUtils.LOGD(TAG, "insert() " + this);
         return db.insertOrThrow(table, null, values);
     }
 
     public int update(SQLiteDatabase db, ContentValues values) {
         assertTable();
-        LogUtils.LOGD(TAG, "update() " + this);
+//        LogUtils.LOGD(TAG, "update() " + this);
         return db.update(table, values, getSelection(), getSelectionArgs());
     }
 
     public int delete(SQLiteDatabase db) {
         assertTable();
-        LogUtils.LOGD(TAG, "delete() " + this);
+//        LogUtils.LOGD(TAG, "delete() " + this);
         return db.delete(table, getSelection(), getSelectionArgs());
     }
 }
