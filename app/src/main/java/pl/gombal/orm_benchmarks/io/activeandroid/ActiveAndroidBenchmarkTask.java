@@ -355,8 +355,7 @@ public class ActiveAndroidBenchmarkTask implements ORMBenchmarkTasks {
             case SINGLE_TAB_RELATION_TO_MANY:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-                        new Select().all().from(TableWithRelationToMany.class).execute();
-                        break;
+                        return -1;
                     case WITHOUT_LAZY_INIT:
                         List<TableWithRelationToMany> toManyList = new Select().all().from(TableWithRelationToMany.class).execute();
                         for (TableWithRelationToMany tableToMany : toManyList)

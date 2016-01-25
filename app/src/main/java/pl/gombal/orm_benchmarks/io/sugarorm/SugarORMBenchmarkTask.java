@@ -325,8 +325,7 @@ public class SugarORMBenchmarkTask implements ORMBenchmarkTasks {
             case SINGLE_TAB_RELATION_TO_MANY:
                 switch (selectionType) {
                     case WITH_LAZY_INIT:
-                        Select.from(TableWithRelationToMany.class).list();
-                        break;
+                        return -1;
                     case WITHOUT_LAZY_INIT:
                         List<TableWithRelationToMany> list = Select.from(TableWithRelationToMany.class).list();
                         for (TableWithRelationToMany toMany : list)

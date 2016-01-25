@@ -181,7 +181,7 @@ public class ORMBenchmarkService extends IntentService {
                 logger.logSearch(entityType, rowCount, time);
             }
 
-            logger.logDropDb(rowCount, benchmarkTasks.dropDB());
+            //logger.logDropDb(rowCount, benchmarkTasks.dropDB());
 
             finishedWithoutErrors = logger.commit();
 
