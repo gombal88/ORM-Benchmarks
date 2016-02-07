@@ -10,7 +10,6 @@ import com.google.common.base.Stopwatch;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -94,25 +93,9 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
-        List<String> indexStatements = new ArrayList<>();
-        indexStatements.addAll(Arrays.asList(new SingleTableDao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new BigSingleTableDao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_01Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_02Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_03Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_04Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_05Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_06Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_07Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_08Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_09Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new MultiTable_10Dao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new TableWithRelationToManyDao().getCreateIndexStatements(false)));
-        indexStatements.addAll(Arrays.asList(new TableWithRelationToOneDao().getCreateIndexStatements(false)));
-
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        SQLiteBenchmarkTasksHelper.createDatabase(dbOpenHelper.getReadableDatabase(), indexStatements, false);
+        SQLiteBenchmarkTasksHelper.createDatabase(dbOpenHelper.getReadableDatabase(), false);
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }

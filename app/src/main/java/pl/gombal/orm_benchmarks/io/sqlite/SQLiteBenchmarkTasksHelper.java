@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import pl.gombal.orm_benchmarks.io.sqlite.entity.BigSingleTable;
@@ -41,10 +42,6 @@ import pl.gombal.orm_benchmarks.io.util.EntityFieldGeneratorUtils;
 public class SQLiteBenchmarkTasksHelper {
 
     protected static void createDatabase(SQLiteDatabase db, boolean createTablesIfNotExists) {
-        createDatabase(db, null, createTablesIfNotExists);
-    }
-
-    protected static void createDatabase(SQLiteDatabase db, List<String> indexStatements, boolean createTablesIfNotExists) {
         db.execSQL(new SingleTableDao().getCreateTableStatement(createTablesIfNotExists));
         db.execSQL(new BigSingleTableDao().getCreateTableStatement(createTablesIfNotExists));
         db.execSQL(new MultiTable_01Dao().getCreateTableStatement(createTablesIfNotExists));
@@ -60,9 +57,24 @@ public class SQLiteBenchmarkTasksHelper {
         db.execSQL(new TableWithRelationToManyDao().getCreateTableStatement(createTablesIfNotExists));
         db.execSQL(new TableWithRelationToOneDao().getCreateTableStatement(createTablesIfNotExists));
 
-        if (indexStatements != null)
-            for (String indexStatement : indexStatements)
-                db.execSQL(indexStatement);
+        List<String> indexStatements = new ArrayList<>();
+        indexStatements.addAll(Arrays.asList(new SingleTableDao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new BigSingleTableDao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_01Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_02Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_03Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_04Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_05Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_06Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_07Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_08Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_09Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new MultiTable_10Dao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new TableWithRelationToManyDao().getCreateIndexStatements(false)));
+        indexStatements.addAll(Arrays.asList(new TableWithRelationToOneDao().getCreateIndexStatements(false)));
+
+        for (String indexStatement : indexStatements)
+            db.execSQL(indexStatement);
     }
 
     protected static void dropDatabase(SQLiteDatabase db, boolean ifNotExists) {
