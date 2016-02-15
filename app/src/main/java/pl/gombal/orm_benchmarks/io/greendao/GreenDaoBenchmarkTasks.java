@@ -58,9 +58,12 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
     private SQLiteOpenHelper dbOpenHelper;
 
     private DaoMaster daoMaster;
+    private DaoSession daoSession;
 
     private DaoSession getDaoSession() {
-        return daoMaster.newSession();
+        if (daoSession == null)
+            daoSession = daoMaster.newSession();
+        return daoSession;
     }
 
     @Override
@@ -91,10 +94,11 @@ public class GreenDaoBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first GreenDaoBenchmarkTasks by call init()!");
 
-        Stopwatch stopwatch = Stopwatch.createStarted();
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
+        getDaoSession();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         DaoMaster.createAllTables(db, true);
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);

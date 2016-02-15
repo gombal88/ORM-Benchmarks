@@ -75,7 +75,6 @@ public class ORMLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        //// TODO: 12.07.2015 Remove If not Exists statement
         ConnectionSource connectionSource = dbOpenHelper.getConnectionSource();
         TableUtils.createTableIfNotExists(connectionSource, SingleTable.class);
         TableUtils.createTableIfNotExists(connectionSource, BigSingleTable.class);
