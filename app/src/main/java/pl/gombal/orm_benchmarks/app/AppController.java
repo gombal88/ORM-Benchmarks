@@ -1,6 +1,7 @@
 package pl.gombal.orm_benchmarks.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import pl.gombal.orm_benchmarks.io.greendao.entity.DaoMaster;
@@ -13,10 +14,17 @@ public class AppController extends Application {
 
     public DaoSession daoSession;
 
+    private Context appContext;
+
+    public Context getAppContext() {
+        return appContext;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        appContext = getApplicationContext();
 //        setupDatabase();
 
 //        ActiveAndroid.initialize(this, false);

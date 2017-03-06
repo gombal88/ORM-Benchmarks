@@ -2,7 +2,7 @@ package pl.gombal.orm_benchmarks.io.sqlite;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.provider.BaseColumns;
 
@@ -51,11 +51,28 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
     public static final String TAG = SQLiteBenchmarkTasks.class.getSimpleName();
     public static final String DB_NAME = "sqlite-db";
+    private final TableWithRelationToManyDao tableTomanyDao = new TableWithRelationToManyDao();
+    private final MultiTable_02Dao table02Dao = new MultiTable_02Dao();
+    private final MultiTable_03Dao table03Dao = new MultiTable_03Dao();
+    private final MultiTable_04Dao table04Dao = new MultiTable_04Dao();
+    private final MultiTable_05Dao table05Dao = new MultiTable_05Dao();
+    private final MultiTable_06Dao table06Dao = new MultiTable_06Dao();
+    private final MultiTable_07Dao table07Dao = new MultiTable_07Dao();
+    private final MultiTable_08Dao table08Dao = new MultiTable_08Dao();
+    private final MultiTable_09Dao table09Dao = new MultiTable_09Dao();
+    private final MultiTable_10Dao table10Dao = new MultiTable_10Dao();
+    private final TableWithRelationToOneDao tableToOneDao = new TableWithRelationToOneDao();
+
+    private Context context;
 
     private boolean initialized = false;
     private boolean devMode = false;
 
-    private SQLiteOpenHelper dbOpenHelper;
+    private SQLiteDatabase db;
+
+    private SingleTableDao singleTableDao = new SingleTableDao();
+    private BigSingleTableDao bigSingleTableDao = new BigSingleTableDao();
+    private MultiTable_01Dao table01Dao = new MultiTable_01Dao();
 
     @Override
     public String getName() {
@@ -68,10 +85,12 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
     @Override
     public void init(Context context, boolean copyDBFormAssets, boolean inMemoryDB) {
+        this.context = context;
+
         if (copyDBFormAssets)
             DataBaseUtils.loadDataBaseFileFomAssets(context, DB_NAME);
 
-        dbOpenHelper = new DataBaseOpenHelper(context, inMemoryDB);
+        db = new DataBaseOpenHelper(context, inMemoryDB).getWritableDatabase();
         initialized = true;
         if (devMode) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -95,7 +114,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        SQLiteBenchmarkTasksHelper.createDatabase(dbOpenHelper.getReadableDatabase(), false);
+        SQLiteBenchmarkTasksHelper.createDatabase(db, false);
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
@@ -107,7 +126,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        SQLiteBenchmarkTasksHelper.dropDatabase(dbOpenHelper.getReadableDatabase(), false);
+        SQLiteBenchmarkTasksHelper.dropDatabase(context, DB_NAME);
 
         return stopwatch.elapsed(TimeUnit.MILLISECONDS);
     }
@@ -129,7 +148,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 for (int i = 0; i < num; i++)
                     singleTableList.add(SingleTable.getNewEntityWithRandomData(generatorUtils));
                 stopwatch.start();
-                new SingleTableDao().insert(dbOpenHelper, singleTableList, withTransaction);
+                singleTableDao.insert(db, singleTableList, withTransaction);
                 break;
 
             case BIG_SINGLE_TAB:
@@ -137,7 +156,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 for (int i = 0; i < num; i++)
                     bigSingleTableList.add(BigSingleTable.getNewEntityWithRandomData(generatorUtils));
                 stopwatch.start();
-                new BigSingleTableDao().insert(dbOpenHelper, bigSingleTableList, withTransaction);
+                bigSingleTableDao.insert(db, bigSingleTableList, withTransaction);
                 break;
 
             case MULTI_TAB_RELATION_TO_ONE:
@@ -145,7 +164,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 for (int i = 0; i < num; i++)
                     multiTableList.add(MultiTable_01.getNewEntityWithRandomData(generatorUtils));
                 stopwatch.start();
-                new MultiTable_01Dao().insert(dbOpenHelper, multiTableList, withTransaction);
+                table01Dao.insert(db, multiTableList, withTransaction);
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
@@ -153,7 +172,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 for (int i = 0; i < num; i++)
                     toManyList.add(TableWithRelationToMany.getNewEntityWithRandomData(generatorUtils, 10));
                 stopwatch.start();
-                new TableWithRelationToManyDao().insert(dbOpenHelper, toManyList, withTransaction);
+                tableTomanyDao.insert(db, toManyList, withTransaction);
                 break;
         }
 
@@ -169,31 +188,31 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
         switch (entityType) {
             case SINGLE_TAB:
-                List<SingleTable> singleTableList = SQLiteBenchmarkTasksHelper.getSingleTableList(dbOpenHelper, num);
+                List<SingleTable> singleTableList = SQLiteBenchmarkTasksHelper.getSingleTableList(db, num);
 
                 stopwatch.start();
-                new SingleTableDao().update(dbOpenHelper, singleTableList, null, null, withTransaction);
+                singleTableDao.update(db, singleTableList, null, null, withTransaction);
                 break;
 
             case BIG_SINGLE_TAB:
-                List<BigSingleTable> bigSingleTableList = SQLiteBenchmarkTasksHelper.getBigSingleTableList(dbOpenHelper, num);
+                List<BigSingleTable> bigSingleTableList = SQLiteBenchmarkTasksHelper.getBigSingleTableList(db, num);
 
                 stopwatch.start();
-                new BigSingleTableDao().update(dbOpenHelper, bigSingleTableList, null, null, withTransaction);
+                bigSingleTableDao.update(db, bigSingleTableList, null, null, withTransaction);
                 break;
 
             case MULTI_TAB_RELATION_TO_ONE:
-                List<MultiTable_01> multiTableList = SQLiteBenchmarkTasksHelper.getMultiTableList(dbOpenHelper, num);
+                List<MultiTable_01> multiTableList = SQLiteBenchmarkTasksHelper.getMultiTableList(db, num);
 
                 stopwatch.start();
-                new MultiTable_01Dao().update(dbOpenHelper, multiTableList, null, null, withTransaction);
+                table01Dao.update(db, multiTableList, null, null, withTransaction);
                 break;
 
             case SINGLE_TAB_RELATION_TO_MANY:
-                List<TableWithRelationToMany> toManyList = SQLiteBenchmarkTasksHelper.getTableToManyList(dbOpenHelper, num);
+                List<TableWithRelationToMany> toManyList = SQLiteBenchmarkTasksHelper.getTableToManyList(db, num);
 
                 stopwatch.start();
-                new TableWithRelationToManyDao().update(dbOpenHelper, toManyList, null, null, withTransaction);
+                tableTomanyDao.update(db, toManyList, null, null, withTransaction);
                 break;
         }
 
@@ -205,6 +224,8 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
         if (!initialized)
             throw new IllegalStateException("Initialize first SQLiteBenchmarkTasks by call init()!");
 
+        SelectionBuilder selectionBuilder = new SelectionBuilder();
+
         Stopwatch stopwatch = Stopwatch.createStarted();
         Cursor cursor = null;
         try {
@@ -212,18 +233,20 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 case SINGLE_TAB:
                     switch (selectionType) {
                         case WITH_LAZY_INIT:
-                            cursor = new SingleTableDao().selectAll(dbOpenHelper);
+                            cursor = singleTableDao.selectAll(db);
                             break;
                         case WITHOUT_LAZY_INIT:
-                            cursor = new SingleTableDao().selectAll(dbOpenHelper);
+                            cursor = singleTableDao.selectAll(db);
                             cursor.moveToFirst();
-                            if (cursor.getCount() > 0)
+                            if (cursor.getCount() > 0) {
+                                SingleTable singleTable = new SingleTable();
                                 do {
-                                    new SingleTable().fromCursor(cursor);
+                                    singleTable.fromCursor(cursor);
                                 } while (cursor.moveToNext());
+                            }
                             break;
                         case COUNT_ONLY:
-                            new SelectionBuilder().table(new SingleTableDao().getTableName()).count(dbOpenHelper.getReadableDatabase());
+                            selectionBuilder.table(singleTableDao.getTableName()).count(db);
                             break;
                     }
                     break;
@@ -231,18 +254,20 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 case BIG_SINGLE_TAB:
                     switch (selectionType) {
                         case WITH_LAZY_INIT:
-                            cursor = new BigSingleTableDao().selectAll(dbOpenHelper);
+                            cursor = bigSingleTableDao.selectAll(db);
                             break;
                         case WITHOUT_LAZY_INIT:
-                            cursor = new BigSingleTableDao().selectAll(dbOpenHelper);
+                            cursor = bigSingleTableDao.selectAll(db);
                             cursor.moveToFirst();
-                            if (cursor.getCount() > 0)
+                            if (cursor.getCount() > 0) {
+                                BigSingleTable bigSingleTable = new BigSingleTable();
                                 do {
-                                    new BigSingleTable().fromCursor(cursor);
+                                    bigSingleTable.fromCursor(cursor);
                                 } while (cursor.moveToNext());
+                            }
                             break;
                         case COUNT_ONLY:
-                            new SelectionBuilder().table(new BigSingleTableDao().getTableName()).count(dbOpenHelper.getReadableDatabase());
+                            selectionBuilder.table(bigSingleTableDao.getTableName()).count(db);
                             break;
                     }
                     break;
@@ -250,70 +275,85 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 case MULTI_TAB_RELATION_TO_ONE:
                     switch (selectionType) {
                         case WITH_LAZY_INIT:
+                            cursor = table01Dao.selectAll(db);
+                            break;
                         case WITHOUT_LAZY_INIT:
                             Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
                             try {
-                                c1 = new MultiTable_01Dao().selectAll(dbOpenHelper);
+                                c1 = table01Dao.selectAll(db);
                                 int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
                                 c1.moveToFirst();
-                                if (c1.getCount() > 0)
+                                if (c1.getCount() > 0) {
+
+                                    MultiTable_01 table01 = new MultiTable_01();
+                                    MultiTable_02 table02 = new MultiTable_02();
+                                    MultiTable_03 table03 = new MultiTable_03();
+                                    MultiTable_04 table04 = new MultiTable_04();
+                                    MultiTable_05 table05 = new MultiTable_05();
+                                    MultiTable_06 table06 = new MultiTable_06();
+                                    MultiTable_07 table07 = new MultiTable_07();
+                                    MultiTable_08 table08 = new MultiTable_08();
+                                    MultiTable_09 table09 = new MultiTable_09();
+                                    MultiTable_10 table10 = new MultiTable_10();
+
                                     do {
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_01().fromCursor(c1);
+                                        table01.fromCursor(c1);
 
-                                        c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                                        c2 = table02Dao.selectById(db, c1.getInt(columnIdIndex));
                                         c2.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_02().fromCursor(c2);
+                                        table02.fromCursor(c2);
 
-                                        c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                                        c3 = table03Dao.selectById(db, c2.getInt(columnIdIndex));
                                         c2.close();
                                         c2 = null;
                                         c3.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_03().fromCursor(c3);
+                                        table03.fromCursor(c3);
 
-                                        c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                                        c4 = table04Dao.selectById(db, c3.getInt(columnIdIndex));
                                         c3.close();
                                         c3 = null;
                                         c4.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_04().fromCursor(c4);
+                                        table04.fromCursor(c4);
 
-                                        c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                                        c5 = table05Dao.selectById(db, c4.getInt(columnIdIndex));
                                         c4.close();
                                         c4 = null;
                                         c5.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_05().fromCursor(c5);
+                                        table05.fromCursor(c5);
 
-                                        c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                                        c6 = table06Dao.selectById(db, c5.getInt(columnIdIndex));
                                         c5.close();
                                         c5 = null;
                                         c6.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_06().fromCursor(c6);
+                                        table06.fromCursor(c6);
 
-                                        c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                                        c7 = table07Dao.selectById(db, c6.getInt(columnIdIndex));
                                         c6.close();
                                         c6 = null;
                                         c7.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_07().fromCursor(c7);
+                                        table07.fromCursor(c7);
 
-                                        c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                                        c8 = table08Dao.selectById(db, c7.getInt(columnIdIndex));
                                         c7.close();
                                         c7 = null;
                                         c8.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_08().fromCursor(c8);
+                                        table08.fromCursor(c8);
 
-                                        c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                                        c9 = table09Dao.selectById(db, c8.getInt(columnIdIndex));
                                         c8.close();
                                         c8 = null;
                                         c9.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_09().fromCursor(c9);
+                                        table09.fromCursor(c9);
 
-                                        c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+                                        c10 = table10Dao.selectById(db, c9.getInt(columnIdIndex));
                                         c9.close();
                                         c9 = null;
-                                            c10.moveToFirst();
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) new MultiTable_10().fromCursor(c10);
+                                        c10.moveToFirst();
+                                        table10.fromCursor(c10);
                                         c10.close();
                                         c10 = null;
                                     } while (c1.moveToNext());
+                                }
                             } finally {
                                 if (c1 != null) {
                                     LogUtils.LOGD(TAG, "Found " + c1.getCount() + "rows.");
@@ -331,7 +371,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                             }
                             break;
                         case COUNT_ONLY:
-                            new SelectionBuilder().table(new MultiTable_01Dao().getTableName()).count(dbOpenHelper.getReadableDatabase());
+                            selectionBuilder.table(table01Dao.getTableName()).count(db);
                             break;
                     }
                     break;
@@ -339,8 +379,10 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                 case SINGLE_TAB_RELATION_TO_MANY:
                     switch (selectionType) {
                         case WITH_LAZY_INIT:
+                            cursor = tableTomanyDao.selectAll(db);
+                            break;
                         case WITHOUT_LAZY_INIT:
-                            cursor = new TableWithRelationToManyDao().selectAll(dbOpenHelper);
+                            cursor = tableTomanyDao.selectAll(db);
                             Cursor toOneCursor = null;
                             try {
                                 String selection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
@@ -349,21 +391,20 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                                 if (cursor.getCount() > 0)
                                     do {
                                         selectionArgs = String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
-                                        toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
-                                        if (selectionType == SelectionType.WITHOUT_LAZY_INIT) {
-                                            new TableWithRelationToMany().fromCursor(cursor);
-                                            toOneCursor.moveToFirst();
-                                            do new TableWithRelationToOne().fromCursor(toOneCursor);
-                                            while (toOneCursor.moveToNext());
-                                            toOneCursor.close();
-                                        }
+                                        toOneCursor = tableToOneDao.selectByWhere(db, selection, selectionArgs);
+                                        new TableWithRelationToMany().fromCursor(cursor);
+                                        toOneCursor.moveToFirst();
+                                        TableWithRelationToOne tableToOne = new TableWithRelationToOne();
+                                        do tableToOne.fromCursor(toOneCursor);
+                                        while (toOneCursor.moveToNext());
+                                        toOneCursor.close();
                                     } while (cursor.moveToNext());
                             } finally {
                                 if (toOneCursor != null) toOneCursor.close();
                             }
                             break;
                         case COUNT_ONLY:
-
+                            selectionBuilder.table(tableToOneDao.getTableName()).count(db);
                             break;
                     }
 
@@ -393,46 +434,46 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
             switch (entityType) {
                 case SINGLE_TAB:
-                    cursor = new SingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    cursor = singleTableDao.selectByWhere(db, selection, selectionArgs);
                     break;
 
                 case BIG_SINGLE_TAB:
-                    cursor = new BigSingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    cursor = bigSingleTableDao.selectByWhere(db, selection, selectionArgs);
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
                     cursor = null;
                     Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
                     try {
-                        c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                        c1 = table01Dao.selectByWhere(db, selection, selectionArgs);
                         int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
                         c1.moveToFirst();
                         if (c1.getCount() > 0)
                             do {
-                                c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                                c2 = table02Dao.selectById(db, c1.getInt(columnIdIndex));
                                 c2.moveToFirst();
-                                c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                                c3 = table03Dao.selectById(db, c2.getInt(columnIdIndex));
                                 c2.close();
                                 c3.moveToFirst();
-                                c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                                c4 = table04Dao.selectById(db, c3.getInt(columnIdIndex));
                                 c3.close();
                                 c4.moveToFirst();
-                                c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                                c5 = table05Dao.selectById(db, c4.getInt(columnIdIndex));
                                 c4.close();
                                 c5.moveToFirst();
-                                c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                                c6 = table06Dao.selectById(db, c5.getInt(columnIdIndex));
                                 c5.close();
                                 c6.moveToFirst();
-                                c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                                c7 = table07Dao.selectById(db, c6.getInt(columnIdIndex));
                                 c6.close();
                                 c7.moveToFirst();
-                                c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                                c8 = table08Dao.selectById(db, c7.getInt(columnIdIndex));
                                 c7.close();
                                 c8.moveToFirst();
-                                c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                                c9 = table09Dao.selectById(db, c8.getInt(columnIdIndex));
                                 c8.close();
                                 c9.moveToFirst();
-                                c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+                                c10 = table10Dao.selectById(db, c9.getInt(columnIdIndex));
                                 c10.close();
                             } while (c1.moveToNext());
                     } finally {
@@ -453,7 +494,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     break;
 
                 case SINGLE_TAB_RELATION_TO_MANY:
-                    cursor = new TableWithRelationToManyDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    cursor = tableTomanyDao.selectByWhere(db, selection, selectionArgs);
                     Cursor toOneCursor = null;
                     try {
                         String toOneSelection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
@@ -463,7 +504,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                         if (cursor.getCount() > 0)
                             do {
                                 toOneSelectionArgs = String.valueOf(cursor.getInt(columnIdIndex));
-                                toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, toOneSelection, toOneSelectionArgs);
+                                toOneCursor = tableToOneDao.selectByWhere(db, toOneSelection, toOneSelectionArgs);
                                 toOneCursor.close();
                             } while (cursor.moveToNext());
                     } finally {
@@ -494,46 +535,46 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
 
             switch (entityType) {
                 case SINGLE_TAB:
-                    cursor = new SingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs); // todo zamykać wszędzie kursor w encjach
+                    cursor = singleTableDao.selectByWhere(db, selection, selectionArgs);
                     break;
 
                 case BIG_SINGLE_TAB:
-                    cursor = new BigSingleTableDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    cursor = bigSingleTableDao.selectByWhere(db, selection, selectionArgs);
                     break;
 
                 case MULTI_TAB_RELATION_TO_ONE:
                     cursor = null;
                     Cursor c1 = null, c2 = null, c3 = null, c4 = null, c5 = null, c6 = null, c7 = null, c8 = null, c9 = null, c10 = null;
                     try {
-                        c1 = new MultiTable_01Dao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                        c1 = table01Dao.selectByWhere(db, selection, selectionArgs);
                         c1.moveToFirst();
                         if (c1.getCount() > 0) {
                             int columnIdIndex = c1.getColumnIndexOrThrow(BaseColumns._ID);
                             do {
-                                c2 = new MultiTable_02Dao().selectById(dbOpenHelper, c1.getInt(columnIdIndex));
+                                c2 = table02Dao.selectById(db, c1.getInt(columnIdIndex));
                                 c2.moveToFirst();
-                                c3 = new MultiTable_03Dao().selectById(dbOpenHelper, c2.getInt(columnIdIndex));
+                                c3 = table03Dao.selectById(db, c2.getInt(columnIdIndex));
                                 c2.close();
                                 c3.moveToFirst();
-                                c4 = new MultiTable_04Dao().selectById(dbOpenHelper, c3.getInt(columnIdIndex));
+                                c4 = table04Dao.selectById(db, c3.getInt(columnIdIndex));
                                 c3.close();
                                 c4.moveToFirst();
-                                c5 = new MultiTable_05Dao().selectById(dbOpenHelper, c4.getInt(columnIdIndex));
+                                c5 = table05Dao.selectById(db, c4.getInt(columnIdIndex));
                                 c4.close();
                                 c5.moveToFirst();
-                                c6 = new MultiTable_06Dao().selectById(dbOpenHelper, c5.getInt(columnIdIndex));
+                                c6 = table06Dao.selectById(db, c5.getInt(columnIdIndex));
                                 c5.close();
                                 c6.moveToFirst();
-                                c7 = new MultiTable_07Dao().selectById(dbOpenHelper, c6.getInt(columnIdIndex));
+                                c7 = table07Dao.selectById(db, c6.getInt(columnIdIndex));
                                 c6.close();
                                 c7.moveToFirst();
-                                c8 = new MultiTable_08Dao().selectById(dbOpenHelper, c7.getInt(columnIdIndex));
+                                c8 = table08Dao.selectById(db, c7.getInt(columnIdIndex));
                                 c7.close();
                                 c8.moveToFirst();
-                                c9 = new MultiTable_09Dao().selectById(dbOpenHelper, c8.getInt(columnIdIndex));
+                                c9 = table09Dao.selectById(db, c8.getInt(columnIdIndex));
                                 c8.close();
                                 c9.moveToFirst();
-                                c10 = new MultiTable_10Dao().selectById(dbOpenHelper, c9.getInt(columnIdIndex));
+                                c10 = table10Dao.selectById(db, c9.getInt(columnIdIndex));
                                 c10.close();
                             } while (c1.moveToNext());
                         }
@@ -555,7 +596,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                     break;
 
                 case SINGLE_TAB_RELATION_TO_MANY:
-                    cursor = new TableWithRelationToManyDao().selectByWhere(dbOpenHelper, selection, selectionArgs);
+                    cursor = tableTomanyDao.selectByWhere(db, selection, selectionArgs);
                     Cursor toOneCursor = null;
                     try {
                         String toOneSelection = TableWithRelationToOneDao.TABLE_WITH_RELATION_TO_MANY_ID + " = ?";
@@ -565,7 +606,7 @@ public class SQLiteBenchmarkTasks implements ORMBenchmarkTasks {
                         if (cursor.getCount() > 0)
                             do {
                                 toOneSelectionArgs = String.valueOf(cursor.getInt(columnIdIndex));
-                                toOneCursor = new TableWithRelationToOneDao().selectByWhere(dbOpenHelper, toOneSelection, toOneSelectionArgs);
+                                toOneCursor = tableToOneDao.selectByWhere(db, toOneSelection, toOneSelectionArgs);
                                 toOneCursor.close();
                             } while (cursor.moveToNext());
                     } finally {

@@ -2,13 +2,11 @@ package pl.gombal.orm_benchmarks.io.sqlite.entity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.gombal.orm_benchmarks.io.sqlite.DataBaseOpenHelper;
 import pl.gombal.orm_benchmarks.io.sqlite.SelectionBuilder;
 import pl.gombal.orm_benchmarks.util.LogUtils;
 
@@ -27,9 +25,9 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
 
     public abstract String[] getColumns();
 
-    protected abstract long saveAction(SQLiteDatabase db, T entity);
+    protected abstract long saveAction(SQLiteDatabase database, T entity);
 
-    protected abstract int updateAction(SQLiteDatabase db, T entity, String selection, String[] selectionArgs);
+    protected abstract int updateAction(SQLiteDatabase database, T entity, String selection, String[] selectionArgs);
 
     public BaseDao(String tableName) {
         this(tableName, false);
@@ -55,13 +53,11 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
     }
 
 
-    public Cursor selectAll(SQLiteOpenHelper dataBaseOpenHelper) {
-        SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
+    public Cursor selectAll(SQLiteDatabase database) {
         return selectionBuilder.reset().table(tableName).query(database, null, null);
     }
 
-    public Cursor selectById(SQLiteOpenHelper dataBaseOpenHelper, long id) {
-        SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
+    public Cursor selectById(SQLiteDatabase database, long id) {
         return selectionBuilder
                 .reset()
                 .table(tableName)
@@ -69,8 +65,7 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 .query(database, null, null);
     }
 
-    public Cursor selectByWhere(SQLiteOpenHelper dataBaseOpenHelper, String selection, String... selectionArgs) {
-        SQLiteDatabase database = dataBaseOpenHelper.getReadableDatabase();
+    public Cursor selectByWhere(SQLiteDatabase database, String selection, String... selectionArgs) {
         return selectionBuilder
                 .reset()
                 .table(tableName)
@@ -78,21 +73,19 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
                 .query(database, null, null);
     }
 
-    public long insert(SQLiteOpenHelper dataBaseOpenHelper, T object, boolean withTransaction) {
+    public synchronized long insert(SQLiteDatabase database, T object, boolean withTransaction) {
         if (object == null)
             return -1;
 
         ArrayList<T> valuesList = new ArrayList<>();
         valuesList.add(object);
-        return insert(dataBaseOpenHelper, valuesList, withTransaction);
+        return insert(database, valuesList, withTransaction);
     }
 
-    public synchronized long insert(SQLiteOpenHelper dataBaseOpenHelper, List<T> objects, boolean withTransaction) {
+    public synchronized long insert(SQLiteDatabase database, List<T> objects, boolean withTransaction) {
         long result = -1;
         if (objects.isEmpty())
             return result;
-
-        SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
 
         if (withTransaction) {
             try {
@@ -112,27 +105,22 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
             }
         }
 
-        database.close();
-
         return result;
     }
 
-    public synchronized int update(SQLiteOpenHelper dataBaseOpenHelper, T object, String selection, String[] selectionArgs, boolean withTransaction) {
+    public synchronized int update(SQLiteDatabase database, T object, String selection, String[] selectionArgs, boolean withTransaction) {
         if (object == null)
             return -1;
 
         ArrayList<T> valuesList = new ArrayList<>();
         valuesList.add(object);
-        return update(dataBaseOpenHelper, valuesList, selection, selectionArgs, withTransaction);
+        return update(database, valuesList, selection, selectionArgs, withTransaction);
     }
 
-    public synchronized int update(SQLiteOpenHelper dataBaseOpenHelper, List<T> objects, String selection, String[] selectionArgs, boolean withTransaction) {
+    public synchronized int update(SQLiteDatabase database, List<T> objects, String selection, String[] selectionArgs, boolean withTransaction) {
         int result = -1;
         if (objects.isEmpty())
             return result;
-
-        SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
-
 
         if (withTransaction) {
             try {
@@ -160,23 +148,20 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
             }
         }
 
-        database.close();
-
         return result;
     }
 
-    public int delete(DataBaseOpenHelper dataBaseOpenHelper, BaseSampleEntity object, boolean withTransaction) {
-        return deleteByWhere(dataBaseOpenHelper, BaseColumns._ID + " = ?",
+    public int delete(SQLiteDatabase database, BaseSampleEntity object, boolean withTransaction) {
+        return deleteByWhere(database, BaseColumns._ID + " = ?",
                 new String[]{String.valueOf(object.getId())}, withTransaction);
     }
 
-    public synchronized int deleteByWhere(SQLiteOpenHelper dataBaseOpenHelper,
+    public synchronized int deleteByWhere(SQLiteDatabase database,
                                           String selection, String[] selectionArgs, boolean withTransaction) {
         int result = -1;
         if (tableName == null)
             return result;
 
-        SQLiteDatabase database = dataBaseOpenHelper.getWritableDatabase();
         selectionBuilder.reset().table(tableName).where(selection, selectionArgs);
 
         if (withTransaction) {
@@ -192,8 +177,6 @@ public abstract class BaseDao<T extends BaseEntity> implements BaseColumns {
         } else {
             selectionBuilder.delete(database);
         }
-
-        database.close();
 
         return result;
     }

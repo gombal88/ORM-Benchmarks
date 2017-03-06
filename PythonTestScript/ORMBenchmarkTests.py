@@ -27,8 +27,8 @@ INTENT_ACTIONS = {
 INTENT_EXTRA_KEY_WITH_TRANSACTION = PACKAGE_NAME + '.intent_key.WITH_TRANSACTION'
 INTENT_EXTRA_KEY_SELECT_TYPE = PACKAGE_NAME + '.intent_key.SELECTION_TYPE'
 
-WITH_TRANSACTION = (0, 1)
-SELECT_TYPE = (0, 1, 2)
+WITH_TRANSACTION = (1)
+SELECT_TYPE = (1, 2)
 ROW_COUNT_TAB = (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)
 
 adb = adb_interface.AdbInterface()
@@ -66,21 +66,21 @@ def main(argv):
     logger.Log('Installing apk')
     print adb.Install('app-debug.apk')
 
-    for with_trans in WITH_TRANSACTION:
-        for select_type in SELECT_TYPE:
-            for name, orm_intent in INTENT_ACTIONS.items():
-                for row_number in ROW_COUNT_TAB:
-                    logger.Log('Tested ORM: ' + name + ' WITH TRANSACTION = %d' % with_trans)
-                    logger.Log('Rows: ' + str(row_number))
+    # for with_trans in WITH_TRANSACTION:
+    for select_type in SELECT_TYPE:
+        for name, orm_intent in INTENT_ACTIONS.items():
+            for row_number in ROW_COUNT_TAB:
+                logger.Log('Tested ORM: ' + name + ' WITH TRANSACTION = %d' % 1)
+                logger.Log('Rows: ' + str(row_number))
 
-                    adb.StopAppProcess(PACKAGE_NAME)
-                    adb.ClearAppData(PACKAGE_NAME)
+                adb.StopAppProcess(PACKAGE_NAME)
+                adb.ClearAppData(PACKAGE_NAME)
 
-                    start_orm_service(orm_intent, row_number, with_trans, select_type)
+                start_orm_service(orm_intent, row_number, 1, select_type)
 
-                    logmatcher.start()
-                    if logmatcher.wait(build_pattern_for_logcat(name, row_number, with_trans, select_type), 43200):
-                        logger.Log('FINISH %s TEST' % name)
+                logmatcher.start()
+                if logmatcher.wait(build_pattern_for_logcat(name, row_number, 1, select_type), 43200):
+                    logger.Log('FINISH %s TEST' % name)
 
 
 if __name__ == '__main__':

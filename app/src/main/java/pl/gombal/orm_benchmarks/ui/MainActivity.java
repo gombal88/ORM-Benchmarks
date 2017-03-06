@@ -83,7 +83,8 @@ public class MainActivity extends Activity implements BenchmarkServiceConnector.
                 intentAction = "";
         }
 
-        int rowCount = Integer.valueOf(rowCountSpinner.getText().toString());
+        String number = rowCountSpinner.getText().toString();
+        int rowCount = Integer.valueOf(number.isEmpty() ? "0" : number);
         int selectionType = selectionTypeSpinner.getSelectedItemPosition();
         int transaction = transactionCheckbox.isChecked() ? 1 : 0;
 
